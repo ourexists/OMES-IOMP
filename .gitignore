@@ -108,7 +108,7 @@ config/era-token.yml
 config/config.properties
 
 # Docker local env (copy from .env.example)
-.env
+#.env
 
 ## Frontend (Node.js / Vite / Webpack)
 **/node_modules/
