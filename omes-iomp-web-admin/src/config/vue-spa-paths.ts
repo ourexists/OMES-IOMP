@@ -36,8 +36,6 @@ export const VUE_SPA_VIEW_PATHS = [
   '/view/inspect_task_detail',
   '/view/sync_tables',
   '/view/task_tables',
-  '/view/local_file',
-  '/view/local_file_tables',
   '/view/material_tables',
   '/view/material_classify_tables',
   '/view/bom_tree',

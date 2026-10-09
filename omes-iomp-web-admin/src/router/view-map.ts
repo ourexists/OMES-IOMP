@@ -60,8 +60,6 @@ const VIEW_COMPONENTS: Record<string, ViewLoader> = {
   '/view/sync_tables': () => import('@/views/system/sync/index.vue'),
   '/view/task_tables': () => import('@/views/system/task/index.vue'),
   '/view/system_config': () => import('@/views/system/config/index.vue'),
-  '/view/local_file': () => import('@/views/system/file/index.vue'),
-  '/view/local_file_tables': () => import('@/views/system/file/index.vue'),
   '/view/material_tables': () => import('@/views/material/index.vue'),
   '/view/material_classify_tables': () => import('@/views/material/index.vue'),
   '/view/bom_tree': () => import('@/views/bom/index.vue'),
@@ -87,9 +85,7 @@ export function resolveViewComponent(url: string): ViewLoader | null {
 }
 
 /** 同一 Vue 页面对应的多个权限 URL（任一路径有权限则均可访问） */
-export const VIEW_PATH_GROUPS: Record<string, string[]> = {
-  '/view/local_file': ['/view/local_file_tables'],
-}
+export const VIEW_PATH_GROUPS: Record<string, string[]> = {}
 
 /** 将权限菜单 URL 解析为 view-map 中的标准路径 */
 export function resolveMenuViewPath(url: string): string | null {
