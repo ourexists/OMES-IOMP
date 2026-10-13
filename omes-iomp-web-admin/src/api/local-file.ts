@@ -12,6 +12,37 @@ export interface LocalFileEntry {
 
 const FILE_URL_PREFIX = '/files/'
 
+/** 统一成存储根下的相对路径（正斜杠，无盘符/无 /files 前缀） */
+export function toRelativeStoragePath(path?: string): string {
+  if (!path?.trim()) {
+    return ''
+  }
+  let value = path.trim().replace(/\\/g, '/')
+  if (/^https?:\/\//i.test(value)) {
+    try {
+      value = new URL(value).pathname + new URL(value).search
+    } catch {
+      return ''
+    }
+  }
+  const queryPath = value.match(/[?&]path=([^&]*)/i)
+  if (queryPath) {
+    try {
+      value = decodeURIComponent(queryPath[1] || '')
+    } catch {
+      value = queryPath[1] || ''
+    }
+    value = value.replace(/\\/g, '/')
+  }
+  value = value.replace(/^\/+files\//i, '')
+  value = value.replace(/^[a-zA-Z]:\//, '')
+  value = value.replace(/^\/+/, '')
+  if (!value || value.includes('..')) {
+    return ''
+  }
+  return value
+}
+
 export function resolveLocalFileUrl(path?: string): string {
   if (!path?.trim()) {
     return ''
@@ -20,45 +51,56 @@ export function resolveLocalFileUrl(path?: string): string {
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
     return trimmed
   }
-  if (trimmed.startsWith('/')) {
-    return gatewayApiPath(trimmed)
+  const relative = toRelativeStoragePath(trimmed)
+  if (!relative) {
+    return trimmed.startsWith('/') ? gatewayApiPath(trimmed) : ''
   }
-  return gatewayApiPath(`${FILE_URL_PREFIX}${trimmed.replace(/^\/+/, '')}`)
+  return gatewayApiPath(`${FILE_URL_PREFIX}${relative}`)
 }
 
 export function getLocalFileDownloadUrl(path: string): string {
-  return gatewayApiPath(`/localFile/download?path=${encodeURIComponent(path)}`)
+  const relative = toRelativeStoragePath(path)
+  if (!relative) {
+    return ''
+  }
+  return gatewayApiPath(`/localFile/download?path=${encodeURIComponent(relative)}`)
 }
 
 export function fetchLocalFileBrowse(dir?: string) {
-  return get<LocalFileEntry[]>('/localFile/browse', dir ? { dir } : undefined)
+  const relative = toRelativeStoragePath(dir)
+  return get<LocalFileEntry[]>('/localFile/browse', relative ? { dir: relative } : undefined)
 }
 
 export async function uploadLocalFile(file: File, dir?: string) {
   const formData = new FormData()
   formData.append('file', file)
-  if (dir?.trim()) {
-    formData.append('dir', dir.trim())
+  const relative = toRelativeStoragePath(dir)
+  if (relative) {
+    formData.append('dir', relative)
   }
   const { data } = await request.post<string>('/localFile/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
-  return typeof data === 'string' ? data : ''
+  return toRelativeStoragePath(typeof data === 'string' ? data : '')
 }
 
 export function mkdirLocalFile(name: string, dir?: string) {
+  const relative = toRelativeStoragePath(dir)
   return postForm<string>('/localFile/mkdir', {
     name,
-    ...(dir?.trim() ? { dir: dir.trim() } : {}),
+    ...(relative ? { dir: relative } : {}),
   })
 }
 
 export function renameLocalFile(path: string, newName: string) {
-  return postForm<string>('/localFile/rename', { path, newName })
+  return postForm<string>('/localFile/rename', {
+    path: toRelativeStoragePath(path),
+    newName,
+  })
 }
 
 export function deleteLocalFile(path: string) {
-  return postForm<boolean>('/localFile/delete', { path })
+  return postForm<boolean>('/localFile/delete', { path: toRelativeStoragePath(path) })
 }
 
 export function formatFileSize(size?: number | null): string {
@@ -85,7 +127,7 @@ export function isPreviewableImage(entry: LocalFileEntry): boolean {
 }
 
 export function splitDirPath(dir: string): string[] {
-  return dir.split('/').map((part) => part.trim()).filter(Boolean)
+  return toRelativeStoragePath(dir).split('/').filter(Boolean)
 }
 
 export function joinDirPath(parts: string[]): string {

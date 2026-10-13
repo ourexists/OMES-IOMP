@@ -174,7 +174,7 @@ springdoc:
 file:
   storage:
     root-path: ${FILE_STORAGE_ROOT:file}
-    url-prefix: /localFile/download?path=
+    url-prefix: /files
 
 liteflow:
   print-execution-log: false

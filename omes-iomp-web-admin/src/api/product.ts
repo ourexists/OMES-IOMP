@@ -1,5 +1,5 @@
-import request, { get, post, postPage } from '@/api/request'
-import { gatewayApiPath } from '@/config/gateway'
+import { get, post, postPage } from '@/api/request'
+import { resolveLocalFileUrl, uploadLocalFile } from '@/api/local-file'
 import type { ProductAttrConfig } from '@/types/equip-config'
 import type { IdsPayload } from '@/types/api'
 import type { PageQuery } from '@/types/api'
@@ -12,20 +12,8 @@ export interface ProductRecord {
   attrConfig?: ProductAttrConfig
 }
 
-const FILE_URL_PREFIX = '/files/'
-
 export function resolveProductImageUrl(path?: string): string {
-  if (!path?.trim()) {
-    return ''
-  }
-  const trimmed = path.trim()
-  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
-    return trimmed
-  }
-  if (trimmed.startsWith('/')) {
-    return gatewayApiPath(trimmed)
-  }
-  return gatewayApiPath(`${FILE_URL_PREFIX}${trimmed.replace(/^\/+/, '')}`)
+  return resolveLocalFileUrl(path)
 }
 
 export function fetchProductPage(params: PageQuery & { name?: string; code?: string }) {
@@ -48,12 +36,7 @@ export function deleteProducts(ids: string[]) {
   return post<boolean>('/product/delete', { ids } satisfies IdsPayload)
 }
 
+/** 返回存储相对路径（如 product/a.png），展示时再用 resolveProductImageUrl */
 export async function uploadProductImage(file: File, dir = 'product') {
-  const formData = new FormData()
-  formData.append('file', file)
-  formData.append('dir', dir)
-  const { data } = await request.post<string>('/localFile/upload', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  })
-  return resolveProductImageUrl(typeof data === 'string' ? data : '')
+  return uploadLocalFile(file, dir)
 }

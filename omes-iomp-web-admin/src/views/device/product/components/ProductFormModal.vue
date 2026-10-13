@@ -101,9 +101,9 @@ function openFilePicker() {
 async function onImageChange(file: File) {
   uploading.value = true
   try {
-    const url = await uploadProductImage(file)
-    formState.imageUrl = url
-    imagePreview.value = url
+    const relativePath = await uploadProductImage(file)
+    formState.imageUrl = relativePath
+    imagePreview.value = resolveProductImageUrl(relativePath)
     message.success(t('productPage.uploadSuccess'))
   } finally {
     uploading.value = false
