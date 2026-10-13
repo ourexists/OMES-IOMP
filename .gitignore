@@ -100,7 +100,8 @@ release.properties
 
 build
 
-file/
+# 本地文件存储根目录（file.storage.root-path），勿忽略前端 src/**/file/
+/file/
 
 # Docker local env (copy from .env)
 #.env
