@@ -13,7 +13,7 @@
     <properties>
         <flink.version>1.20.1</flink.version>
         <flink.connector.rabbitmq.version>3.0.1-1.17</flink.connector.rabbitmq.version>
-        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
     </properties>
 
     <dependencies>

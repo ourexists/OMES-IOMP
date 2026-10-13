@@ -6,8 +6,8 @@
 
 | 模块 | 方式 |
 |------|------|
-| [omes-iomp-flinker-equip-boot](../omes-iomp-flinker-equip-boot/README.md) | `java -jar`，Spring Boot 嵌 Flink。JDK 21 |
-| [omes-iomp-flinker-equip-flink](../omes-iomp-flinker-equip-flink/README.md) | `flink run` / Web UI。集群也要 JDK 21 |
+| [omes-iomp-flinker-equip-boot](../omes-iomp-flinker-equip-boot/README.md) | `java -jar`，Spring Boot 嵌 Flink。JDK 17+ |
+| [omes-iomp-flinker-equip-flink](../omes-iomp-flinker-equip-flink/README.md) | `flink run` / Web UI。集群 JDK 17、Flink 1.20.1 |
 
 ```bash
 mvn -pl omes-iomp-flinker/omes-iomp-flinker-equip-boot,omes-iomp-flinker/omes-iomp-flinker-equip-flink -am clean package -DskipTests

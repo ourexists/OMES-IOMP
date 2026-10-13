@@ -4,7 +4,7 @@
 
 ## 构建与启动
 
-JDK **21**。在父工程目录 `omes-iomp`：
+字节码目标 **17**；本机可用 JDK 17 或 21（21 须加 `-Djava.security.manager=allow`）。在父工程目录 `omes-iomp`：
 
 ```bash
 mvn -pl omes-iomp-flinker/omes-iomp-flinker-equip-boot -am clean package -DskipTests

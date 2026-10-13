@@ -38,7 +38,7 @@
 
 ## 环境与构建
 
-- 后端使用 JDK 21、Maven。设备 Flink 的 `java -jar` 和集群都用 JDK 21。
+- 后端使用 JDK 21、Maven。Flink 设备/场景作业字节码目标为 17，集群用 JDK 17、Flink 1.20.1；本机 `java -jar` 可用 JDK 17 或 21。
 - 场景 Flink 编译目标为 Java 17，集群使用 JDK 17、Flink 1.20.1。处理模块与两种启动模块分开，详见各模块文档。
 - 管理端 Node.js 要求见其 README 和依赖锁文件；移动端使用 HBuilderX 工具链。
 - 默认数据库为 PostgreSQL，另需 Redis、RabbitMQ。

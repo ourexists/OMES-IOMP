@@ -1,6 +1,6 @@
 ﻿# omes-iomp-flinker-equip-flink
 
-设备流 **集群启动**。提交给 Flink，不含 Flink 本体。作业图见 [处理模块](../omes-iomp-flinker-equip/README.md)。集群 JobManager / TaskManager 使用 **JDK 21**。
+设备流 **集群启动**。提交给 Flink，不含 Flink 本体。作业图见 [处理模块](../omes-iomp-flinker-equip/README.md)。集群 JobManager / TaskManager 使用 **JDK 17**、Flink **1.20.1**（与 workshop 相同）。
 
 ## 构建
 

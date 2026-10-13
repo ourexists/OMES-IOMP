@@ -12,7 +12,7 @@
 
     <properties>
         <flink.version>1.20.1</flink.version>
-        <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.release>17</maven.compiler.release>
     </properties>
 
     <dependencies>
