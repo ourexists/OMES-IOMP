@@ -22,6 +22,18 @@ npm run dev
 | `npm run build:dist` | 仅运行 Vite 构建，不检查类型 |
 | `npm run preview` | 本地预览已构建产物 |
 
+## 清理
+
+构建产物在 `dist/`，Vite 缓存在 `node_modules/.vite`，vue-tsc 增量信息在 `node_modules/.tmp`。依赖异常时再删除整个 `node_modules`，然后重新执行 `npm ci`。
+
+```powershell
+Remove-Item -Recurse -Force dist, node_modules\.vite, node_modules\.tmp -ErrorAction SilentlyContinue
+```
+
+```bash
+rm -rf dist node_modules/.vite node_modules/.tmp
+```
+
 开发前启动 Admin 和 SAS；[vite.config.ts](vite.config.ts) 中的 `GATEWAY_PROXY_PREFIXES` 定义相对路径请求的代理范围。
 
 ## 环境与运行时配置
