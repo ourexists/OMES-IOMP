@@ -102,13 +102,6 @@ build
 
 file/
 
-# Local JWT keys (copy from era-token.yml.example)
-config/era-token.yml
-# Local runtime secrets (copy from *.properties.example)
-config/config.properties
-config/admin.properties
-config/sas.properties
-
 # Docker local env (copy from .env.example)
 #.env
 
