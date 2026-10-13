@@ -53,24 +53,38 @@ Flink Web UI：上传 `*-flink.jar`，Main Class 填上述全限定名。
    | `OMES_FLINK_LOCAL_PARALLELISM` / `omes.workshop.flink.local.parallelism` | 并行度 | `1` |
    | `OMES_FLINK_LOCAL_WEBUI` / `omes.workshop.flink.local.webui` | 是否起本地 Flink Dashboard；`false` 时用无 UI 的 `createLocalEnvironment` | `true` |
 
-4. **IntelliJ IDEA（Java 17）**：在运行配置的 **VM options** 里加入 `--add-opens`（与官方 Flink 脚本一致；缺省时 Kryo 序列化可能报 `InaccessibleObjectException`）：
+4. **IntelliJ IDEA（Java 17）**：在运行配置的 **VM options** 里加入 Flink 1.20.1 `config.yaml` 的 `env.java.opts.all`（缺省时 Kryo 序列化可能报 `InaccessibleObjectException`）：
 
    ```
-   --add-opens java.base/java.lang=ALL-UNNAMED
-   --add-opens java.base/java.lang.invoke=ALL-UNNAMED
-   --add-opens java.base/java.util=ALL-UNNAMED
-   --add-opens java.base/java.io=ALL-UNNAMED
-   --add-opens java.base/java.net=ALL-UNNAMED
-   --add-opens java.base/java.nio=ALL-UNNAMED
-   --add-opens java.base/java.text=ALL-UNNAMED
-   --add-opens java.base/java.time=ALL-UNNAMED
-   --add-opens java.base/java.util.concurrent=ALL-UNNAMED
-   --add-opens java.base/java.util.concurrent.atomic=ALL-UNNAMED
-   --add-opens java.base/java.util.concurrent.locks=ALL-UNNAMED
-   --add-opens java.base/sun.nio.ch=ALL-UNNAMED
+   --add-exports=java.base/sun.net.util=ALL-UNNAMED
+   --add-exports=java.rmi/sun.rmi.registry=ALL-UNNAMED
+   --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED
+   --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED
+   --add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED
+   --add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED
+   --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED
+   --add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED
+   --add-opens=java.base/java.lang=ALL-UNNAMED
+   --add-opens=java.base/java.net=ALL-UNNAMED
+   --add-opens=java.base/java.io=ALL-UNNAMED
+   --add-opens=java.base/java.nio=ALL-UNNAMED
+   --add-opens=java.base/sun.nio.ch=ALL-UNNAMED
+   --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+   --add-opens=java.base/java.text=ALL-UNNAMED
+   --add-opens=java.base/java.time=ALL-UNNAMED
+   --add-opens=java.base/java.util=ALL-UNNAMED
+   --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+   --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED
+   --add-opens=java.base/java.util.concurrent.locks=ALL-UNNAMED
    ```
 
-   **Program arguments** 示例：`--local true`。Maven 运行配置勾选 profile **`flink-with-dependencies`**，使 Flink 依赖进入 classpath。
+   **Program arguments**：`--local true`。Maven 运行配置勾选 profile **`flink-with-dependencies`**，使 Flink 依赖进入 classpath。
+
+   本机 `java -jar` 时，把同一组参数放在 `-jar` 前面，程序参数放在 jar 后面（仓库根目录）：
+
+   ```bash
+   java --add-exports=java.base/sun.net.util=ALL-UNNAMED --add-exports=java.rmi/sun.rmi.registry=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.locks=ALL-UNNAMED -jar omes-iomp-flinker-workshop/target/omes-iomp-flinker-workshop-1.0.1-SNAPSHOT-flink.jar --local true
+   ```
 
 5. 本地调试建议保持 **`OMES_FLINK_ENABLE_CHECKPOINTING=false`**（默认），与 RMQ Source checkpoint 说明一致；仍需可连通的 RabbitMQ 与队列配置。
 

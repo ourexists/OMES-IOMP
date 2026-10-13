@@ -82,6 +82,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <configuration>
+                    <!-- Boot parent 默认 true，会把 provided 的 Flink 打进提交包，和集群 lib 冲突。 -->
+                    <keepDependenciesWithProvidedScope>false</keepDependenciesWithProvidedScope>
+                </configuration>
                 <executions combine.self="override">
                     <execution>
                         <id>default</id>
