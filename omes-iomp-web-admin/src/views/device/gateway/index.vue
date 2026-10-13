@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CompactSearchActions from '@/components/admin/CompactSearchActions.vue'
 import AdminPanelTitle from '@/components/admin/AdminPanelTitle.vue'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   ApiOutlined,
@@ -34,6 +34,9 @@ const themeStore = useThemeStore()
 // gatewayPage.subtitle: 管理 MQTT、PLC 轮询等协议连接，启停后由 Admin 运行时拉起采集；系统管理端说明文案不向普通用户展示。
 
 const loading = ref(false)
+const togglingId = ref('')
+const togglePercent = ref(0)
+let toggleTimer: ReturnType<typeof setInterval> | undefined
 const gateways = ref<GatewayRecord[]>([])
 const protocolOptions = ref<ProtocolOption[]>([])
 
@@ -75,8 +78,10 @@ async function loadProtocols() {
   }
 }
 
-async function loadCards() {
-  loading.value = true
+async function loadCards(silent = false) {
+  if (!silent) {
+    loading.value = true
+  }
   try {
     const list = await fetchGatewayList({
       protocol: searchForm.protocol,
@@ -84,9 +89,11 @@ async function loadCards() {
     })
     gateways.value = Array.isArray(list) ? list : []
   } catch {
-    gateways.value = []
+    // 列表请求失败时保留当前卡片，避免启停后的刷新把页面清空
   } finally {
-    loading.value = false
+    if (!silent) {
+      loading.value = false
+    }
   }
 }
 
@@ -115,18 +122,60 @@ function openBinding(record: GatewayRecord) {
   bindingOpen.value = true
 }
 
+function applyEnabled(id: string, enabled: boolean) {
+  const hit = gateways.value.find((item) => item.id === id)
+  if (hit) {
+    hit.enabled = enabled
+  }
+}
+
+function beginToggleWait(id: string) {
+  // shortcut: 接口不回报进度，条走到 90% 停住；有真实进度再换成服务端百分比
+  togglingId.value = id
+  togglePercent.value = 12
+  clearInterval(toggleTimer)
+  toggleTimer = setInterval(() => {
+    if (togglePercent.value < 90) {
+      togglePercent.value += 6
+    }
+  }, 300)
+}
+
+function endToggleWait() {
+  clearInterval(toggleTimer)
+  toggleTimer = undefined
+  togglingId.value = ''
+  togglePercent.value = 0
+}
+
 async function toggleEnabled(record: GatewayRecord) {
-  if (!record.id) {
+  if (!record.id || togglingId.value) {
     return
   }
-  if (record.enabled) {
-    await stopGateway(record.id)
-    message.success(t('gatewayPage.stopSuccess'))
-  } else {
-    await startGateway(record.id)
-    message.success(t('gatewayPage.startSuccess'))
+  const id = record.id
+  const next = !record.enabled
+  beginToggleWait(id)
+  let ok = false
+  try {
+    if (next) {
+      await startGateway(id)
+      message.success(t('gatewayPage.startSuccess'))
+    } else {
+      await stopGateway(id)
+      message.success(t('gatewayPage.stopSuccess'))
+    }
+    ok = true
+  } catch {
+    // 失败提示由请求拦截器弹出
   }
-  loadCards()
+  try {
+    await loadCards(true)
+  } finally {
+    endToggleWait()
+  }
+  if (ok) {
+    applyEnabled(id, next)
+  }
 }
 
 function confirmDelete(record: GatewayRecord) {
@@ -152,6 +201,8 @@ onMounted(async () => {
   await loadProtocols()
   await loadCards()
 })
+
+onUnmounted(endToggleWait)
 </script>
 
 <template>
@@ -246,7 +297,15 @@ onMounted(async () => {
               class="gw-card"
               :class="{ 'gw-card--on': item.enabled }"
             >
-              <div class="gw-card__accent" :style="{ background: protocolColor(item.protocol) }" />
+              <a-progress
+                v-if="togglingId === item.id"
+                class="gw-card__wait"
+                :percent="togglePercent"
+                :show-info="false"
+                status="active"
+                :stroke-width="3"
+              />
+              <div v-else class="gw-card__accent" :style="{ background: protocolColor(item.protocol) }" />
 
               <header class="gw-card__head">
                 <div
@@ -294,6 +353,8 @@ onMounted(async () => {
                     size="small"
                     class="action-btn"
                     :class="{ 'action-btn--active': item.enabled }"
+                    :loading="togglingId === item.id"
+                    :disabled="!!togglingId && togglingId !== item.id"
                     @click="toggleEnabled(item)"
                   >
                     <PauseCircleOutlined v-if="item.enabled" />
@@ -497,6 +558,16 @@ onMounted(async () => {
 .gw-card__accent {
   height: 3px;
   flex-shrink: 0;
+}
+
+.gw-card__wait {
+  margin: 0;
+  line-height: 0;
+}
+
+.gw-card__wait :deep(.ant-progress-outer),
+.gw-card__wait :deep(.ant-progress-inner) {
+  display: block;
 }
 
 .gw-card__head {
