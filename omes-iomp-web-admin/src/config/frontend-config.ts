@@ -25,7 +25,7 @@ export function getSasBaseUrl(): string {
 function applyGatewayBase(cfg: Partial<FrontendConfig> = {}): FrontendConfig {
   const gatewayPort = cfg.gatewayPort ?? getGatewayPort()
   let sasBaseUrl = resolveGatewayBaseUrl({ ...cfg, gatewayPort })
-  // SAS 空基址表示「与网关同源」；Vite 开发页在 :5173，必须回退到网关绝对地址
+  // SAS 空基址：穿透访问时保持同源走 Vite proxy；本机开发回退到网关绝对地址
   if (!sasBaseUrl && import.meta.env.DEV) {
     sasBaseUrl = defaultGatewayBaseUrl()
   }

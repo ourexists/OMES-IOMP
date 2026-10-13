@@ -19,8 +19,24 @@ export function getRuntimeSasBaseUrl(): string {
   return runtimeSasBaseUrl ?? resolveGatewayBaseUrl()
 }
 
+function isLoopbackHost(hostname: string): boolean {
+  return hostname === '127.0.0.1' || hostname === 'localhost' || hostname === '[::1]' || hostname === '::1'
+}
+
+/** 内网穿透访问 Vite 时：走同源相对路径 + dev proxy，避免跨域/混合内容 */
+function useDevProxyBase(): boolean {
+  return (
+    import.meta.env.DEV &&
+    typeof window !== 'undefined' &&
+    !isLoopbackHost(window.location.hostname)
+  )
+}
+
 /** 环境变量或开发默认网关根地址 */
 export function defaultGatewayBaseUrl(): string {
+  if (useDevProxyBase()) {
+    return ''
+  }
   const fromEnv = import.meta.env.VITE_SAS_BASE_URL?.trim()
   if (fromEnv) {
     return fromEnv.replace(/\/$/, '')
@@ -43,13 +59,13 @@ function resolveSasBaseUrl(configured: string, gatewayPort: number): string {
   try {
     const parsed = new URL(configured)
     const pageHost = typeof window !== 'undefined' ? window.location.hostname : ''
-    if (
-      pageHost &&
-      (parsed.hostname === '127.0.0.1' || parsed.hostname === 'localhost') &&
-      pageHost !== '127.0.0.1' &&
-      pageHost !== 'localhost'
-    ) {
+    if (pageHost && isLoopbackHost(parsed.hostname) && !isLoopbackHost(pageHost)) {
+      // shortcut: 仅穿透前端时用 Vite proxy；若同时穿透了 :9400，改设 VITE_SAS_BASE_URL 为该公网地址
+      if (import.meta.env.DEV) {
+        return ''
+      }
       parsed.hostname = pageHost
+      parsed.protocol = window.location.protocol
       if (!parsed.port) {
         parsed.port = String(gatewayPort)
       }
@@ -83,6 +99,10 @@ export function resolveGatewayBaseUrl(cfg?: { sasBaseUrl?: string; gatewayPort?:
   const envOrDevBase = defaultGatewayBaseUrl()
   if (envOrDevBase) {
     return envOrDevBase
+  }
+  // 穿透访问 Vite：空基址走同源 proxy，不要拼 :9400
+  if (useDevProxyBase()) {
+    return ''
   }
 
   if (typeof window !== 'undefined' && !isSameOriginGatewayPort(gatewayPort)) {

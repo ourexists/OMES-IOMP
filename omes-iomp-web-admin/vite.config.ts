@@ -69,7 +69,10 @@ export default defineConfig(({ mode }) => {
       exclude: ['vue-i18n'],
     },
     server: {
+      host: true,
       port: 5173,
+      // 内网穿透域名访问 Vite 时放行 Host 检查
+      allowedHosts: true,
       proxy: Object.fromEntries(
         GATEWAY_PROXY_PREFIXES.map((prefix) => [
           prefix,

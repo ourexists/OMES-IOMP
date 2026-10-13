@@ -78,8 +78,9 @@ export function fetchRolePage(params: Record<string, unknown>) {
   return postPage<RoleRecord>('/role/selectByPage', params)
 }
 
-export function fetchAllRoles() {
-  return post<RoleRecord[]>('/role/selectByPage', { requirePage: false })
+export async function fetchAllRoles() {
+  const result = await postPage<RoleRecord>('/role/selectByPage', { requirePage: false })
+  return result.records || []
 }
 
 export function saveRole(data: RoleRecord) {
