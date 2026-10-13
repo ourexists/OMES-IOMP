@@ -60,18 +60,16 @@ function toTreeNodes(nodes: PermissionRecord[] = []): TreeCheckNode[] {
   }))
 }
 
-const currentPlatformCheckedKeys = computed({
-  get() {
-    const platformCode = selectedPlatformCode.value
-    if (!platformCode) {
-      return []
-    }
-    const platformIds = permissionIdsByPlatform.value[platformCode] || []
-    return checkedPermissionIds.value.filter((id) => platformIds.includes(id))
-  },
-  set(keys: string[]) {
-    syncPlatformCheckedKeys(keys)
-  },
+const currentPlatformCheckedKeys = computed(() => {
+  const platformCode = selectedPlatformCode.value
+  if (!platformCode) {
+    return { checked: [] as string[], halfChecked: [] as string[] }
+  }
+  const platformIds = permissionIdsByPlatform.value[platformCode] || []
+  return {
+    checked: checkedPermissionIds.value.filter((id) => platformIds.includes(id)),
+    halfChecked: [] as string[],
+  }
 })
 
 function syncPlatformCheckedKeys(keys: string[]) {
@@ -82,6 +80,54 @@ function syncPlatformCheckedKeys(keys: string[]) {
   const platformIds = permissionIdsByPlatform.value[platformCode] || []
   const others = checkedPermissionIds.value.filter((id) => !platformIds.includes(id))
   checkedPermissionIds.value = [...others, ...keys]
+}
+
+function findTreeNode(nodes: TreeCheckNode[], key: string): TreeCheckNode | undefined {
+  for (const node of nodes) {
+    if (node.key === key) {
+      return node
+    }
+    if (node.children?.length) {
+      const found = findTreeNode(node.children, key)
+      if (found) {
+        return found
+      }
+    }
+  }
+}
+
+function collectDescendantKeys(node: TreeCheckNode): string[] {
+  const keys: string[] = []
+  const walk = (list: TreeCheckNode[]) => {
+    for (const child of list) {
+      keys.push(child.key)
+      if (child.children?.length) {
+        walk(child.children)
+      }
+    }
+  }
+  if (node.children?.length) {
+    walk(node.children)
+  }
+  return keys
+}
+
+function handleTreeCheck(
+  keys: string[] | { checked: string[]; halfChecked: string[] },
+  info: { checked: boolean; node: { key: string | number } },
+) {
+  const checked = Array.isArray(keys) ? keys : keys.checked
+  const nodeKey = String(info.node.key)
+  const node = findTreeNode(currentTreeData.value, nodeKey)
+  const descendants = node ? collectDescendantKeys(node) : []
+
+  if (info.checked) {
+    syncPlatformCheckedKeys([...new Set([...checked, ...descendants])])
+    return
+  }
+
+  const remove = new Set([nodeKey, ...descendants])
+  syncPlatformCheckedKeys(checked.filter((id) => !remove.has(id)))
 }
 
 async function loadPlatformTree(platform: PlatformNode) {
@@ -191,10 +237,12 @@ async function handleSubmit() {
             <div class="permission-tree-panel">
               <a-tree
                 v-if="currentTreeData.length"
-                v-model:checked-keys="currentPlatformCheckedKeys"
+                :checked-keys="currentPlatformCheckedKeys"
                 checkable
+                check-strictly
                 default-expand-all
                 :tree-data="currentTreeData"
+                @check="handleTreeCheck"
               />
               <a-empty v-else :description="t('rolePage.noPermissions')" />
             </div>
