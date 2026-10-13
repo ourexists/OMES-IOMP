@@ -35,7 +35,7 @@ type Config = {
 
 // 根据环境导出最终配置
 export const config = {
-    name: "太仓水务集团",
+    name: "OMES",
     version: "1.0.0",
     locale: "zh",
     website: "",
@@ -53,12 +53,13 @@ export const config = {
 function getPath(env: string) {
     const host = get(proxy, env + `.target`) as string;
     const authTarget = get(proxy, env + `.authTarget`) as string | null;
-    const baseUrl = host;
-    const authBaseUrl = authTarget != null && authTarget.length > 0 ? authTarget : host;
+    // 生产走反代：/api 由网关去掉后再转发 SAS。开发直连 SAS，后端没有 /api
+    const prefix = env == "prod" ? "/api" : "";
+    const authRoot = authTarget != null && authTarget.length > 0 ? authTarget : host;
     return {
         host,
-        baseUrl,
-        authBaseUrl
+        baseUrl: host + prefix,
+        authBaseUrl: authRoot + prefix
     };
 }
 
