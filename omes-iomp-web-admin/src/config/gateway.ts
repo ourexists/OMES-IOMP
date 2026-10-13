@@ -47,29 +47,13 @@ export function defaultGatewayBaseUrl(): string {
   return ''
 }
 
-function isSameOriginGatewayPort(gatewayPort: number): boolean {
-  if (typeof window === 'undefined') {
-    return false
-  }
-  const port = window.location.port || (window.location.protocol === 'https:' ? '443' : '80')
-  return port === String(gatewayPort)
-}
-
-function resolveSasBaseUrl(configured: string, gatewayPort: number): string {
+function resolveSasBaseUrl(configured: string): string {
   try {
     const parsed = new URL(configured)
     const pageHost = typeof window !== 'undefined' ? window.location.hostname : ''
+    // shortcut: 配置里是本机地址、页面已是穿透/公网域名时，走同源（Docker Nginx / Vite proxy），勿拼 :9400
     if (pageHost && isLoopbackHost(parsed.hostname) && !isLoopbackHost(pageHost)) {
-      // shortcut: 仅穿透前端时用 Vite proxy；若同时穿透了 :9400，改设 VITE_SAS_BASE_URL 为该公网地址
-      if (import.meta.env.DEV) {
-        return ''
-      }
-      parsed.hostname = pageHost
-      parsed.protocol = window.location.protocol
-      if (!parsed.port) {
-        parsed.port = String(gatewayPort)
-      }
-      return parsed.toString().replace(/\/$/, '')
+      return ''
     }
   } catch {
     // ignore invalid url
@@ -80,36 +64,23 @@ function resolveSasBaseUrl(configured: string, gatewayPort: number): string {
 /**
  * 计算当前页面应使用的网关根地址（不含尾斜杠）。
  * - 构建时注入 VITE_SAS_BASE_URL：前后端分离，API 指向 SAS
- * - 开发：默认 http://127.0.0.1:9400
- * - 生产未注入且页面端口即网关端口：空字符串（同源相对路径，兼容反代同域）
- * - 生产未注入且页面在其它端口：当前 host + 网关端口
+ * - 开发本机：默认 http://127.0.0.1:9400；穿透访问 Vite：空串走 dev proxy
+ * - 未注入时：空串同源（Docker Nginx 反代）；勿默认拼 host:9400（穿透后会 CORS）
  */
 export function resolveGatewayBaseUrl(cfg?: { sasBaseUrl?: string; gatewayPort?: number }): string {
-  const gatewayPort = cfg?.gatewayPort ?? GATEWAY_PORT
-
   // 显式传入 sasBaseUrl（含空串）时：空串 = 同源相对路径（Nginx/SAS 同域）
   if (cfg && Object.prototype.hasOwnProperty.call(cfg, 'sasBaseUrl')) {
     const configured = cfg.sasBaseUrl?.trim() ?? ''
     if (!configured) {
       return ''
     }
-    return resolveSasBaseUrl(configured, gatewayPort)
+    return resolveSasBaseUrl(configured)
   }
 
   const envOrDevBase = defaultGatewayBaseUrl()
   if (envOrDevBase) {
     return envOrDevBase
   }
-  // 穿透访问 Vite：空基址走同源 proxy，不要拼 :9400
-  if (useDevProxyBase()) {
-    return ''
-  }
-
-  if (typeof window !== 'undefined' && !isSameOriginGatewayPort(gatewayPort)) {
-    const host = window.location.hostname || '127.0.0.1'
-    return `${window.location.protocol}//${host}:${gatewayPort}`
-  }
-
   return ''
 }
 
