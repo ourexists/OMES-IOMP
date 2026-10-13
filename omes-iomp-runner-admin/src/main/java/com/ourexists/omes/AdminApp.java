@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 @EnableScheduling
 @SpringBootApplication
 @EnableAsync
-@PropertySource(value = {"file:config/config.properties"})
+@PropertySource(value = {"file:config/admin.properties"})
 public class AdminApp {
 
     public static void main(String[] args) {

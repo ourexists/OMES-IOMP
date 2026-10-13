@@ -91,7 +91,7 @@ omes:
     enabled: ${OMES_GATEWAY_ENABLED:true}
     admin-url: ${OMES_ADMIN_URL:http://127.0.0.1:10010}
   internal:
-    service-key: ${OMES_INTERNAL_SERVICE_KEY:dev-internal-change-me}
+    service-key: ${OMES_INTERNAL_SERVICE_KEY:d41ab5d5775f90e753d2cba0b3099e6523c285864e64a2ac6c46cbdcdb216091}
   auth-rate-limit:
     captcha-per-minute: ${OMES_AUTH_CAPTCHA_RATE:60}
     token-per-minute: ${OMES_AUTH_TOKEN_RATE:30}

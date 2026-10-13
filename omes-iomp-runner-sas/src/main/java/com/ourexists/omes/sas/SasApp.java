@@ -15,7 +15,7 @@ import org.springframework.context.annotation.PropertySource;
  */
 @SpringBootApplication(scanBasePackages = "com.ourexists.omes.sas")
 @EnableFeignClients(basePackages = "com.ourexists.omes.sas.remote")
-@PropertySource(value = {"file:config/config.properties"})
+@PropertySource(value = {"file:config/sas.properties"})
 public class SasApp {
 
     public static void main(String[] args) {

@@ -38,7 +38,7 @@ bash docker/docker.sh down
 SKIP_MVN=1 SKIP_WEB=1 bash docker/docker.sh build
 ```
 
-脚本根据自身路径定位仓库，可从其他工作目录通过完整路径调用。首次使用且根目录 `.env` 不存在时，从本目录模板复制；已有 `.env` 保持不变。Admin、SAS 继续挂载根目录 `config/` 到容器 `/app/config`。
+脚本根据自身路径定位仓库，可从其他工作目录通过完整路径调用。首次使用且根目录 `.env` 不存在时，从本目录模板复制；已有 `.env` 保持不变。Admin、SAS 挂载根目录 `config/` 到容器 `/app/config`，业务配置分别读 `admin.properties` / `sas.properties`（Compose 只保留端口与 `JAVA_OPTS`）。
 
 `build` 先用 Maven 构建 Admin/SAS，再在仓库内 `omes-iomp-web-admin` 安装依赖并构建 `dist/`，最后构建镜像。前端构建使用空 `VITE_SAS_BASE_URL` 以支持同源代理；该步骤只运行 Vite，不包含类型检查。后端需要可用的 Era 依赖。跳过构建时，每个后端 target 目录必须有且仅有一个匹配的 JAR，前端需已有 `dist/index.html`。
 
@@ -64,6 +64,6 @@ IDEA 的 `.run/` 配置已同步新路径，Dockerfile 构建 context 为仓库�
 
 默认端口为 Web 8080、SAS 9400、Admin 10010，具体映射以 Compose 和根目录 `.env` 为准。`down` 不带 `--volumes`，保留数据库等命名卷。
 
-本次集中目录保留既有网络配置：Admin、SAS 通过 `host.docker.internal` 访问中间件，Web Nginx 通过 `host.docker.internal:9400` 访问 SAS。部署主机需支持该地址并开放对应端口；修改 SAS 宿主机映射端口时，同步调整 Nginx upstream。SAS 转发 Admin 使用 Compose 服务名 `admin:10010`。
+本次集中目录保留既有网络配置：Admin、SAS 通过 `host.docker.internal` 访问中间件与互相调用（见各服务 properties 中的 `db_*` / `REDIS_*` / `OMES_ADMIN_URL`），Web Nginx 通过 `host.docker.internal:9400` 访问 SAS。部署主机需支持该地址并开放对应端口；修改 SAS 宿主机映射端口时，同步调整 Nginx upstream。
 
 当前 Compose 仅集成已有的 Admin、SAS、Web 和三种中间件。AI、Control、Flink 尚未定义容器服务，其运行说明见各模块文档。

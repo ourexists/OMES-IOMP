@@ -1,0 +1,18 @@
+#
+# Copyright (c) 2025. created by ourexists.https://gitee.com/ourexists
+# Copy to admin.properties and adjust for your environment.
+#
+db_host=host.docker.internal:5432
+db_schema=omes
+db_username=postgres
+db_password=postgres
+REDIS_HOST=host.docker.internal
+REDIS_PORT=6379
+REDIS_PASSWORD=waqwertyuiop!
+RABBITMQ_HOST=host.docker.internal
+RABBITMQ_PORT=5672
+RABBITMQ_USERNAME=admin
+RABBITMQ_PASSWORD=TyY6Df3bZe
+RABBITMQ_VHOST=/
+OMES_INTERNAL_SERVICE_KEY=d41ab5d5775f90e753d2cba0b3099e6523c285864e64a2ac6c46cbdcdb216091
+AI_BRIDGE_INTERNAL_KEY=dev-bridge-change-me

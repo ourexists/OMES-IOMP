@@ -40,7 +40,7 @@ public class SasFrontendConfigController {
             .build();
 
     public SasFrontendConfigController(OmesGatewayProperties gatewayProperties,
-                                       @Value("${omes.internal.service-key:dev-internal-change-me}") String internalServiceKey) {
+                                       @Value("${omes.internal.service-key:d41ab5d5775f90e753d2cba0b3099e6523c285864e64a2ac6c46cbdcdb216091}") String internalServiceKey) {
         this.gatewayProperties = gatewayProperties;
         this.internalServiceKey = internalServiceKey == null ? "" : internalServiceKey.trim();
     }

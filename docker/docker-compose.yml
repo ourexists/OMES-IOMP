@@ -69,30 +69,9 @@ services:
     image: omes-admin:${OMES_IMAGE_TAG:-latest}
     container_name: omes-admin
     restart: unless-stopped
-#    depends_on:
-#      postgres:
-#        condition: service_healthy
-#      redis:
-#        condition: service_healthy
-#      rabbitmq:
-#        condition: service_healthy
     environment:
       TZ: Asia/Shanghai
       JAVA_OPTS: ${ADMIN_JAVA_OPTS:--Xms512m -Xmx1024m}
-      db_host: host.docker.internal:5432
-      db_schema: ${POSTGRES_DB:-omes}
-      db_username: ${POSTGRES_USER:-postgres}
-      db_password: ${POSTGRES_PASSWORD:-postgres}
-      REDIS_HOST: host.docker.internal
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-waqwertyuiop!}
-      RABBITMQ_HOST: host.docker.internal
-      RABBITMQ_PORT: 5672
-      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-admin}
-      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-TyY6Df3bZe}
-      RABBITMQ_VHOST: ${RABBITMQ_VHOST:-/}
-      OMES_INTERNAL_SERVICE_KEY: ${OMES_INTERNAL_SERVICE_KEY:-dev-internal-change-me}
-      AI_BRIDGE_INTERNAL_KEY: ${AI_BRIDGE_INTERNAL_KEY:-dev-bridge-change-me}
     ports:
       - "${ADMIN_PORT:-10010}:10010"
     volumes:
@@ -111,27 +90,11 @@ services:
     container_name: omes-sas
     restart: unless-stopped
     depends_on:
-#      postgres:
-#        condition: service_healthy
-#      redis:
-#        condition: service_healthy
       admin:
         condition: service_healthy
     environment:
       TZ: Asia/Shanghai
       JAVA_OPTS: ${SAS_JAVA_OPTS:--Xms256m -Xmx512m}
-      OMES_GATEWAY_PORT: 9400
-      OMES_ADMIN_URL: http://admin:10010
-      OMES_GATEWAY_ENABLED: ${OMES_GATEWAY_ENABLED:-true}
-      db_host: host.docker.internal:5432
-      db_schema: ${POSTGRES_DB:-omes}
-      db_username: ${POSTGRES_USER:-postgres}
-      db_password: ${POSTGRES_PASSWORD:-postgres}
-      REDIS_HOST: host.docker.internal
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-waqwertyuiop!}
-      OMES_INTERNAL_SERVICE_KEY: ${OMES_INTERNAL_SERVICE_KEY:-dev-internal-change-me}
-      AI_BRIDGE_INTERNAL_KEY: ${AI_BRIDGE_INTERNAL_KEY:-dev-bridge-change-me}
     ports:
       - "${SAS_PORT:-9400}:9400"
     volumes:

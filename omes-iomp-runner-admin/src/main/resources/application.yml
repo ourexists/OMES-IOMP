@@ -141,7 +141,7 @@ era:
     # 用户/权限由 SAS 网关解析后通过内部头传递，Admin 不再读 OAuth2 授权 Redis
     identity-source: gateway
     gateway:
-      internal-service-key: ${OMES_INTERNAL_SERVICE_KEY:dev-internal-change-me}
+      internal-service-key: ${OMES_INTERNAL_SERVICE_KEY:d41ab5d5775f90e753d2cba0b3099e6523c285864e64a2ac6c46cbdcdb216091}
   log:
     level: info
     file:
@@ -194,7 +194,7 @@ process:
 
 omes:
   internal:
-    service-key: ${OMES_INTERNAL_SERVICE_KEY:dev-internal-change-me}
+    service-key: ${OMES_INTERNAL_SERVICE_KEY:d41ab5d5775f90e753d2cba0b3099e6523c285864e64a2ac6c46cbdcdb216091}
   equip:
     # change 消息聚合成批再调 device 批量接口：条数阈值与最大等待（毫秒，防抖）
     stream-persist-batch-size: ${OMES_EQUIP_STREAM_PERSIST_BATCH_SIZE:32}

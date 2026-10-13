@@ -41,8 +41,8 @@ function Invoke-Compose {
 
 switch ($Command) {
     "build" {
-        foreach ($f in @("config\config.properties", "config\era-token.yml")) {
-            if (-not (Test-Path $f)) { throw "Missing $f" }
+        foreach ($f in @("config\admin.properties", "config\sas.properties", "config\era-token.yml")) {
+            if (-not (Test-Path $f)) { throw "Missing $f (copy from *.example if needed)" }
         }
         if (-not $SkipMaven) {
             Write-Host "==> mvn package"

@@ -15,7 +15,10 @@ shift || true
 
 case "$cmd" in
   build)
-    [[ -f config/config.properties && -f config/era-token.yml ]] || { echo "Missing config/*"; exit 1; }
+    [[ -f config/admin.properties && -f config/sas.properties && -f config/era-token.yml ]] || {
+      echo "Missing config/admin.properties, config/sas.properties or config/era-token.yml (copy from *.example if needed)"
+      exit 1
+    }
     if [[ "${SKIP_MVN:-0}" != "1" ]]; then
       echo "==> mvn package"
       mvn -pl omes-iomp-runner-admin,omes-iomp-runner-sas -am clean package -DskipTests

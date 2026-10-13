@@ -13,7 +13,7 @@
 | `omes-iomp-runner-admin` | 聚合业务模块的管理 API，主类 `com.ourexists.omes.AdminApp` | 10010 |
 | `omes-iomp-runner-sas` | OAuth2 认证与 API 网关，主类 `com.ourexists.omes.sas.SasApp` | 9400 |
 | `omes-iomp-runner-control` | 设备控制进程，主类 `com.ourexists.omes.control.ControlApp` | 10015 |
-| [omes-iomp-web-admin](omes-iomp-web-admin/README.md) | Vue 管理端：开发、构建、网关配置 | 5173（开发） |
+| [omes-iomp-web-admin](omes-iomp-web-admin/README.md) | Vue 管理端：开发、构建、网关配置。产品介绍见 [管理端介绍](管理端介绍.md) | 5173（开发） |
 | [omes-iomp-app](omes-iomp-app/README.md) | uni-app x 移动端：运行与接口配置 | 9990（H5 开发） |
 | [omes-iomp-ai](omes-iomp-ai/README.md) | AI 编排、模型供应商与部署配置 | 10011 |
 | [omes-iomp-flinker-equip](omes-iomp-flinker-equip/README.md) | 设备实时处理，Spring Boot 内嵌 Flink | — |
@@ -59,9 +59,9 @@ mvn clean package -DskipTests
 
 ## 本地配置与启动
 
-Admin、SAS、AI 启动类通过 `@PropertySource` 读取 `config/config.properties`。运行工作目录设为仓库根目录，并准备该文件中的数据库变量：`db_host`、`db_schema`、`db_username`、`db_password`。
+Admin / SAS 分别通过 `@PropertySource` 读取 `config/admin.properties`、`config/sas.properties`（可从同名 `*.example` 复制）；AI 仍读 `config/config.properties`。运行工作目录设为仓库根目录，并准备其中的数据库变量：`db_host`、`db_schema`、`db_username`、`db_password`。
 
-认证相关配置放在 `config/era-token.yml`；中间件及服务变量参照各运行模块的 `src/main/resources/application.yml`。本地配置不纳入版本控制，仓库目前没有对应的 `config.properties.example` 或 `era-token.yml.example`。
+认证相关配置放在 `config/era-token.yml`；中间件及服务变量以各服务 `config/*.properties` 为准（Docker Compose 不再注入这些键），默认值也可对照各运行模块的 `src/main/resources/application.yml`。本地配置不纳入版本控制。
 
 | 配置 | 用途 |
 | --- | --- |

@@ -1,6 +1,6 @@
 # IDEA Docker：对本文件右键 Run；Build context = 仓库根目录
 # 运行前先 mvn package；并挂载仓库根目录 config → /app/config
-# 单独跑容器时默认连宿主机中间件与 Admin（host.docker.internal）
+# 业务配置以 config/sas.properties 为准（勿在镜像 ENV / Compose 里覆盖）
 
 FROM eclipse-temurin:21-jre-jammy
 
@@ -14,19 +14,7 @@ COPY omes-iomp-runner-sas/target/omes-iomp-runner-sas-*.jar /app/app.jar
 
 ENV JAVA_OPTS="-Xms256m -Xmx512m" \
     TZ=Asia/Shanghai \
-    SPRING_PROFILES_ACTIVE=prod \
-    OMES_GATEWAY_PORT=9400 \
-    OMES_ADMIN_URL=http://host.docker.internal:10010 \
-    OMES_GATEWAY_ENABLED=true \
-    db_host=host.docker.internal:5432 \
-    db_schema=omes \
-    db_username=postgres \
-    db_password=postgres \
-    REDIS_HOST=host.docker.internal \
-    REDIS_PORT=6379 \
-    REDIS_PASSWORD=waqwertyuiop! \
-    OMES_INTERNAL_SERVICE_KEY=dev-internal-change-me \
-    AI_BRIDGE_INTERNAL_KEY=dev-bridge-change-me
+    SPRING_PROFILES_ACTIVE=prod
 
 EXPOSE 9400
 
