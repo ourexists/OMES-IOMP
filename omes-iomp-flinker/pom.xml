@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ourexists.omes</groupId>
+        <artifactId>omes-iomp</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>omes-iomp-flinker</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>omes-iomp-flinker-equip</module>
+        <module>omes-iomp-flinker-equip-boot</module>
+        <module>omes-iomp-flinker-equip-flink</module>
+        <module>omes-iomp-flinker-workshop</module>
+        <module>omes-iomp-flinker-workshop-boot</module>
+        <module>omes-iomp-flinker-workshop-flink</module>
+    </modules>
+</project>

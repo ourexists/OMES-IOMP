@@ -47,8 +47,7 @@
         <module>omes-iomp-message</module>
         <module>omes-iomp-process</module>
         <module>omes-iomp-runner-admin</module>
-        <module>omes-iomp-flinker-equip</module>
-        <module>omes-iomp-flinker-workshop</module>
+        <module>omes-iomp-flinker</module>
         <module>omes-iomp-runner-control</module>
         <module>omes-iomp-runner-sas</module>
         <module>omes-iomp-web-admin</module>

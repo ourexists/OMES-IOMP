@@ -16,8 +16,7 @@
 | [omes-iomp-web-admin](omes-iomp-web-admin/README.md) | Vue 管理端：开发、构建、网关配置。产品介绍见 [管理端介绍](管理端介绍.md) | 5173（开发） |
 | [omes-iomp-app](omes-iomp-app/README.md) | uni-app x 移动端：运行与接口配置 | 9990（H5 开发） |
 | [omes-iomp-ai](omes-iomp-ai/README.md) | AI 编排、模型供应商与部署配置 | 10011 |
-| [omes-iomp-flinker-equip](omes-iomp-flinker-equip/README.md) | 设备实时处理，Spring Boot 内嵌 Flink | — |
-| [omes-iomp-flinker-workshop](omes-iomp-flinker-workshop/README.md) | 场景采集快照，提交到 Flink 集群 | — |
+| [omes-iomp-flinker](omes-iomp-flinker/README.md) | Flink 流处理（设备 / 场景，处理与两种启动） | — |
 
 业务模块由运行模块集成，无需逐个启动：
 
@@ -39,8 +38,8 @@
 
 ## 环境与构建
 
-- 后端使用 JDK 21、Maven；设备 Flink 模块也使用 JDK 21。
-- 场景 Flink 模块编译目标为 Java 17，集群使用 JDK 17、Flink 1.20.1，详见模块文档。
+- 后端使用 JDK 21、Maven。设备 Flink 的 `java -jar` 和集群都用 JDK 21。
+- 场景 Flink 编译目标为 Java 17，集群使用 JDK 17、Flink 1.20.1。处理模块与两种启动模块分开，详见各模块文档。
 - 管理端 Node.js 要求见其 README 和依赖锁文件；移动端使用 HBuilderX 工具链。
 - 默认数据库为 PostgreSQL，另需 Redis、RabbitMQ。
 - 根 POM 依赖 `com.ourexists.era:era-parent:2024.0.2.0-SNAPSHOT`，相对路径为 `../era/pom.xml`。构建前需准备 Era 源码或可解析的私有制品源；仅克隆本仓库无法保证直接构建运行。
@@ -81,7 +80,7 @@ java -jar omes-iomp-runner-sas/target/omes-iomp-runner-sas-1.0.1-SNAPSHOT.jar
 
 然后按 [管理端说明](omes-iomp-web-admin/README.md) 启动前端。浏览器访问前端站点，认证和业务请求进入 SAS 网关，再由网关转发业务 API 至 Admin。SAS 不托管前端静态页面。
 
-Control、AI 和两个 Flink 作业按业务需要启动。设备与场景 Flink 的部署方式不同，请使用对应模块说明。
+Control、AI 和两个 Flink 作业按业务需要启动。设备与场景 Flink 都支持内嵌 `java -jar` 和提交集群，用哪个包见对应模块说明。
 
 ## Docker 部署
 

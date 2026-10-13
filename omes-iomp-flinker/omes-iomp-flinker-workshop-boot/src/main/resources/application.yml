@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: omes-iomp-flinker-workshop
+
+# 日志文件目录（见 logback-spring.xml）；可用环境变量 LOGGING_FILE_PATH 覆盖
+logging:
+  file:
+    path: log/omes-iomp-flinker-workshop
+
+RABBITMQ_HOST: 127.0.0.1
+RABBITMQ_PORT: 5672
+RABBITMQ_USERNAME: admin
+RABBITMQ_PASSWORD: TyY6Df3bZe
+RABBITMQ_VHOST: "/"
+
+omes:
+  workshop:
+    snapshot-interval-ms: 30000
+    rabbitmq:
+      workshop-realtime-queue: omes.workshop.realtime
+      workshop-stream-persist-collect-queue: omes.workshop.stream.persist.collect
+    flink:
+      enable-checkpointing: false
+      checkpoint-interval-ms: 10000
+      checkpoint-timeout-ms: 120000
+      unaligned-checkpoint: true
+      aligned-checkpoint-timeout-ms: 30000
+      rmq-prefetch: 100
+      local:
+        parallelism: 1
+        webui: true
+      state-ttl-minutes:
+        collect-snapshot: -1
