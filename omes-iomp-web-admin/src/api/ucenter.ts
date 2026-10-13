@@ -79,8 +79,15 @@ export function fetchRolePage(params: Record<string, unknown>) {
 }
 
 export async function fetchAllRoles() {
-  const result = await postPage<RoleRecord>('/role/selectByPage', { requirePage: false })
-  return result.records || []
+  // 与角色列表同参；避免 requirePage:false → pageSize=MAX 触发分页插件空结果
+  const result = await postPage<RoleRecord>('/role/selectByPage', {
+    page: 1,
+    pageSize: 500,
+  })
+  if (Array.isArray(result)) {
+    return result
+  }
+  return result?.records ?? []
 }
 
 export function saveRole(data: RoleRecord) {

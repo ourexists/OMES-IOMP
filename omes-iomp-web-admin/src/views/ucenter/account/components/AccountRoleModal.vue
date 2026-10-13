@@ -25,18 +25,30 @@ async function loadData() {
     return
   }
   loading.value = true
+  roleOptions.value = []
+  checkedRoleIds.value = []
   try {
-    const [roles, held] = await Promise.all([fetchAllRoles(), fetchRolesByAccount(props.accountId)])
-    roleOptions.value = Array.isArray(roles) ? roles : []
-    checkedRoleIds.value = (Array.isArray(held) ? held : []).map((item) => item.id)
+    // 分拆请求：已持有角色失败时仍展示可分配列表
+    try {
+      const roles = await fetchAllRoles()
+      roleOptions.value = Array.isArray(roles) ? roles : []
+    } catch {
+      roleOptions.value = []
+    }
+    try {
+      const held = await fetchRolesByAccount(props.accountId)
+      checkedRoleIds.value = (Array.isArray(held) ? held : []).map((item) => String(item.id))
+    } catch {
+      checkedRoleIds.value = []
+    }
   } finally {
     loading.value = false
   }
 }
 
 watch(
-  () => props.open,
-  (open) => {
+  () => [props.open, props.accountId] as const,
+  ([open]) => {
     if (open) {
       loadData()
     }
@@ -67,7 +79,7 @@ async function handleSubmit() {
       <div v-if="roleOptions.length" class="role-list">
         <a-checkbox-group v-model:value="checkedRoleIds" class="role-group">
           <label v-for="role in roleOptions" :key="role.id" class="role-item">
-            <a-checkbox :value="role.id">
+            <a-checkbox :value="String(role.id)">
               <span class="role-name">{{ role.name }}</span>
               <span class="role-code">{{ role.code }}</span>
             </a-checkbox>

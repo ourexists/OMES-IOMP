@@ -23,7 +23,6 @@ import {
   filterMenuTree,
   flattenPermissions,
   isVisibleMenu,
-  LOCAL_FILE_VIEW_PATHS,
   normalizeRoutePath,
 } from '@/utils/permission'
 import { getJson } from '@/utils/storage'
@@ -76,7 +75,7 @@ export const usePermissionStore = defineStore('permission', () => {
 
   function buildDynamicRoutes(): RouteRecordRaw[] {
     const routes: RouteRecordRaw[] = []
-    const seen = new Set<string>(LOCAL_FILE_VIEW_PATHS as unknown as string[])
+    const seen = new Set<string>()
 
     routes.push(...buildDefaultViewRoutes(seen))
 

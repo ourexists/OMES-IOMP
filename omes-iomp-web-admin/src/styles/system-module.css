@@ -27,6 +27,11 @@
   box-shadow: var(--omes-shadow-orange-icon);
 }
 
+.system-module-page--file .card-title__icon {
+  background: var(--omes-gradient-accent-cyan);
+  box-shadow: 0 4px 10px color-mix(in srgb, var(--omes-color-accent-cyan-from) 28%, transparent);
+}
+
 .system-module-page--config .card-title__icon {
   background: linear-gradient(
     135deg,
