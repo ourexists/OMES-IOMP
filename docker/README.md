@@ -8,7 +8,7 @@
 | --- | --- |
 | [docker-compose.yml](docker-compose.yml) | PostgreSQL、Redis、RabbitMQ，以及 app profile 下的 Admin、SAS、Web |
 | [docker.ps1](docker.ps1) / [docker.sh](docker.sh) | Windows / Bash 构建、启动、停止入口 |
-| [.env.example](.env.example) | Compose 环境变量模板 |
+| [.env.example](.env) | Compose 环境变量模板 |
 | [admin/Dockerfile](admin/Dockerfile) | Admin JAR 镜像 |
 | [sas/Dockerfile](sas/Dockerfile) | SAS JAR 镜像 |
 | [web/Dockerfile](web/Dockerfile) | Web 静态站点镜像 |

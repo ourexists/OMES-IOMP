@@ -96,7 +96,7 @@ Control、AI 和两个 Flink 作业按业务需要启动。设备与场景 Flink
 .\docker\docker.ps1 down
 ```
 
-Linux / macOS 使用 `bash docker/docker.sh` 和相同子命令。脚本读取根目录 `.env`，首次使用从 [docker/.env.example](docker/.env.example) 生成；后端运行配置仍放在根目录 `config/`。网络要求、单独构建命令和目录说明见 [部署文档](docker/README.md)。
+Linux / macOS 使用 `bash docker/docker.sh` 和相同子命令。脚本读取根目录 `.env`，首次使用从 [docker/.env.example](docker/.env) 生成；后端运行配置仍放在根目录 `config/`。网络要求、单独构建命令和目录说明见 [部署文档](docker/README.md)。
 
 ## 开源协议
 

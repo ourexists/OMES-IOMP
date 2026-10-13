@@ -102,7 +102,7 @@ build
 
 file/
 
-# Docker local env (copy from .env.example)
+# Docker local env (copy from .env)
 #.env
 
 ## Frontend (Node.js / Vite / Webpack)
