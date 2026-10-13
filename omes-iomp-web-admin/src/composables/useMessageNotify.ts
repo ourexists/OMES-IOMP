@@ -1,7 +1,7 @@
 import { onMounted, onUnmounted, ref, shallowRef } from 'vue'
 import { notification } from 'ant-design-vue'
 import { OAUTH_CLIENT, STORAGE_KEYS } from '@/config'
-import { getRuntimeSasBaseUrl } from '@/config/gateway'
+import { gatewayApiPath } from '@/config/gateway'
 import { i18n } from '@/i18n'
 import { fetchMessagePage, fetchUnreadMessageCount, markMessageRead } from '@/api/message'
 import type { MessagePushEvent, MessageRecord } from '@/types/message'
@@ -28,24 +28,20 @@ function resolveWebSocketUrl(): string | null {
   if (!token) {
     return null
   }
-  const httpBase = getRuntimeSasBaseUrl()
-  if (!httpBase && typeof window !== 'undefined') {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const host = window.location.host
-    const params = new URLSearchParams({
-      access_token: token,
-      platform: OAUTH_CLIENT.platform,
-      tenant: String(OAUTH_CLIENT.tenantId),
-    })
-    return `${protocol}//${host}/message/ws?${params}`
-  }
-  const wsBase = httpBase.replace(/^http/i, 'ws')
+  const httpPath = gatewayApiPath('/message/ws')
   const params = new URLSearchParams({
     access_token: token,
     platform: OAUTH_CLIENT.platform,
     tenant: String(OAUTH_CLIENT.tenantId),
   })
-  return `${wsBase}/message/ws?${params}`
+  if (/^https?:\/\//i.test(httpPath)) {
+    return `${httpPath.replace(/^http/i, 'ws')}?${params}`
+  }
+  if (typeof window === 'undefined') {
+    return null
+  }
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+  return `${protocol}//${window.location.host}${httpPath}?${params}`
 }
 
 export function useMessageNotify() {

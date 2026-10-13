@@ -1,53 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
-/** 与 OMES-SAS 转发上游一致的业务路径前缀（开发态相对路径兜底代理到网关） */
-const GATEWAY_PROXY_PREFIXES = [
-  '/oauth2',
-  '/open',
-  '/authentication',
-  '/expose',
-  '/acc',
-  '/role',
-  '/platform',
-  '/permission',
-  '/depart',
-  '/tenant',
-  '/workshop',
-  '/equip',
-  '/equipHealth',
-  '/equipStateSnapshot',
-  '/equipRecordOnline',
-  '/equipRecordRun',
-  '/equipRecordAlarm',
-  '/notify',
-  '/message',
-  '/product',
-  '/productModel',
-  '/gateway',
-  '/device',
-  '/devg',
-  '/line',
-  '/tf',
-  '/tfEdge',
-  '/plc',
-  '/localFile',
-  '/files',
-  '/static',
-  '/inspection',
-  '/task',
-  '/sync',
-  '/systemConfig',
-  '/mo',
-  '/mps',
-  '/flow',
-  '/mat',
-  '/mc',
-  '/BOM',
-  '/BOMC',
-  '/processes',
-]
-
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const gatewayPort = env.VITE_GATEWAY_PORT || '9400'
@@ -73,12 +26,19 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       // 内网穿透域名访问 Vite 时放行 Host 检查
       allowedHosts: true,
-      proxy: Object.fromEntries(
-        GATEWAY_PROXY_PREFIXES.map((prefix) => [
-          prefix,
-          { target: proxyTarget, changeOrigin: true, ws: true },
-        ]),
-      ),
+      proxy: {
+        '/api': {
+          target: proxyTarget,
+          changeOrigin: true,
+          ws: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+          configure: (proxy) => {
+            proxy.on('proxyReq', (proxyReq) => {
+              proxyReq.removeHeader('origin')
+            })
+          },
+        },
+      },
     },
     build: {
       emptyOutDir: true,

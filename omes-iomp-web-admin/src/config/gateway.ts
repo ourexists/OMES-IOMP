@@ -65,7 +65,7 @@ function resolveSasBaseUrl(configured: string): string {
  * 计算当前页面应使用的网关根地址（不含尾斜杠）。
  * - 构建时注入 VITE_SAS_BASE_URL：前后端分离，API 指向 SAS
  * - 开发本机：默认 http://127.0.0.1:9400；穿透访问 Vite：空串走 dev proxy
- * - 未注入时：空串同源（Docker Nginx 反代）；勿默认拼 host:9400（穿透后会 CORS）
+ * - 未注入时：空串，请求走 /api（Nginx / Vite 反代并去掉前缀）
  */
 export function resolveGatewayBaseUrl(cfg?: { sasBaseUrl?: string; gatewayPort?: number }): string {
   // 显式传入 sasBaseUrl（含空串）时：空串 = 同源相对路径（Nginx/SAS 同域）
@@ -92,10 +92,10 @@ export function gatewayApiPath(path: string): string {
     return path
   }
   const normalized = path.startsWith('/') ? path : `/${path}`
-
   const base = runtimeSasBaseUrl ?? resolveGatewayBaseUrl()
+  // 同源（Nginx / Vite）走 /api，由反代去掉前缀。直连 SAS 不加，后端没有 /api 上下文
   if (!base) {
-    return normalized
+    return normalized === '/api' || normalized.startsWith('/api/') ? normalized : `/api${normalized}`
   }
   return `${base}${normalized}`
 }
