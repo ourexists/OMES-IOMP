@@ -5,14 +5,12 @@ server:
 spring:
   autoconfigure:
     exclude:
-      # 由 RedissonClientConfiguration 基于 RedisConnectionFactory 创建，与 RedisTemplate 同源
       - org.redisson.spring.starter.RedissonAutoConfigurationV2
   rabbitmq:
     host: ${RABBITMQ_HOST:127.0.0.1}
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USERNAME:admin}
     password: ${RABBITMQ_PASSWORD:TyY6Df3bZe}
-    # 必须带引号，否则 YAML 会把 `/` 误解析；需与 omes-stream（Flink RMQSource）使用同一 vhost
     virtual-host: "${RABBITMQ_VHOST:/}"
   application:
     name: OMES-ADMIN
@@ -36,7 +34,6 @@ spring:
     # 多个 Consumer 时必须显式声明 function.definition（见 Spring Cloud Stream 文档）
     function:
       definition: equipStreamPersistChange;equipStreamPersistStateSnapshot;equipStreamPersistCollectSnapshot;equipNotifyCreate;workshopStreamPersistCollectSnapshot
-    # 设备侧 RabbitMQ 走 Spring Cloud Stream + rabbit binder；换 Kafka 等 broker 时可改 binder 与中继拓扑（Flink omes-stream 仍为独立 AMQP 客户端）
     stream:
       default-binder: rabbit
       bindings:
