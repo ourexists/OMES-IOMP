@@ -56,4 +56,10 @@ public class GatewayDto {
     private String password;
 
     private String tenantId;
+
+    /** 运行时连通：up / down / pending。仅 Admin 列表填充，不入库。 */
+    private String linkState;
+
+    /** 连通异常说明。仅 Admin 列表填充，不入库。 */
+    private String linkMessage;
 }

@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { AppstoreOutlined, ClusterOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import type { ProductRecord } from '@/api/product'
-import { deleteProducts, resolveProductImageUrl } from '@/api/product'
+import { deleteProducts } from '@/api/product'
 import ProductListPanel from './components/ProductListPanel.vue'
 import ProductModelPanel from './components/ProductModelPanel.vue'
 import ProductFormModal from './components/ProductFormModal.vue'
@@ -17,7 +17,6 @@ const productPanelRef = ref<InstanceType<typeof ProductListPanel> | null>(null)
 
 const selectedProduct = ref<ProductRecord | null>(null)
 const productTotal = ref(0)
-const brokenThumb = ref(false)
 
 const formOpen = ref(false)
 const editingRecord = ref<ProductRecord | null>(null)
@@ -31,14 +30,8 @@ const rightTitle = computed(() => {
   return t('productPage.modelsTitle', { name: selectedProduct.value.name })
 })
 
-const selectedThumb = computed(() => resolveProductImageUrl(selectedProduct.value?.imageUrl))
-
 function onProductLoaded(_list: ProductRecord[], total: number) {
   productTotal.value = total
-}
-
-function onProductChange() {
-  brokenThumb.value = false
 }
 
 function openCreate() {
@@ -118,7 +111,6 @@ async function onAttrSaved() {
               ref="productPanelRef"
               v-model="selectedProduct"
               @loaded="onProductLoaded"
-              @change="onProductChange"
               @edit="openEdit"
               @attr-config="openAttrConfig"
               @delete="confirmDeleteSelected"
@@ -144,22 +136,6 @@ async function onAttrSaved() {
             </a-tag>
           </template>
           <div class="admin-panel-body model-card__body">
-            <div v-if="selectedProduct" class="product-summary">
-              <div class="product-summary__thumb">
-                <img
-                  v-if="selectedThumb && !brokenThumb"
-                  :src="selectedThumb"
-                  alt=""
-                  class="product-summary__img"
-                  @error="brokenThumb = true"
-                />
-                <AppstoreOutlined v-else class="product-summary__placeholder" />
-              </div>
-              <div class="product-summary__meta">
-                <div class="product-summary__name">{{ selectedProduct.name || '—' }}</div>
-                <div class="product-summary__desc">{{ t('productPage.modelPanelHint') }}</div>
-              </div>
-            </div>
             <ProductModelPanel :product="selectedProduct" />
           </div>
         </a-card>
@@ -213,7 +189,7 @@ async function onAttrSaved() {
 .model-card :deep(.ant-card-body) {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 280px);
+  min-height: 0;
 }
 
 .product-card__body,
@@ -222,64 +198,6 @@ async function onAttrSaved() {
   min-height: 0;
   display: flex;
   flex-direction: column;
-}
-
-.product-summary {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-  margin-bottom: 14px;
-  padding: 12px 14px;
-  border: 1px solid var(--omes-color-primary-border);
-  border-radius: var(--omes-radius-md);
-  background: linear-gradient(120deg, var(--omes-color-primary-bg) 0%, #ffffff 58%);
-}
-
-.product-summary__thumb {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  overflow: hidden;
-  border-radius: 10px;
-  border: 1px solid var(--omes-color-primary-border);
-  background: var(--omes-color-bg-container);
-}
-
-.product-summary__img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.product-summary__placeholder {
-  font-size: 18px;
-  color: var(--omes-color-primary);
-}
-
-.product-summary__meta {
-  min-width: 0;
-  flex: 1;
-}
-
-.product-summary__name {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--omes-color-text);
-  line-height: 1.35;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.product-summary__desc {
-  margin-top: 2px;
-  font-size: 12px;
-  color: var(--omes-color-text-tertiary);
-  line-height: 1.4;
 }
 
 @media (max-width: 991px) {

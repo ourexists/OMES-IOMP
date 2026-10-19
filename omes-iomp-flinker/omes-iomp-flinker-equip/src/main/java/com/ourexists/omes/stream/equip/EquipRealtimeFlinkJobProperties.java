@@ -42,7 +42,7 @@ final class EquipRealtimeFlinkJobProperties {
                         "omes.device.flink.aligned-checkpoint-timeout-ms",
                         pt.getLong("OMES_FLINK_ALIGNED_CHECKPOINT_TIMEOUT_MS", 30_000L)),
                 pt.getInt("omes.device.flink.rmq-prefetch", pt.getInt("OMES_FLINK_RMQ_PREFETCH", 100)),
-                pt.getLong("omes.device.offline-timeout-ms", pt.getLong("OMES_EQUIP_OFFLINE_TIMEOUT_MS", 90_000L)),
+                pt.getLong("omes.device.offline-timeout-ms", pt.getLong("OMES_EQUIP_OFFLINE_TIMEOUT_MS", 120_000L)),
                 pt.getLong("omes.device.snapshot-interval-ms", pt.getLong("OMES_EQUIP_SNAPSHOT_INTERVAL_MS", 30_000L)),
                 pt.getLong("omes.device.attr-fluctuation-window-ms", pt.getLong("OMES_EQUIP_ATTR_FLUCTUATION_WINDOW_MS", 90_000L)),
                 pt.getLong("omes.device.attr-fluctuation-slide-ms", pt.getLong("OMES_EQUIP_ATTR_FLUCTUATION_SLIDE_MS", 5_000L)),

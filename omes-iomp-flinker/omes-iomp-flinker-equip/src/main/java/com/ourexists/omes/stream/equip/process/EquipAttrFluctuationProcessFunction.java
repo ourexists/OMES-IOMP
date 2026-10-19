@@ -77,6 +77,7 @@ public class EquipAttrFluctuationProcessFunction
         if (latest == null || latest.getEquipAttrRealtimes() == null) {
             return;
         }
+        Set<String> evaluated = new HashSet<>();
         for (EquipAttrRealtime attr : latest.getEquipAttrRealtimes()) {
             if (attr == null || StringUtils.isBlank(attr.getName())) {
                 continue;
@@ -95,14 +96,10 @@ public class EquipAttrFluctuationProcessFunction
             }
             int requiredWindows = Math.max(1, requiredWindowsRaw);
             if (min != null && max != null) {
-                double delta = Math.abs(max - min);
-                if (delta >= minDelta) {
-                    double baseline = Math.max(Math.abs(min), MIN_BASELINE);
-                    double ratio = delta / baseline;
-                    exceeded = ratio >= thresholdRatio;
-                }
+                exceeded = spanExceeded(min, max, minDelta, thresholdRatio);
             }
             String attrName = attr.getName();
+            evaluated.add(attrName);
             Integer current = consecutiveByAttr.get(attrName);
             int next = exceeded ? (current == null ? 1 : current + 1) : 0;
             consecutiveByAttr.put(attrName, next);
@@ -135,6 +132,25 @@ public class EquipAttrFluctuationProcessFunction
                             null,
                             null));
         }
+        List<String> stale = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : consecutiveByAttr.entries()) {
+            if (!evaluated.contains(entry.getKey())) {
+                stale.add(entry.getKey());
+            }
+        }
+        for (String key : stale) {
+            consecutiveByAttr.remove(key);
+        }
+    }
+
+    /** 跨度相对窗口内较大绝对值，避免近 0 的最小值把比例放大成误报。 */
+    public static boolean spanExceeded(double min, double max, double minDelta, double thresholdRatio) {
+        double delta = Math.abs(max - min);
+        if (delta < minDelta) {
+            return false;
+        }
+        double baseline = Math.max(Math.max(Math.abs(min), Math.abs(max)), MIN_BASELINE);
+        return delta / baseline >= thresholdRatio;
     }
 
     private static Double tryParseDouble(String raw) {

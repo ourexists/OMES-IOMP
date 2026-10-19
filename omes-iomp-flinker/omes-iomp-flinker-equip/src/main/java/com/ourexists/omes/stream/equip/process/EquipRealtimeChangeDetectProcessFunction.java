@@ -103,8 +103,9 @@ public class EquipRealtimeChangeDetectProcessFunction extends KeyedProcessFuncti
         if (previous == null) {
             return true;
         }
-        // Online/offline transitions must apply even when event-time lags (Flink offline timer vs skewed device clocks).
-        if (!Objects.equals(previous.getOnlineState(), current.getOnlineState())) {
+        // 离线定时器的处理时间可能早于偏快的设备时钟，仍要落地；更早的在线包不能把已离线状态拉回来。
+        if (!Objects.equals(previous.getOnlineState(), current.getOnlineState())
+                && Objects.equals(current.getOnlineState(), 0)) {
             return true;
         }
         return EquipRealtimeEventTimeUtil.isNewerOrSame(current, previous);
@@ -148,9 +149,8 @@ public class EquipRealtimeChangeDetectProcessFunction extends KeyedProcessFuncti
         }
         if (!Objects.equals(previous.getOnlineState(), current.getOnlineState())) {
             return true;
-        } else {
-            return current.getOnlineChange();
         }
+        return Boolean.TRUE.equals(current.getOnlineChange());
 
     }
 }

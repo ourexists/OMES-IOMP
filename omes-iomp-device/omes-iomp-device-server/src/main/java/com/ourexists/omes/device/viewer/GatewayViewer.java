@@ -5,6 +5,7 @@
 package com.ourexists.omes.device.viewer;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ourexists.era.framework.core.exceptions.BusinessException;
 import com.ourexists.era.framework.core.model.dto.IdsDto;
 import com.ourexists.era.framework.core.model.vo.JsonResponseEntity;
 import com.ourexists.era.framework.orm.mybatisplus.OrmUtils;
@@ -58,6 +59,12 @@ public class GatewayViewer implements GatewayFeign {
     @Override
     @PostMapping("addOrUpdate")
     public JsonResponseEntity<Boolean> addOrUpdate(@Validated @RequestBody GatewayDto dto) {
+        if (dto.getId() != null) {
+            Gateway existing = gatewayService.getById(dto.getId());
+            if (existing != null && Boolean.TRUE.equals(existing.getEnabled())) {
+                throw new BusinessException("请先停用连接");
+            }
+        }
         gatewayService.saveOrUpdate(Gateway.wrap(dto));
         return JsonResponseEntity.success(true);
     }
@@ -65,6 +72,14 @@ public class GatewayViewer implements GatewayFeign {
     @Override
     @PostMapping("delete")
     public JsonResponseEntity<Boolean> delete(@Validated @RequestBody IdsDto idsDto) {
+        if (idsDto.getIds() != null) {
+            for (String id : idsDto.getIds()) {
+                Gateway existing = gatewayService.getById(id);
+                if (existing != null && Boolean.TRUE.equals(existing.getEnabled())) {
+                    throw new BusinessException("请先停用连接");
+                }
+            }
+        }
         gatewayService.removeByIds(idsDto.getIds());
         return JsonResponseEntity.success(true);
     }

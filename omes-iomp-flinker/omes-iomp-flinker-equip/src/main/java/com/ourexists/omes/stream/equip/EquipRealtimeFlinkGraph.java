@@ -177,6 +177,7 @@ public final class EquipRealtimeFlinkGraph {
                 .name("equip-realtime-change-detect");
 
         DataStream<EquipStateSnapshotEvent> snapshotStream = validStream
+                .union(offlineStream)
                 .keyBy(EquipRealtime::getSelfCode)
                 .process(new EquipStateSnapshotProcessFunction(cfg.snapshotIntervalMs(), cfg.stateTtlMinutesStateSnapshot()))
                 .name("equip-realtime-snapshot-timed");

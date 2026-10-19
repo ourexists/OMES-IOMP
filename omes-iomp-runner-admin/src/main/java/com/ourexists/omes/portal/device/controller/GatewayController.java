@@ -16,12 +16,15 @@ import com.ourexists.omes.device.feign.GatewayFeign;
 import com.ourexists.omes.device.model.GatewayDto;
 import com.ourexists.omes.device.model.GatewayPageQuery;
 import com.ourexists.omes.portal.device.gateway.GatewayRuntimeService;
+import com.ourexists.omes.portal.device.protocol.dgw.DgwCatalogService;
+import com.ourexists.omes.portal.device.protocol.dgw.DgwDeviceOption;
+import com.ourexists.omes.portal.device.protocol.dgw.DgwPointOption;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -43,10 +46,19 @@ public class GatewayController {
     @Autowired
     private GatewayRuntimeService gatewayRuntimeService;
 
+    @Autowired
+    private DgwCatalogService dgwCatalogService;
+
     @Operation(summary = "分页查询", description = "连接分页列表")
     @PostMapping("selectByPage")
     public JsonResponseEntity<List<GatewayDto>> selectByPage(@RequestBody GatewayPageQuery query) {
-        return gatewayFeign.selectByPage(query);
+        JsonResponseEntity<List<GatewayDto>> response = gatewayFeign.selectByPage(query);
+        if (response != null && response.getData() != null) {
+            for (GatewayDto item : response.getData()) {
+                gatewayRuntimeService.fillLink(item);
+            }
+        }
+        return response;
     }
 
     @Operation(summary = "按ID查询", description = "单条连接详情")
@@ -55,53 +67,29 @@ public class GatewayController {
         return gatewayFeign.selectById(id);
     }
 
-    @Operation(summary = "新增或修改", description = "根据id判断新增或更新")
+    @Operation(summary = "新增或修改", description = "已启用的连接拒绝修改")
     @PostMapping("addOrUpdate")
     public JsonResponseEntity<Boolean> addOrUpdate(@Validated @RequestBody GatewayDto dto) {
-        boolean restartAfterSave = false;
-        GatewayDto before = null;
-        if (dto.getId() != null) {
-            try {
-                before = RemoteHandleUtils.getDataFormResponse(gatewayFeign.selectById(dto.getId()));
-                restartAfterSave = before != null && Boolean.TRUE.equals(before.getEnabled());
-                if (restartAfterSave) {
-                    gatewayRuntimeService.stop(before);
-                }
-            } catch (EraCommonException e) {
-                throw new BusinessException(e.getMessage());
-            }
-        }
-        JsonResponseEntity<Boolean> response = gatewayFeign.addOrUpdate(dto);
-        if (restartAfterSave && dto.getId() != null) {
-            try {
-                GatewayDto after = RemoteHandleUtils.getDataFormResponse(gatewayFeign.selectById(dto.getId()));
-                if (after != null && Boolean.TRUE.equals(after.getEnabled())) {
-                    gatewayRuntimeService.start(after);
-                }
-            } catch (EraCommonException e) {
-                throw new BusinessException(e.getMessage());
-            }
-        }
-        return response;
+        return gatewayFeign.addOrUpdate(dto);
     }
 
-    @Operation(summary = "删除", description = "按id列表删除")
+    @Operation(summary = "删除", description = "已启用的连接拒绝删除")
     @PostMapping("delete")
     public JsonResponseEntity<Boolean> delete(@Validated @RequestBody IdsDto idsDto) {
-        if (idsDto != null && !CollectionUtils.isEmpty(idsDto.getIds())) {
-            for (String id : idsDto.getIds()) {
-                try {
-                    GatewayDto gateway = RemoteHandleUtils.getDataFormResponse(gatewayFeign.selectById(id));
-                    if (gateway != null && Boolean.TRUE.equals(gateway.getEnabled())) {
-                        gatewayRuntimeService.stop(gateway);
-                        gatewayFeign.stop(id);
-                    }
-                } catch (EraCommonException e) {
-                    throw new BusinessException(e.getMessage());
-                }
-            }
-        }
         return gatewayFeign.delete(idsDto);
+    }
+
+    @Operation(summary = "DGW 设备列表", description = "用该网关保存的地址和账号查询 DGW 设备，供绑定")
+    @GetMapping("dgw/devices")
+    public JsonResponseEntity<List<DgwDeviceOption>> dgwDevices(@RequestParam String id) {
+        return JsonResponseEntity.success(dgwCatalogService.devices(id));
+    }
+
+    @Operation(summary = "DGW 点位列表", description = "查询指定 DGW 设备的读取参数与控制点位")
+    @GetMapping("dgw/points")
+    public JsonResponseEntity<List<DgwPointOption>> dgwPoints(@RequestParam String id,
+                                                              @RequestParam String deviceId) {
+        return JsonResponseEntity.success(dgwCatalogService.points(id, deviceId));
     }
 
     @Operation(summary = "协议枚举列表", description = "返回所有支持的协议类型，用于下拉/配置")
@@ -148,13 +136,22 @@ public class GatewayController {
     @GetMapping("start")
     public JsonResponseEntity<Boolean> start(@RequestParam String id) {
         JsonResponseEntity<Boolean> response = gatewayFeign.start(id);
+        GatewayDto gateway;
         try {
-            GatewayDto gateway = RemoteHandleUtils.getDataFormResponse(gatewayFeign.selectById(id));
-            gatewayRuntimeService.start(gateway);
+            gateway = RemoteHandleUtils.getDataFormResponse(gatewayFeign.selectById(id));
         } catch (EraCommonException e) {
             throw new BusinessException(e.getMessage());
         }
+        if (!gatewayRuntimeService.start(gateway)) {
+            gatewayFeign.stop(id);
+            throw new BusinessException(startFailure(gateway));
+        }
         return response;
+    }
+
+    private String startFailure(GatewayDto gateway) {
+        String reason = gatewayRuntimeService.lastLinkMessage(gateway);
+        return StringUtils.hasText(reason) ? reason : "网关连接未建立";
     }
 
     @Operation(summary = "停用", description = "停用")

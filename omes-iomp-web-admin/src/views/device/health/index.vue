@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
+  ApartmentOutlined,
   CheckCircleOutlined,
   EditOutlined,
   HeartOutlined,
@@ -10,6 +11,7 @@ import {
 } from '@ant-design/icons-vue'
 import type { HealthRuleTemplate } from '@/api/equip-health'
 import { computeHealthByTemplate, fetchHealthRuleTemplates } from '@/api/equip-health'
+import HealthTemplateApplyModal from './components/HealthTemplateApplyModal.vue'
 import HealthTemplateFormModal from './components/HealthTemplateFormModal.vue'
 import TableScrollWrap from '@/components/common/TableScrollWrap.vue'
 import AdminPanelTitle from '@/components/admin/AdminPanelTitle.vue'
@@ -23,6 +25,8 @@ const dataSource = ref<HealthRuleTemplate[]>([])
 
 const formOpen = ref(false)
 const editingRecord = ref<HealthRuleTemplate | null>(null)
+const applyOpen = ref(false)
+const applyingRecord = ref<HealthRuleTemplate | null>(null)
 
 const columns = computed(() => [
   { title: t('equipHealth.templateName'), dataIndex: 'name', key: 'name', ellipsis: true, minWidth: 160 },
@@ -50,7 +54,7 @@ const columns = computed(() => [
     width: 90,
     align: 'center' as const,
   },
-  { title: t('healthPage.operate'), key: 'action', width: 180, fixed: 'right' as const },
+  { title: t('healthPage.operate'), key: 'action', width: 250, fixed: 'right' as const },
 ])
 
 function configValue(record: HealthRuleTemplate, field: keyof NonNullable<HealthRuleTemplate['config']>) {
@@ -79,6 +83,11 @@ function openCreate() {
 function openEdit(record: HealthRuleTemplate) {
   editingRecord.value = record
   formOpen.value = true
+}
+
+function openApply(record: HealthRuleTemplate) {
+  applyingRecord.value = record
+  applyOpen.value = true
 }
 
 async function startScoring(record: HealthRuleTemplate) {
@@ -139,7 +148,7 @@ onMounted(loadTable)
         class="scroll-table health-table"
         :columns="columns"
         :data-source="dataSource"
-        :scroll="{ x: 860, y: scrollY }"
+        :scroll="{ x: 980, y: scrollY }"
         :pagination="false"
       >
         <template #bodyCell="{ column, record }">
@@ -170,6 +179,10 @@ onMounted(loadTable)
                 <CheckCircleOutlined />
                 {{ t('equipHealth.startScoring') }}
               </a-button>
+              <a-button type="link" size="small" @click="openApply(record)">
+                <ApartmentOutlined />
+                {{ t('healthPage.apply') }}
+              </a-button>
             </a-space>
           </template>
         </template>
@@ -189,6 +202,7 @@ onMounted(loadTable)
     </a-card>
 
     <HealthTemplateFormModal v-model:open="formOpen" :record="editingRecord" @success="loadTable" />
+    <HealthTemplateApplyModal v-model:open="applyOpen" :template="applyingRecord" />
   </div>
 </template>
 

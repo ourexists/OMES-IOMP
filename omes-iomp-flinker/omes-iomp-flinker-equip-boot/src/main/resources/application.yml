@@ -16,7 +16,7 @@ RABBITMQ_VHOST: "/"
 
 omes:
   device:
-    offline-timeout-ms: 90000
+    offline-timeout-ms: 120000
     snapshot-interval-ms: 30000
     attr-fluctuation-window-ms: 90000
     attr-fluctuation-slide-ms: 5000

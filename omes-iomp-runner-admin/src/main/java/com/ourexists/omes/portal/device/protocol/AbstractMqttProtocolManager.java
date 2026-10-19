@@ -35,6 +35,8 @@ public abstract class AbstractMqttProtocolManager implements ProtocolManager {
     /** key: gatewayId，value: 该网关的 MqttClient */
     private final Map<String, MqttClient> connectionMap = new ConcurrentHashMap<>();
 
+    private final ConnectLink link = new ConnectLink();
+
     /**
      * 本机机器码后缀（首块可用网卡 MAC 十六进制；失败则用主机名哈希），用于 MQTT clientId 区分多实例。
      */
@@ -97,7 +99,7 @@ public abstract class AbstractMqttProtocolManager implements ProtocolManager {
         String key = gw.getId();
         if (connectionMap.containsKey(key)) {
             log.debug("Connection already exists for gateway: {}", key);
-            return false;
+            return true;
         }
         try {
             UserContext.defaultTenant();
@@ -107,6 +109,7 @@ public abstract class AbstractMqttProtocolManager implements ProtocolManager {
             return true;
         } catch (Exception e) {
             log.error("Failed to start MQTT for gateway {}: {}", gw.getServerName(), e.getMessage(), e);
+            link.failed(key, e.getMessage() != null ? e.getMessage() : "连接未建立");
             return false;
         }
     }
@@ -115,6 +118,7 @@ public abstract class AbstractMqttProtocolManager implements ProtocolManager {
         if (gatewayId == null || gatewayId.isEmpty()) {
             return false;
         }
+        link.clear(gatewayId);
         MqttClient client = connectionMap.remove(gatewayId);
         if (client == null) {
             log.debug("No connection found for gateway: {}", gatewayId);
@@ -153,6 +157,7 @@ public abstract class AbstractMqttProtocolManager implements ProtocolManager {
         client.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean reconnect, String serverURI) {
+                link.up(gw.getId());
                 if (!reconnect) {
                     return;
                 }
@@ -166,7 +171,9 @@ public abstract class AbstractMqttProtocolManager implements ProtocolManager {
 
             @Override
             public void connectionLost(Throwable cause) {
-                log.warn("MQTT connection lost clientId: [{}]: {}", client.getClientId(), cause != null ? cause.getMessage() : "unknown");
+                String reason = cause != null && cause.getMessage() != null ? cause.getMessage() : "连接已断开";
+                link.down(gw.getId(), reason);
+                log.warn("MQTT connection lost clientId: [{}]: {}", client.getClientId(), reason);
             }
 
             @Override
@@ -208,6 +215,31 @@ public abstract class AbstractMqttProtocolManager implements ProtocolManager {
             throw e instanceof MqttException ? (MqttException) e : new MqttException(e);
         }
         return client;
+    }
+
+    @Override
+    public String linkState(String connectId) {
+        MqttClient client = connectionMap.get(connectId);
+        if (client == null) {
+            return null;
+        }
+        try {
+            return client.isConnected() ? ConnectLink.UP : ConnectLink.DOWN;
+        } catch (Exception e) {
+            return ConnectLink.DOWN;
+        }
+    }
+
+    @Override
+    public String linkMessage(String connectId) {
+        if (ConnectLink.UP.equals(linkState(connectId))) {
+            return null;
+        }
+        String msg = link.message(connectId);
+        if (ConnectLink.DOWN.equals(linkState(connectId))) {
+            return msg != null ? msg : "连接已断开";
+        }
+        return msg;
     }
 
     protected abstract IMqttMessageListener getListener(ProtocolConnect gw);

@@ -1,6 +1,7 @@
 package com.ourexists.omes.stream.equip.process;
 
 import com.ourexists.omes.device.core.equip.cache.EquipRealtime;
+import com.ourexists.omes.stream.equip.support.EquipRealtimeEventTimeUtil;
 import com.ourexists.omes.stream.equip.support.EquipStreamStateTtl;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
@@ -58,6 +59,11 @@ public class EquipOfflineDetectProcessFunction
                                Context ctx,
                                Collector<EquipRealtime> out) throws Exception {
 
+        EquipRealtime latest = latestState.value();
+        if (latest != null && !EquipRealtimeEventTimeUtil.isNewerOrSame(value, latest)) {
+            return;
+        }
+
         long now = ctx.timerService().currentProcessingTime();
 
         Long oldTimer = activeTimer.value();
@@ -94,7 +100,16 @@ public class EquipOfflineDetectProcessFunction
 
         EquipRealtime offline = copy(latest);
         offline.offline();
-        offline.setTime(new Date(ctx.timerService().currentProcessingTime()));
+        long mark = ctx.timerService().currentProcessingTime();
+        Date lastSeen = latest.getTime();
+        if (lastSeen != null && lastSeen.getTime() >= mark) {
+            mark = lastSeen.getTime() + 1L;
+        }
+        offline.setTime(new Date(mark));
+        Long seq = latest.getStreamIngressSeq();
+        offline.setStreamIngressSeq(seq == null ? 1L : seq + 1L);
+        latestState.update(offline);
+        activeTimer.clear();
 
         out.collect(offline);
     }
@@ -123,6 +138,7 @@ public class EquipOfflineDetectProcessFunction
         dst.setWorkshopCode(src.getWorkshopCode());
 
         dst.setTime(src.getTime());
+        dst.setStreamIngressSeq(src.getStreamIngressSeq());
         dst.setOnlineChangeTime(src.getOnlineChangeTime());
         dst.setRunChangeTime(src.getRunChangeTime());
         dst.setAlarmChangeTime(src.getAlarmChangeTime());

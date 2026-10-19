@@ -14,6 +14,9 @@ export interface GatewayRecord {
   protocol?: string
   params?: string | Record<string, unknown>
   enabled?: boolean
+  /** up 已连通，down 连不上，pending 已启动还没有第一次通信结果 */
+  linkState?: 'up' | 'down' | 'pending'
+  linkMessage?: string
   collectCron?: string
   username?: string
   password?: string
@@ -70,7 +73,11 @@ export function isMqttProtocol(protocol?: string): boolean {
   return p === 'mqtt' || p === 'tc_mqtt'
 }
 
+export function isDgwProtocol(protocol?: string): boolean {
+  return normalizeProtocol(protocol) === 'dgw'
+}
+
 export function needsGatewayAuth(protocol?: string): boolean {
   const p = normalizeProtocol(protocol)
-  return isMqttProtocol(protocol) || p === 'rest' || p === 'wincc'
+  return isMqttProtocol(protocol) || p === 'rest' || p === 'wincc' || p === 'dgw'
 }

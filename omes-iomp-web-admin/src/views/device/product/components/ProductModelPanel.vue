@@ -2,6 +2,7 @@
 import { computed, nextTick, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
+  AppstoreOutlined,
   ArrowLeftOutlined,
   DeleteOutlined,
   EditOutlined,
@@ -9,10 +10,11 @@ import {
   ReloadOutlined,
   SettingOutlined,
 } from '@ant-design/icons-vue'
-import type { ProductRecord } from '@/api/product'
+import { resolveProductImageUrl, type ProductRecord } from '@/api/product'
 import type { ProductModelRecord } from '@/api/product-model'
 import { deleteProductModels, fetchProductModels, saveProductModel } from '@/api/product-model'
 import ProductModelMapPanel from './ProductModelMapModal.vue'
+import TableScrollWrap from '@/components/common/TableScrollWrap.vue'
 import { message, Modal } from 'ant-design-vue'
 
 const props = defineProps<{
@@ -29,6 +31,9 @@ const view = ref<'list' | 'map'>('list')
 const editing = ref<ProductModelRecord | null>(null)
 const mappingRecord = ref<ProductModelRecord | null>(null)
 const nameInputRef = ref<{ focus?: () => void } | null>(null)
+const brokenThumb = ref(false)
+
+const selectedThumb = computed(() => resolveProductImageUrl(props.product?.imageUrl))
 
 const formState = reactive({
   id: '',
@@ -45,25 +50,31 @@ const mapTitle = computed(() =>
 )
 
 const columns = computed(() => [
-  { title: t('productPage.modelName'), dataIndex: 'name', key: 'name', ellipsis: true },
+  {
+    title: t('productPage.modelName'),
+    dataIndex: 'name',
+    key: 'name',
+    width: 180,
+    ellipsis: true,
+  },
   {
     title: t('productPage.modelCode'),
     dataIndex: 'code',
     key: 'code',
-    width: 150,
+    width: 132,
     align: 'center' as const,
     ellipsis: true,
   },
   {
     title: t('productPage.modelMapStatus'),
     key: 'mapStatus',
-    width: 100,
+    width: 96,
     align: 'center' as const,
   },
   {
     title: t('productPage.colAction'),
     key: 'action',
-    width: 220,
+    width: 268,
     align: 'center' as const,
   },
 ])
@@ -208,6 +219,7 @@ function resetView() {
 watch(
   () => props.product?.code,
   async (code) => {
+    brokenThumb.value = false
     resetView()
     if (!code) {
       dataSource.value = []
@@ -233,8 +245,24 @@ defineExpose({
 
     <template v-else>
       <div v-show="view === 'list'" class="model-list-view">
-        <div class="model-toolbar">
-          <a-space :size="8" wrap>
+        <div class="model-head">
+          <div class="product-summary">
+            <div class="product-summary__thumb">
+              <img
+                v-if="selectedThumb && !brokenThumb"
+                :src="selectedThumb"
+                alt=""
+                class="product-summary__img"
+                @error="brokenThumb = true"
+              />
+              <AppstoreOutlined v-else class="product-summary__placeholder" />
+            </div>
+            <div class="product-summary__meta">
+              <div class="product-summary__name">{{ product.name || '—' }}</div>
+              <div class="product-summary__desc">{{ t('productPage.modelPanelHint') }}</div>
+            </div>
+          </div>
+          <div class="model-head__actions">
             <a-button type="primary" @click="openCreate">
               <template #icon><PlusOutlined /></template>
               {{ t('productPage.modelAdd') }}
@@ -243,24 +271,26 @@ defineExpose({
               <template #icon><ReloadOutlined /></template>
               {{ t('productPage.refresh') }}
             </a-button>
-          </a-space>
-          <a-tag v-if="modelCount" color="processing" class="model-count-tag">
-            {{ t('productPage.modelCount', { count: modelCount }) }}
-          </a-tag>
+            <a-tag v-if="modelCount" color="processing" class="model-count-tag">
+              {{ t('productPage.modelCount', { count: modelCount }) }}
+            </a-tag>
+          </div>
         </div>
 
-        <div class="model-table-wrap">
+        <TableScrollWrap class="model-table-scroll" :refresh-keys="[dataSource.length, product.code]">
+          <template #default="{ scrollY, scrollReady }">
           <a-table
             row-key="id"
             size="small"
             table-layout="fixed"
             bordered
-            class="model-table"
+            class="model-table scroll-table"
+            :class="{ 'scroll-table--pending': !scrollReady }"
             :loading="loading"
             :columns="columns"
             :data-source="dataSource"
             :pagination="false"
-            :scroll="{ y: 'calc(100vh - 360px)' }"
+            :scroll="scrollReady ? { x: 680, y: scrollY } : { x: 680 }"
             :row-class-name="rowClassName"
           >
             <template #bodyCell="{ column, record }">
@@ -322,7 +352,8 @@ defineExpose({
               </a-empty>
             </template>
           </a-table>
-        </div>
+          </template>
+        </TableScrollWrap>
       </div>
 
       <div v-if="view === 'map'" class="model-map-view">
@@ -408,16 +439,92 @@ defineExpose({
   min-height: 0;
 }
 
-.model-toolbar {
+.model-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
+  flex-shrink: 0;
   margin-bottom: 12px;
   padding: 10px 12px;
-  background: linear-gradient(180deg, var(--omes-color-bg-toolbar-from) 0%, var(--omes-color-bg-toolbar-to) 100%);
-  border: 1px solid var(--omes-color-border);
+  border: 1px solid var(--omes-color-primary-border);
   border-radius: var(--omes-radius-md);
+  background: linear-gradient(120deg, var(--omes-color-primary-bg) 0%, #ffffff 62%);
+}
+
+.product-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.product-summary__thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--omes-color-primary-border);
+  background: var(--omes-color-bg-container);
+}
+
+.product-summary__img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product-summary__placeholder {
+  font-size: 18px;
+  color: var(--omes-color-primary);
+}
+
+.product-summary__meta {
+  min-width: 0;
+}
+
+.product-summary__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--omes-color-text);
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-summary__desc {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--omes-color-text-tertiary);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.model-head__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+  .model-head {
+    flex-wrap: wrap;
+  }
+
+  .model-head__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
 }
 
 .model-count-tag {
@@ -439,14 +546,9 @@ defineExpose({
   color: var(--omes-color-text-tertiary);
 }
 
-.model-table-wrap {
+.model-table-scroll {
   flex: 1;
   min-height: 0;
-}
-
-.model-table :deep(.ant-table) {
-  border-radius: var(--omes-radius-md);
-  overflow: hidden;
 }
 
 .model-table :deep(.ant-table-thead > tr > th) {

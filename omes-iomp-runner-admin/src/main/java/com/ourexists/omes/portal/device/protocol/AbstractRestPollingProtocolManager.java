@@ -70,6 +70,7 @@ public abstract class AbstractRestPollingProtocolManager implements ProtocolMana
     private final ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
     private final Map<String, ScheduledFuture<?>> taskMap = new ConcurrentHashMap<>();
     private final Map<String, ProtocolConnect> connectSnapshotMap = new ConcurrentHashMap<>();
+    private final ConnectLink link = new ConnectLink();
 
     private RestTemplate restTemplate;
     private CloseableHttpClient httpClient;
@@ -138,32 +139,54 @@ public abstract class AbstractRestPollingProtocolManager implements ProtocolMana
         String connectId = connect.getId();
         if (taskMap.containsKey(connectId)) {
             log.debug("REST polling task already exists, connectId={}", connectId);
-            return false;
+            return true;
         }
         if (!StringUtils.hasText(connect.getUri())) {
             log.warn("REST polling skipped: uri is empty, connectId={}", connectId);
+            link.failed(connectId, "连接地址为空");
             return false;
         }
         if (!StringUtils.hasText(connect.getCollectCron())) {
             log.warn("REST polling skipped: collectCron is empty, connectId={}", connectId);
+            link.failed(connectId, "采集 Cron 为空");
             return false;
         }
 
         Runnable job = () -> {
             UserContext.defaultTenant();
+            String payload;
             try {
-                String payload = doRequest(connect);
+                payload = doRequest(connect);
+                link.up(connectId);
+            } catch (Exception e) {
+                link.down(connectId, e.getMessage());
+                log.error("REST polling error, connectId={}, uri={}", connect.getId(), connect.getUri(), e);
+                return;
+            }
+            try {
                 if (StringUtils.hasText(payload)) {
                     respHandle(connect, payload);
                 }
             } catch (Exception e) {
-                log.error("REST polling error, connectId={}, uri={}", connect.getId(), connect.getUri(), e);
+                log.error("REST polling parse error, connectId={}, uri={}", connect.getId(), connect.getUri(), e);
             }
         };
 
-        ScheduledFuture<?> future = scheduler.schedule(job, new CronTrigger(connect.getCollectCron()));
+        link.pending(connectId);
+        ScheduledFuture<?> future;
+        try {
+            future = scheduler.schedule(job, new CronTrigger(connect.getCollectCron()));
+        } catch (IllegalArgumentException e) {
+            link.failed(connectId, "采集 Cron 不正确");
+            return false;
+        }
         taskMap.put(connectId, future);
         connectSnapshotMap.put(connectId, connect);
+        try {
+            scheduler.execute(job);
+        } catch (Exception e) {
+            log.debug("REST first probe skipped, connectId={}", connectId);
+        }
         log.info("REST polling started, connectId={}, cron={}, uri={}", connectId, connect.getCollectCron(), connect.getUri());
         return true;
     }
@@ -181,6 +204,7 @@ public abstract class AbstractRestPollingProtocolManager implements ProtocolMana
         }
         ScheduledFuture<?> future = taskMap.remove(connectId);
         connectSnapshotMap.remove(connectId);
+        link.clear(connectId);
         if (future != null) {
             future.cancel(true);
             log.info("REST polling stopped, connectId={}", connectId);
@@ -233,6 +257,14 @@ public abstract class AbstractRestPollingProtocolManager implements ProtocolMana
         return restTemplate.exchange(url, HttpMethod.POST, entity, String.class).getBody();
     }
 
+    @Override
+    public String linkState(String connectId) {
+        return link.state(connectId);
+    }
 
+    @Override
+    public String linkMessage(String connectId) {
+        return link.message(connectId);
+    }
 }
 

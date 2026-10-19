@@ -25,7 +25,7 @@ Web UI / `flink run` 时，集群进程读不到你本机的环境变量，配�
 | Allow Non Restored State | 不勾选 |
 
 ```bash
-flink run -c com.ourexists.omes.stream.equip.EquipRealtimeFlinkJob omes-iomp-flinker/omes-iomp-flinker-equip-flink/target/omes-iomp-flinker-equip-flink-1.0.1-SNAPSHOT.jar --omes.device.flink.local false --RABBITMQ_HOST 127.0.0.1 --RABBITMQ_PORT 5672 --RABBITMQ_USERNAME admin --RABBITMQ_PASSWORD TyY6Df3bZe --RABBITMQ_VHOST / --omes.device.rabbitmq.equip-realtime-queue omes.equip.realtime --omes.device.rabbitmq.equip-notify-create-queue omes.notify.create --omes.device.rabbitmq.equip-stream-persist-change-queue omes.equip.stream.persist.change --omes.device.rabbitmq.equip-stream-persist-state-queue omes.equip.stream.persist.state --omes.device.rabbitmq.equip-stream-persist-collect-queue omes.equip.stream.persist.collect --omes.device.offline-timeout-ms 90000 --omes.device.snapshot-interval-ms 30000 --omes.device.attr-fluctuation-window-ms 90000 --omes.device.attr-fluctuation-slide-ms 5000 --omes.device.flink.enable-checkpointing false --omes.device.flink.checkpoint-interval-ms 10000 --omes.device.flink.checkpoint-timeout-ms 120000 --omes.device.flink.unaligned-checkpoint true --omes.device.flink.aligned-checkpoint-timeout-ms 30000 --omes.device.flink.rmq-prefetch 100 --omes.device.flink.change-detect-ingress-windowed false --omes.device.flink.change-detect-ingress-window-ms 60000 --omes.device.flink.change-detect-ingress-slide-ms 60000
+flink run -c com.ourexists.omes.stream.equip.EquipRealtimeFlinkJob omes-iomp-flinker/omes-iomp-flinker-equip-flink/target/omes-iomp-flinker-equip-flink-1.0.1-SNAPSHOT.jar --omes.device.flink.local false --RABBITMQ_HOST 127.0.0.1 --RABBITMQ_PORT 5672 --RABBITMQ_USERNAME admin --RABBITMQ_PASSWORD TyY6Df3bZe --RABBITMQ_VHOST / --omes.device.rabbitmq.equip-realtime-queue omes.equip.realtime --omes.device.rabbitmq.equip-notify-create-queue omes.notify.create --omes.device.rabbitmq.equip-stream-persist-change-queue omes.equip.stream.persist.change --omes.device.rabbitmq.equip-stream-persist-state-queue omes.equip.stream.persist.state --omes.device.rabbitmq.equip-stream-persist-collect-queue omes.equip.stream.persist.collect --omes.device.offline-timeout-ms 120000 --omes.device.snapshot-interval-ms 30000 --omes.device.attr-fluctuation-window-ms 90000 --omes.device.attr-fluctuation-slide-ms 5000 --omes.device.flink.enable-checkpointing false --omes.device.flink.checkpoint-interval-ms 10000 --omes.device.flink.checkpoint-timeout-ms 120000 --omes.device.flink.unaligned-checkpoint true --omes.device.flink.aligned-checkpoint-timeout-ms 30000 --omes.device.flink.rmq-prefetch 100 --omes.device.flink.change-detect-ingress-windowed false --omes.device.flink.change-detect-ingress-window-ms 60000 --omes.device.flink.change-detect-ingress-slide-ms 60000
 ```
 
 ## 配置合并顺序
@@ -47,7 +47,7 @@ flink run -c com.ourexists.omes.stream.equip.EquipRealtimeFlinkJob omes-iomp-fli
 | `--omes.device.rabbitmq.equip-stream-persist-change-queue` | 运行/报警/在线变更桥接队列 | `omes.equip.stream.persist.change` |
 | `--omes.device.rabbitmq.equip-stream-persist-state-queue` | 状态周期快照桥接队列 | `omes.equip.stream.persist.state` |
 | `--omes.device.rabbitmq.equip-stream-persist-collect-queue` | 采集周期快照桥接队列 | `omes.equip.stream.persist.collect` |
-| `--omes.device.offline-timeout-ms` | 离线判定阈值（毫秒） | `90000` |
+| `--omes.device.offline-timeout-ms` | 离线判定阈值（毫秒） | `120000` |
 | `--omes.device.snapshot-interval-ms` | 快照周期（毫秒） | `30000` |
 | `--omes.device.attr-fluctuation-window-ms` | 属性波动窗口（毫秒） | `90000` |
 | `--omes.device.attr-fluctuation-slide-ms` | 属性波动滑动步长（毫秒） | `5000` |
@@ -74,7 +74,7 @@ flink run -c com.ourexists.omes.stream.equip.EquipRealtimeFlinkJob omes-iomp-fli
 | `OMES_EQUIP_STREAM_PERSIST_CHANGE_QUEUE` | 变更桥接 | `omes.equip.stream.persist.change` |
 | `OMES_EQUIP_STREAM_PERSIST_STATE_QUEUE` | 状态快照桥接 | `omes.equip.stream.persist.state` |
 | `OMES_EQUIP_STREAM_PERSIST_COLLECT_QUEUE` | 采集快照桥接 | `omes.equip.stream.persist.collect` |
-| `OMES_EQUIP_OFFLINE_TIMEOUT_MS` | 离线阈值 | `90000` |
+| `OMES_EQUIP_OFFLINE_TIMEOUT_MS` | 离线阈值 | `120000` |
 | `OMES_EQUIP_SNAPSHOT_INTERVAL_MS` | 快照周期 | `30000` |
 | `OMES_EQUIP_ATTR_FLUCTUATION_WINDOW_MS` | 波动窗口 | `90000` |
 | `OMES_EQUIP_ATTR_FLUCTUATION_SLIDE_MS` | 波动步长 | `5000` |

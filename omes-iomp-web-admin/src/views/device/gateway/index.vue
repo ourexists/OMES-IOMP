@@ -37,6 +37,7 @@ const loading = ref(false)
 const togglingId = ref('')
 const togglePercent = ref(0)
 let toggleTimer: ReturnType<typeof setInterval> | undefined
+let linkTimer: ReturnType<typeof setInterval> | undefined
 const gateways = ref<GatewayRecord[]>([])
 const protocolOptions = ref<ProtocolOption[]>([])
 
@@ -68,6 +69,36 @@ function protocolColor(protocol?: string): string {
 const emptyText = computed(() => t('gatewayPage.empty'))
 const enabledCount = computed(() => gateways.value.filter((g) => g.enabled).length)
 const disabledCount = computed(() => gateways.value.length - enabledCount.value)
+
+function linkLabel(state?: string) {
+  if (state === 'up') {
+    return t('gatewayPage.linkUp')
+  }
+  if (state === 'down') {
+    return t('gatewayPage.linkDown')
+  }
+  return t('gatewayPage.linkPending')
+}
+
+function linkColor(state?: string) {
+  if (state === 'up') {
+    return 'success'
+  }
+  if (state === 'down') {
+    return 'error'
+  }
+  return 'processing'
+}
+
+function linkTip(item: GatewayRecord) {
+  if (item.linkState === 'up') {
+    return t('gatewayPage.linkUp')
+  }
+  if (item.linkState === 'down') {
+    return item.linkMessage || t('gatewayPage.linkDown')
+  }
+  return t('gatewayPage.linkPendingTip')
+}
 
 async function loadProtocols() {
   try {
@@ -113,6 +144,10 @@ function openCreate() {
 }
 
 function openEdit(record: GatewayRecord) {
+  if (record.enabled) {
+    message.warning(t('gatewayPage.disableFirst'))
+    return
+  }
   editingRecord.value = record
   formOpen.value = true
 }
@@ -159,10 +194,8 @@ async function toggleEnabled(record: GatewayRecord) {
   try {
     if (next) {
       await startGateway(id)
-      message.success(t('gatewayPage.startSuccess'))
     } else {
       await stopGateway(id)
-      message.success(t('gatewayPage.stopSuccess'))
     }
     ok = true
   } catch {
@@ -173,9 +206,16 @@ async function toggleEnabled(record: GatewayRecord) {
   } finally {
     endToggleWait()
   }
-  if (ok) {
-    applyEnabled(id, next)
+  if (!ok) {
+    return
   }
+  applyEnabled(id, next)
+  const current = gateways.value.find((item) => item.id === id)
+  if (next && current?.linkState === 'down') {
+    message.warning(current.linkMessage || t('gatewayPage.linkDown'))
+    return
+  }
+  message.success(next ? t('gatewayPage.startSuccess') : t('gatewayPage.stopSuccess'))
 }
 
 function confirmDelete(record: GatewayRecord) {
@@ -200,9 +240,17 @@ function confirmDelete(record: GatewayRecord) {
 onMounted(async () => {
   await loadProtocols()
   await loadCards()
+  linkTimer = setInterval(() => {
+    if (!togglingId.value && gateways.value.some((item) => item.enabled)) {
+      loadCards(true)
+    }
+  }, 5000)
 })
 
-onUnmounted(endToggleWait)
+onUnmounted(() => {
+  endToggleWait()
+  clearInterval(linkTimer)
+})
 </script>
 
 <template>
@@ -295,7 +343,10 @@ onUnmounted(endToggleWait)
               v-for="item in gateways"
               :key="item.id"
               class="gw-card"
-              :class="{ 'gw-card--on': item.enabled }"
+              :class="{
+                'gw-card--on': item.enabled && item.linkState === 'up',
+                'gw-card--down': item.enabled && item.linkState === 'down',
+              }"
             >
               <a-progress
                 v-if="togglingId === item.id"
@@ -327,12 +378,19 @@ onUnmounted(endToggleWait)
                       {{ item.enabled ? t('gatewayPage.enabled') : t('gatewayPage.disabled') }}
                     </a-tag>
                   </div>
-                  <span
-                    class="gw-card__protocol"
-                    :style="{ color: protocolColor(item.protocol), borderColor: protocolColor(item.protocol) }"
-                  >
-                    {{ item.protocol || '—' }}
-                  </span>
+                  <div class="gw-card__meta">
+                    <span
+                      class="gw-card__protocol"
+                      :style="{ color: protocolColor(item.protocol), borderColor: protocolColor(item.protocol) }"
+                    >
+                      {{ item.protocol || '—' }}
+                    </span>
+                    <a-tooltip v-if="item.enabled" :title="linkTip(item)">
+                      <a-tag class="gw-card__status-tag" :color="linkColor(item.linkState)">
+                        {{ linkLabel(item.linkState) }}
+                      </a-tag>
+                    </a-tooltip>
+                  </div>
                 </div>
               </header>
 
@@ -344,6 +402,13 @@ onUnmounted(endToggleWait)
                     <span class="uri-value" :title="item.uri">{{ item.uri || '—' }}</span>
                   </div>
                 </div>
+                <p
+                  v-if="item.enabled && item.linkState === 'down' && item.linkMessage"
+                  class="gw-card__link-msg"
+                  :title="item.linkMessage"
+                >
+                  {{ item.linkMessage }}
+                </p>
               </div>
 
               <footer class="gw-card__foot">
@@ -362,11 +427,13 @@ onUnmounted(endToggleWait)
                     <span class="action-btn__text">{{ item.enabled ? t('gatewayPage.stop') : t('gatewayPage.start') }}</span>
                   </a-button>
                 </a-tooltip>
-                <a-tooltip :title="t('gatewayPage.edit')">
-                  <a-button type="text" size="small" class="action-btn" @click="openEdit(item)">
-                    <EditOutlined />
-                    <span class="action-btn__text">{{ t('gatewayPage.edit') }}</span>
-                  </a-button>
+                <a-tooltip :title="item.enabled ? t('gatewayPage.disableFirst') : t('gatewayPage.edit')">
+                  <span class="action-btn-wrap">
+                    <a-button type="text" size="small" class="action-btn" :disabled="item.enabled" @click="openEdit(item)">
+                      <EditOutlined />
+                      <span class="action-btn__text">{{ t('gatewayPage.edit') }}</span>
+                    </a-button>
+                  </span>
                 </a-tooltip>
                 <a-tooltip :title="t('gatewayPage.binding')">
                   <a-button type="text" size="small" class="action-btn" @click="openBinding(item)">
@@ -374,18 +441,20 @@ onUnmounted(endToggleWait)
                     <span class="action-btn__text">{{ t('gatewayPage.binding') }}</span>
                   </a-button>
                 </a-tooltip>
-                <a-tooltip :title="t('gatewayPage.delete')">
-                  <a-button
-                    type="text"
-                    size="small"
-                    danger
-                    class="action-btn"
-                    :disabled="item.enabled"
-                    @click="confirmDelete(item)"
-                  >
-                    <DeleteOutlined />
-                    <span class="action-btn__text">{{ t('gatewayPage.delete') }}</span>
-                  </a-button>
+                <a-tooltip :title="item.enabled ? t('gatewayPage.disableFirst') : t('gatewayPage.delete')">
+                  <span class="action-btn-wrap">
+                    <a-button
+                      type="text"
+                      size="small"
+                      danger
+                      class="action-btn"
+                      :disabled="item.enabled"
+                      @click="confirmDelete(item)"
+                    >
+                      <DeleteOutlined />
+                      <span class="action-btn__text">{{ t('gatewayPage.delete') }}</span>
+                    </a-button>
+                  </span>
                 </a-tooltip>
               </footer>
             </article>
@@ -555,6 +624,11 @@ onUnmounted(endToggleWait)
   border-color: #b7eb8f;
 }
 
+.gw-card--down {
+  background: color-mix(in srgb, var(--omes-color-error) 8%, var(--omes-color-bg-container));
+  border-color: color-mix(in srgb, var(--omes-color-error) 45%, var(--omes-color-border));
+}
+
 .gw-card__accent {
   height: 3px;
   flex-shrink: 0;
@@ -626,6 +700,13 @@ onUnmounted(endToggleWait)
   font-size: 12px;
 }
 
+.gw-card__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .gw-card__protocol {
   display: inline-block;
   padding: 0 8px;
@@ -671,6 +752,16 @@ onUnmounted(endToggleWait)
   color: var(--omes-color-text-quaternary);
 }
 
+.gw-card__link-msg {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--omes-color-error);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .uri-value {
   display: block;
   font-size: 13px;
@@ -693,6 +784,11 @@ onUnmounted(endToggleWait)
 
 .gw-card--on .gw-card__foot {
   background: rgba(246, 255, 237, 0.55);
+}
+
+.action-btn-wrap {
+  display: flex;
+  min-width: 0;
 }
 
 .action-btn {

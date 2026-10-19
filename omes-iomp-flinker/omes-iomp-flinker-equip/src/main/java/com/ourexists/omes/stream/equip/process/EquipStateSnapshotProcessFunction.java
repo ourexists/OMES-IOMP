@@ -12,6 +12,7 @@ import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.util.Collector;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class EquipStateSnapshotProcessFunction extends KeyedProcessFunction<String, EquipRealtime, EquipStateSnapshotEvent> {
 
@@ -41,6 +42,11 @@ public class EquipStateSnapshotProcessFunction extends KeyedProcessFunction<Stri
         EquipRealtime current = latestState.value();
         if (shouldUpdateLatestState(current, value)) {
             latestState.update(value);
+            if (current != null
+                    && Objects.equals(value.getOnlineState(), 0)
+                    && !Objects.equals(current.getOnlineState(), 0)) {
+                out.collect(snapshotOf(value, ctx.timerService().currentProcessingTime()));
+            }
         }
         Long timer = nextSnapshotTimerState.value();
         if (timer == null) {
@@ -57,6 +63,9 @@ public class EquipStateSnapshotProcessFunction extends KeyedProcessFunction<Stri
         if (current == null) {
             return true;
         }
+        if (Objects.equals(incoming.getOnlineState(), 0) && !Objects.equals(current.getOnlineState(), 0)) {
+            return true;
+        }
         return EquipRealtimeEventTimeUtil.isNewerOrSame(incoming, current);
     }
 
@@ -68,6 +77,14 @@ public class EquipStateSnapshotProcessFunction extends KeyedProcessFunction<Stri
             nextSnapshotTimerState.clear();
             return;
         }
+        out.collect(snapshotOf(latest, timestamp));
+
+        long nextTs = timestamp + snapshotIntervalMs;
+        ctx.timerService().registerProcessingTimeTimer(nextTs);
+        nextSnapshotTimerState.update(nextTs);
+    }
+
+    private static EquipStateSnapshotEvent snapshotOf(EquipRealtime latest, long timestamp) {
         EquipStateSnapshotDto snapshot = new EquipStateSnapshotDto()
                 .setSn(latest.getSelfCode())
                 .setRunState(latest.getRunState())
@@ -75,10 +92,6 @@ public class EquipStateSnapshotProcessFunction extends KeyedProcessFunction<Stri
                 .setOnlineState(latest.getOnlineState())
                 .setTime(new Date(timestamp))
                 .setTenantId(latest.getTenantId());
-        out.collect(new EquipStateSnapshotEvent(snapshot));
-
-        long nextTs = timestamp + snapshotIntervalMs;
-        ctx.timerService().registerProcessingTimeTimer(nextTs);
-        nextSnapshotTimerState.update(nextTs);
+        return new EquipStateSnapshotEvent(snapshot);
     }
 }

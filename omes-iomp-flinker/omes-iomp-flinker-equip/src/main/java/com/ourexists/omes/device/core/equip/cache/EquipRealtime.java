@@ -49,7 +49,7 @@ public class EquipRealtime {
 
     private Date alarmChangeTime;
 
-    private Boolean onlineChange;
+    private Boolean onlineChange = false;
 
     /**
      * 进入 Flink 作业时的单调序号（反序列化时赋值）。用于滑动窗口 reduce / 变化检测：

@@ -11,6 +11,7 @@ import {
 import {
   fetchGatewayById,
   fetchGatewayProtocols,
+  isDgwProtocol,
   isMqttProtocol,
   needsGatewayAuth,
   saveGateway,
@@ -49,8 +50,12 @@ const formState = reactive({
 })
 
 const showMqttFields = computed(() => isMqttProtocol(formState.protocol))
+const showDgwFields = computed(() => isDgwProtocol(formState.protocol))
 const showAuthFields = computed(() => needsGatewayAuth(formState.protocol))
 const topicRequired = computed(() => showMqttFields.value)
+const uriPlaceholder = computed(() =>
+  showDgwFields.value ? t('gatewayPage.dgwUriPlaceholder') : t('gatewayPage.uriPlaceholder'),
+)
 
 const protocolLabel = computed(() => {
   const hit = protocolOptions.value.find((p) => p.id === formState.protocol)
@@ -93,6 +98,15 @@ function closeModal() {
 }
 
 watch(
+  () => formState.protocol,
+  (protocol) => {
+    if (isDgwProtocol(protocol) && !formState.collectCron.trim()) {
+      formState.collectCron = '0/5 * * * * ?'
+    }
+  },
+)
+
+watch(
   () => props.open,
   async (open) => {
     if (!open) {
@@ -122,6 +136,14 @@ async function handleSubmit() {
   }
   if (topicRequired.value && !formState.topic?.trim()) {
     message.warning(t('gatewayPage.topicRequired'))
+    return
+  }
+  if (showDgwFields.value && (!formState.username?.trim() || !formState.password)) {
+    message.warning(t('gatewayPage.dgwAuthRequired'))
+    return
+  }
+  if (showDgwFields.value && !formState.collectCron?.trim()) {
+    message.warning(t('gatewayPage.collectCronRequired'))
     return
   }
 
@@ -190,7 +212,7 @@ async function handleSubmit() {
             <a-input
               v-model:value="formState.uri"
               allow-clear
-              :placeholder="t('gatewayPage.uriPlaceholder')"
+              :placeholder="uriPlaceholder"
             >
               <template #prefix>
                 <LinkOutlined class="input-prefix-icon" />
@@ -228,6 +250,21 @@ async function handleSubmit() {
               </a-form-item>
             </a-col>
           </a-row>
+        </div>
+
+        <div v-if="showDgwFields" class="form-section">
+          <div class="section-title">
+            <SettingOutlined />
+            {{ t('gatewayPage.formDgw') }}
+          </div>
+          <a-form-item :label="t('gatewayPage.collectCron')" required>
+            <a-input
+              v-model:value="formState.collectCron"
+              allow-clear
+              :placeholder="t('gatewayPage.collectCronPlaceholder')"
+            />
+          </a-form-item>
+          <div class="form-hint">{{ t('gatewayPage.dgwHint') }}</div>
         </div>
 
         <div v-if="showMqttFields" class="form-section form-section--mqtt">
@@ -327,6 +364,13 @@ async function handleSubmit() {
 
 .input-prefix-icon {
   color: var(--omes-color-text-placeholder);
+}
+
+.form-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--omes-color-text-tertiary);
 }
 
 .protocol-badge {

@@ -11,6 +11,19 @@ public interface ProtocolManager {
     String protocol();
 
     /**
+     * 本进程里该连接的连通情况：{@code up} 已连通，{@code down} 已启动但当前不通，{@code pending} 已启动但还没有一次通信结果。
+     * 未拉起时返回 null。
+     */
+    default String linkState(String connectId) {
+        return null;
+    }
+
+    /** 最近一次连通失败原因；没有则返回 null。 */
+    default String linkMessage(String connectId) {
+        return null;
+    }
+
+    /**
      * 向设备写入控制值。
      *
      * @param connectId 网关连接 ID

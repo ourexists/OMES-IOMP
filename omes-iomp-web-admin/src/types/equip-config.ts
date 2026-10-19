@@ -36,6 +36,7 @@ export interface EquipControlRow {
 
 export interface EquipConfigDetail {
   gwId?: string
+  deviceIdMap?: string
   runMap?: string
   attrs?: EquipAttrRow[]
   alarms?: EquipAlarmRow[]

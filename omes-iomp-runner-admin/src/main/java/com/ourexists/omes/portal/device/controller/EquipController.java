@@ -25,6 +25,7 @@ import com.ourexists.omes.device.feign.WorkshopFeign;
 import com.ourexists.omes.device.model.*;
 import com.ourexists.omes.portal.device.model.EquipCountDto;
 import com.ourexists.omes.portal.device.protocol.ProtocolManagerRunner;
+import com.ourexists.omes.portal.device.protocol.dgw.DgwPointAddress;
 import com.ourexists.omes.ucenter.feign.RoleFeign;
 import com.ourexists.omes.ucenter.role.RoleDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -259,7 +260,14 @@ public class EquipController {
         if (protocolManager == null) {
             throw new BusinessException("不支持的协议: " + gw.getProtocol());
         }
-        boolean result = protocolManager.write(rtConfig.getGwId(), dto.getAddress(), dto.getValue());
+        String writeAddress = dto.getAddress();
+        if (gw.getProtocol() != null && "DGW".equalsIgnoreCase(gw.getProtocol())) {
+            if (!StringUtils.hasText(equipRealtime.getSelfCode())) {
+                throw new BusinessException("设备编号为空，无法对应 DGW 设备");
+            }
+            writeAddress = DgwPointAddress.encode(equipRealtime.getSelfCode().trim(), dto.getAddress());
+        }
+        boolean result = protocolManager.write(rtConfig.getGwId(), writeAddress, dto.getValue());
         if (!result) {
             throw new BusinessException("写入失败");
         }
