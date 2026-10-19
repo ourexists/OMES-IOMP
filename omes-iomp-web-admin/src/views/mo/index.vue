@@ -384,6 +384,7 @@ defineExpose({ reloadTable: loadTable })
                   size="small"
                   danger
                   ghost
+                  class="mo-list-toolbar__label-btn"
                   :disabled="!selectedRowKeys.length"
                   @click="onBatchCancel"
                 >

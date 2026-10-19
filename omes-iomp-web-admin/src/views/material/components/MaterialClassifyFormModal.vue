@@ -125,8 +125,6 @@ async function handleSubmit() {
           {{ t('materialPage.formClassifySection') }}
         </div>
 
-        <p v-if="!isEdit" class="section-desc">{{ t('materialPage.classifyFormDesc') }}</p>
-
         <a-form-item :label="t('materialPage.classifyName')" required>
           <a-input
             v-model:value="formState.name"
@@ -223,17 +221,6 @@ async function handleSubmit() {
 .section-title :deep(.anticon) {
   font-size: 15px;
   color: var(--omes-color-primary);
-}
-
-.section-desc {
-  margin: 0 0 16px;
-  padding: 8px 12px;
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--omes-color-text-tertiary);
-  background: var(--omes-color-bg-container);
-  border-radius: var(--omes-radius-sm);
-  border: 1px solid var(--omes-color-border);
 }
 
 .classify-form :deep(.ant-form-item) {

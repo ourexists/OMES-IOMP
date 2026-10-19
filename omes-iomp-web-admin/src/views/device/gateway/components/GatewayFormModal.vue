@@ -2,8 +2,6 @@
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  ApiOutlined,
-  ClockCircleOutlined,
   CloudOutlined,
   GatewayOutlined,
   LinkOutlined,
@@ -11,14 +9,10 @@ import {
   SettingOutlined,
 } from '@ant-design/icons-vue'
 import {
-  buildPollingParams,
   fetchGatewayById,
   fetchGatewayProtocols,
   isMqttProtocol,
-  isPollingProtocol,
   needsGatewayAuth,
-  normalizeProtocol,
-  parsePollingParams,
   saveGateway,
   type GatewayRecord,
   type ProtocolOption,
@@ -54,18 +48,9 @@ const formState = reactive({
   collectCron: '',
 })
 
-const pollingState = reactive({
-  timeout: 5000,
-  remoteRack: 0,
-  remoteSlot: 1,
-})
-
 const showMqttFields = computed(() => isMqttProtocol(formState.protocol))
-const showPollingFields = computed(() => isPollingProtocol(formState.protocol))
 const showAuthFields = computed(() => needsGatewayAuth(formState.protocol))
-const showS7Fields = computed(() => normalizeProtocol(formState.protocol) === 's7')
 const topicRequired = computed(() => showMqttFields.value)
-const cronRequired = computed(() => showPollingFields.value)
 
 const protocolLabel = computed(() => {
   const hit = protocolOptions.value.find((p) => p.id === formState.protocol)
@@ -88,12 +73,6 @@ async function loadDetail(id: string) {
     formState.username = data.username || ''
     formState.password = data.password || ''
     formState.collectCron = data.collectCron || ''
-    if (isPollingProtocol(data.protocol)) {
-      const p = parsePollingParams(data.params)
-      pollingState.timeout = p.timeout ?? 5000
-      pollingState.remoteRack = p.remoteRack ?? 0
-      pollingState.remoteSlot = p.remoteSlot ?? 1
-    }
   } finally {
     loading.value = false
   }
@@ -107,9 +86,6 @@ function resetForm() {
   formState.username = ''
   formState.password = ''
   formState.collectCron = ''
-  pollingState.timeout = 5000
-  pollingState.remoteRack = 0
-  pollingState.remoteSlot = 1
 }
 
 function closeModal() {
@@ -148,10 +124,6 @@ async function handleSubmit() {
     message.warning(t('gatewayPage.topicRequired'))
     return
   }
-  if (cronRequired.value && !formState.collectCron?.trim()) {
-    message.warning(t('gatewayPage.cronRequired'))
-    return
-  }
 
   const payload: GatewayRecord = {
     id: props.record?.id,
@@ -162,9 +134,6 @@ async function handleSubmit() {
     username: formState.username?.trim() || undefined,
     password: formState.password || undefined,
     collectCron: formState.collectCron?.trim() || undefined,
-  }
-  if (isPollingProtocol(formState.protocol)) {
-    payload.params = buildPollingParams(formState.protocol, pollingState)
   }
 
   saving.value = true
@@ -275,61 +244,6 @@ async function handleSubmit() {
           </a-form-item>
         </div>
 
-        <div v-if="showPollingFields" class="form-section form-section--polling">
-          <div class="section-title">
-            <ClockCircleOutlined />
-            {{ t('gatewayPage.formPolling') }}
-          </div>
-          <a-row v-if="showS7Fields" :gutter="16">
-            <a-col :span="12">
-              <a-form-item label="Rack">
-                <a-input-number
-                  v-model:value="pollingState.remoteRack"
-                  :min="0"
-                  class="full-width"
-                />
-                <div class="field-hint">{{ t('gatewayPage.s7RackHint') }}</div>
-              </a-form-item>
-            </a-col>
-            <a-col :span="12">
-              <a-form-item label="Slot">
-                <a-input-number
-                  v-model:value="pollingState.remoteSlot"
-                  :min="0"
-                  class="full-width"
-                />
-                <div class="field-hint">{{ t('gatewayPage.s7SlotHint') }}</div>
-              </a-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="16">
-            <a-col :span="12">
-              <a-form-item :label="t('gatewayPage.timeout')">
-                <a-input-number
-                  v-model:value="pollingState.timeout"
-                  :min="1000"
-                  :step="500"
-                  class="full-width"
-                  addon-after="ms"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col :span="12">
-              <a-form-item :label="t('gatewayPage.collectCron')" :required="cronRequired">
-                <a-input
-                  v-model:value="formState.collectCron"
-                  allow-clear
-                  :placeholder="t('gatewayPage.cronPlaceholder')"
-                >
-                  <template #prefix>
-                    <ApiOutlined class="input-prefix-icon" />
-                  </template>
-                </a-input>
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </div>
-
         <div v-if="!formState.protocol" class="form-hint-empty">
           <SettingOutlined />
           <span>{{ t('gatewayPage.selectProtocolHint') }}</span>
@@ -373,11 +287,6 @@ async function handleSubmit() {
   border-color: #d9f7be;
 }
 
-.form-section--polling {
-  background: linear-gradient(180deg, #f0f5ff 0%, var(--omes-color-bg-elevated) 40%);
-  border-color: var(--omes-color-primary-border);
-}
-
 .section-title {
   display: flex;
   align-items: center;
@@ -416,10 +325,6 @@ async function handleSubmit() {
   color: var(--omes-color-text-label);
 }
 
-.full-width {
-  width: 100%;
-}
-
 .input-prefix-icon {
   color: var(--omes-color-text-placeholder);
 }
@@ -431,13 +336,6 @@ async function handleSubmit() {
   color: var(--omes-color-primary);
   background: var(--omes-color-primary-bg);
   border-radius: var(--omes-radius-sm);
-}
-
-.field-hint {
-  margin-top: 6px;
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--omes-color-text-quaternary);
 }
 
 .form-hint-empty {

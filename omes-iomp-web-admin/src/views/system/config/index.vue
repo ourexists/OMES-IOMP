@@ -24,10 +24,10 @@ const form = reactive({
   baiduMapAk: '',
 })
 let cached: SystemConfigRecord | null = null
-let initialAk = ''
+const initialAk = ref('')
 
 const akConfigured = computed(() => form.baiduMapAk.trim().length > 0)
-const dirty = computed(() => form.baiduMapAk.trim() !== initialAk)
+const dirty = computed(() => form.baiduMapAk.trim() !== initialAk.value)
 
 async function loadConfig() {
   loading.value = true
@@ -35,14 +35,14 @@ async function loadConfig() {
     const data = await fetchSystemConfig()
     cached = data || null
     form.baiduMapAk = data?.config?.baiduMapAk?.trim() || ''
-    initialAk = form.baiduMapAk
+    initialAk.value = form.baiduMapAk
     if (form.baiduMapAk) {
       setBaiduMapRuntimeAk(form.baiduMapAk)
     }
   } catch {
     cached = null
     form.baiduMapAk = ''
-    initialAk = ''
+    initialAk.value = ''
   } finally {
     loading.value = false
   }
@@ -98,7 +98,7 @@ onMounted(() => {
 
       <div class="admin-panel-body">
         <a-spin :spinning="loading">
-          <a-form layout="vertical" class="system-config-form" @finish="onSave">
+          <a-form :model="form" layout="vertical" class="system-config-form" @finish="onSave">
             <section class="system-config-section">
               <header class="system-config-section__head">
                 <span class="system-config-section__icon">

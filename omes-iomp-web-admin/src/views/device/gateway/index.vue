@@ -31,7 +31,7 @@ import { message, Modal } from 'ant-design-vue'
 const { t } = useI18n()
 const themeStore = useThemeStore()
 
-// gatewayPage.subtitle: 管理 MQTT、PLC 轮询等协议连接，启停后由 Admin 运行时拉起采集；系统管理端说明文案不向普通用户展示。
+// gatewayPage.subtitle: 管理 MQTT、REST 等协议连接，启停后由 Admin 运行时拉起采集；系统管理端说明文案不向普通用户展示。
 
 const loading = ref(false)
 const togglingId = ref('')

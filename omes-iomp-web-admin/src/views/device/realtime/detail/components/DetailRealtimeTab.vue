@@ -33,6 +33,8 @@ let trendChart: echarts.ECharts | null = null
 let resizeObserver: ResizeObserver | null = null
 
 const loading = ref(false)
+const runHasData = ref(false)
+const collectHasRows = ref(false)
 const collectAttrs = shallowRef<EquipAttrRow[]>([])
 const collectRows = shallowRef<Record<string, unknown>[]>([])
 const tableLoading = ref(false)
@@ -100,8 +102,20 @@ async function loadCollectConfig() {
   collectAttrs.value = (binding?.config?.attrs || []).filter((item) => item.needCollect)
 }
 
+function clearRunChart() {
+  runChart?.dispose()
+  runChart = null
+}
+
+function clearTrendChart() {
+  trendChart?.dispose()
+  trendChart = null
+}
+
 async function loadRunChart() {
-  if (!props.equip?.selfCode || !runChart) {
+  if (!props.equip?.selfCode) {
+    runHasData.value = false
+    clearRunChart()
     return
   }
   const { startDate, endDate } = formatRange()
@@ -112,16 +126,26 @@ async function loadRunChart() {
     fetchEquipAlarmSegments(query),
   ])
   const rows = buildGanttRows(online || [], run || [], alarm || [])
+  runHasData.value = rows.length > 0
+  if (!rows.length) {
+    clearRunChart()
+    return
+  }
+  await nextTick()
+  if (!runChart) initRunChart()
+  if (!runChart) return
   const min = capEndDateToNow(range.value[0].toDate()).getTime()
   const max = capEndDateToNow(range.value[1].toDate()).getTime()
   runChart.setOption({
     xAxis: { min, max },
     series: [{ data: rows }],
   })
+  runChart.resize()
 }
 
 async function loadTrendChart() {
-  if (!props.equip?.selfCode || !trendChart || !hasCollect.value) {
+  if (!props.equip?.selfCode || !hasCollect.value) {
+    clearTrendChart()
     return
   }
   const { startDate, endDate } = formatRange()
@@ -136,9 +160,13 @@ async function loadTrendChart() {
   })
   const list = result?.records || []
   const attrs = collectAttrs.value.filter((item) => item.needCollect && item.name)
-  if (!attrs.length) {
+  if (!attrs.length || !list.length) {
+    clearTrendChart()
     return
   }
+  await nextTick()
+  if (!trendChart) initTrendChart()
+  if (!trendChart) return
   const series = attrs.map((attr, index) => ({
     name: attr.name,
     type: 'line' as const,
@@ -157,11 +185,13 @@ async function loadTrendChart() {
   const xAxis = attrs.map((_, index) => ({ type: 'time' as const, gridIndex: index }))
   const yAxis = attrs.map((_, index) => ({ type: 'value' as const, gridIndex: index, splitLine: { show: false } }))
   trendChart.setOption({ grid: grids, xAxis, yAxis, series, tooltip: { trigger: 'axis' } }, true)
+  trendChart.resize()
 }
 
 async function loadCollectTable() {
   if (!props.equip?.selfCode || !hasCollect.value) {
     collectRows.value = []
+    collectHasRows.value = false
     return
   }
   tableLoading.value = true
@@ -177,6 +207,7 @@ async function loadCollectTable() {
       aggregateInterval: aggregateInterval.value || undefined,
     })
     collectRows.value = (result?.records || []) as Record<string, unknown>[]
+    collectHasRows.value = collectRows.value.length > 0
   } finally {
     tableLoading.value = false
   }
@@ -250,19 +281,14 @@ async function reloadAll() {
   loading.value = true
   try {
     await loadCollectConfig()
-    await nextTick()
-    if (!runChart) {
-      initRunChart()
-    }
-    if (hasCollect.value && !trendChart) {
-      initTrendChart()
-    }
     await Promise.all([loadRunChart(), loadTrendChart(), loadCollectTable()])
     runChart?.resize()
     trendChart?.resize()
   } finally {
     loading.value = false
   }
+  await nextTick()
+  setupResizeObserver()
 }
 
 function onResetRange() {
@@ -335,9 +361,18 @@ onUnmounted(() => {
     </div>
 
     <a-spin :spinning="loading" class="realtime-body">
-      <div ref="chartRef" class="run-chart" />
+    <div v-if="!loading && !runHasData" class="chart-empty">
+      <div class="chart-empty__title">{{ t('equipDetailPage.runTrend') }}</div>
+      <a-empty :description="t('equipDetailPage.runEmpty')" />
+      <p class="chart-empty__hint">{{ t('equipDetailPage.runEmptyHint') }}</p>
+    </div>
+    <div v-else ref="chartRef" class="run-chart" />
 
-      <div v-if="hasCollect" class="collect-block">
+    <div v-if="hasCollect" class="collect-block" :class="{ 'is-empty': !loading && !collectHasRows }">
+      <div v-if="!loading && !collectHasRows" class="chart-empty chart-empty--flat">
+        <a-empty :description="t('equipDetailPage.collectEmpty')" />
+      </div>
+      <template v-else>
         <div ref="trendRef" class="trend-chart" />
         <div class="table-toolbar">
           <a-select
@@ -366,12 +401,15 @@ onUnmounted(() => {
               class="scroll-table collect-table"
               :columns="tableColumns"
               :data-source="tableData"
+              :loading="tableLoading"
               :pagination="{ pageSize: 10, showSizeChanger: true }"
               :scroll="{ x: true, y: scrollY }"
+              :locale="{ emptyText: t('equipDetailPage.collectEmpty') }"
             />
           </template>
         </TableScrollWrap>
-      </div>
+      </template>
+    </div>
     </a-spin>
   </div>
 </template>
@@ -420,6 +458,43 @@ onUnmounted(() => {
   border-radius: 12px;
 }
 
+.chart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-height: 220px;
+  padding: 28px 16px 20px;
+  background: var(--omes-color-bg-container);
+  border: 1px dashed #dbe3ee;
+  border-radius: 12px;
+}
+
+.chart-empty--flat {
+  min-height: 0;
+  padding: 8px 0 4px;
+  background: transparent;
+  border: none;
+}
+
+.chart-empty__title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.chart-empty :deep(.ant-empty) {
+  margin: 8px 0 0;
+}
+
+.chart-empty__hint {
+  margin: 0 0 4px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--omes-color-text-quaternary);
+}
+
 .collect-block {
   flex: 1;
   min-height: 0;
@@ -430,6 +505,10 @@ onUnmounted(() => {
   background: var(--omes-color-bg-container);
   border: 1px solid #e8eef5;
   border-radius: 12px;
+}
+
+.collect-block.is-empty {
+  flex: none;
 }
 
 .trend-chart {

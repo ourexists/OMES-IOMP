@@ -115,6 +115,40 @@ function wrapInfoWindowHtml(title: string, body: string): string {
   return `<div class="gis-map-popup-shell"><div class="gis-map-popup-shell__title"><b>${escapeHtml(title)}</b></div>${body}</div>`
 }
 
+function collapseInfoWindowTitle() {
+  const host = document.getElementById(mapContainerId)
+  if (!host) {
+    return
+  }
+  host.querySelectorAll<HTMLElement>('[class*="bubble_top"]').forEach((el) => {
+    el.style.setProperty('height', '0', 'important')
+    el.style.setProperty('min-height', '0', 'important')
+    el.style.setProperty('max-height', '0', 'important')
+    el.style.setProperty('padding', '0', 'important')
+    el.style.setProperty('margin', '0', 'important')
+    el.style.setProperty('overflow', 'visible', 'important')
+    el.style.setProperty('border', 'none', 'important')
+  })
+  host.querySelectorAll<HTMLElement>('[class*="bubble_title"]').forEach((el) => {
+    el.style.setProperty('display', 'none', 'important')
+    el.style.setProperty('height', '0', 'important')
+    el.style.setProperty('min-height', '0', 'important')
+    el.style.setProperty('padding', '0', 'important')
+    el.style.setProperty('margin', '0', 'important')
+    el.style.setProperty('overflow', 'hidden', 'important')
+    el.style.setProperty('border', 'none', 'important')
+  })
+  host.querySelectorAll<HTMLElement>('[class*="bubble_pop"]').forEach((el) => {
+    el.style.setProperty('position', 'relative', 'important')
+  })
+  host.querySelectorAll<HTMLElement>('[class*="bubble_close"]').forEach((el) => {
+    el.style.setProperty('position', 'absolute', 'important')
+    el.style.setProperty('top', '6px', 'important')
+    el.style.setProperty('right', '6px', 'important')
+    el.style.setProperty('z-index', '2', 'important')
+  })
+}
+
 function openInfoWindowForId(id: string) {
   if (!map || !window.BMapGL) {
     return
@@ -128,6 +162,10 @@ function openInfoWindowForId(id: string) {
   const mapPoint = new window.BMapGL.Point(coord.lng, coord.lat)
   openMarkerId = id
   map.openInfoWindow(info, mapPoint)
+  window.requestAnimationFrame(() => {
+    collapseInfoWindowTitle()
+    window.requestAnimationFrame(collapseInfoWindowTitle)
+  })
 }
 
 function upsertOverlay(point: SceneAggregatePoint) {
@@ -574,6 +612,37 @@ onUnmounted(() => {
     height: calc((var(--dot-r) + 35px) * 2);
     opacity: 0;
   }
+}
+
+.baidu-gis-map [class*='bubble_top'] {
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  border: none !important;
+}
+
+.baidu-gis-map [class*='bubble_title'] {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border: none !important;
+}
+
+.baidu-gis-map [class*='bubble_pop'] {
+  position: relative;
+}
+
+.baidu-gis-map [class*='bubble_close'] {
+  position: absolute !important;
+  top: 6px !important;
+  right: 6px !important;
+  z-index: 2 !important;
 }
 
 .gis-map-popup-shell {

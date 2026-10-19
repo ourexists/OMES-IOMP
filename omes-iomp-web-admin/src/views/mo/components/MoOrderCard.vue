@@ -163,7 +163,7 @@ function onAdjustMenu({ key }: { key: string | number }) {
           </a-button>
         </a-tooltip>
         <a-dropdown v-if="canCancel" :trigger="['click']">
-          <a-button type="text" size="small" class="mo-order-card__icon-btn">
+          <a-button type="text" size="small" class="mo-order-card__icon-btn mo-order-card__menu-btn">
             <MoreOutlined />
             {{ t('moPage.adjust') }}
           </a-button>

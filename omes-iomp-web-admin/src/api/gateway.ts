@@ -27,12 +27,6 @@ export interface GatewayPageQuery {
   enabled?: boolean
 }
 
-export interface PollingParams {
-  timeout?: number
-  remoteRack?: number
-  remoteSlot?: number
-}
-
 export function fetchGatewayProtocols() {
   return get<ProtocolOption[]>('/gateway/protocols')
 }
@@ -76,39 +70,7 @@ export function isMqttProtocol(protocol?: string): boolean {
   return p === 'mqtt' || p === 'tc_mqtt'
 }
 
-export function isPollingProtocol(protocol?: string): boolean {
-  const p = normalizeProtocol(protocol)
-  return p === 's7' || p === 'modbus tcp' || p === 'opc ua'
-}
-
 export function needsGatewayAuth(protocol?: string): boolean {
   const p = normalizeProtocol(protocol)
   return isMqttProtocol(protocol) || p === 'rest' || p === 'wincc'
-}
-
-export function parsePollingParams(
-  params?: string | Record<string, unknown> | null,
-): PollingParams {
-  if (!params) {
-    return { timeout: 5000, remoteRack: 0, remoteSlot: 1 }
-  }
-  try {
-    const raw = typeof params === 'string' ? JSON.parse(params) : params
-    return {
-      timeout: Number(raw.timeout) || 5000,
-      remoteRack: Number(raw.remoteRack) || 0,
-      remoteSlot: Number(raw.remoteSlot) || 1,
-    }
-  } catch {
-    return { timeout: 5000, remoteRack: 0, remoteSlot: 1 }
-  }
-}
-
-export function buildPollingParams(protocol: string, polling: PollingParams): string {
-  const params: PollingParams = { timeout: polling.timeout ?? 5000 }
-  if (normalizeProtocol(protocol) === 's7') {
-    params.remoteRack = polling.remoteRack ?? 0
-    params.remoteSlot = polling.remoteSlot ?? 1
-  }
-  return JSON.stringify(params)
 }

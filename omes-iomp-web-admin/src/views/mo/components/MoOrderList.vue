@@ -179,7 +179,11 @@ function onAdjustMenu(record: MoRecord, { key }: { key: string | number }) {
         </span>
       </template>
       <template v-else-if="column.key === 'progress'">
-        <div v-if="getProgress(record)" class="mo-list-table__progress">
+        <div
+          v-if="getProgress(record)"
+          class="mo-list-table__progress"
+          :class="`mo-list-table__progress--${statusTone(record.status)}`"
+        >
           <span class="mo-list-table__progress-text">
             {{
               t('moPage.progressDone', {

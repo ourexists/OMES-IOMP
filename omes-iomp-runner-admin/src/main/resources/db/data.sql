@@ -188,31 +188,31 @@ CREATE TABLE "public"."p_ucenter_acc" (
   "perfection" int2
 )
 ;
-COMMENT ON COLUMN "public"."p_ucenter_acc"."acc_name" IS 'è´¦æ·å';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."password" IS 'è´¦æ·å¯ç ';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."nick_name" IS 'è´¦æ·æµç§°';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."user_name" IS 'ç¨æ·å';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."id_card" IS 'èº«ä»½è¯å·';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."mobile" IS 'è´¦æ·ææºå·';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."email" IS 'è´¦æ·é®ç®±';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."sex" IS 'ç¨æ·æ§å«';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."init" IS 'åå§ç¶æ(1:æ¯åå§åè´¦æ·)';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."status" IS 'è´¦æ·ç¶æ';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."settled_time" IS 'å¥é©»æ¶é´';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."expire_time" IS 'è¿ææ¶é´';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."birth_day" IS 'åºçå¹´æ';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."del_flag" IS 'é»è¾å é¤';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."source" IS 'æ¥æº';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."source_id" IS 'æ¥æºid';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."platform" IS 'å¹³å°';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."union_id" IS 'æ¥æºæ¹äºéid';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."avatar_url" IS 'å¤´åè·¯å¾';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."country" IS 'å½å®¶';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."province" IS 'ç';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."city" IS 'å¸';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."language" IS 'è¯­è¨';
-COMMENT ON COLUMN "public"."p_ucenter_acc"."perfection" IS 'è´¦æ·å®ååº¦ï¼0: æªå®åï¼1:å·²å®åï¼';
-COMMENT ON TABLE "public"."p_ucenter_acc" IS 'è´¦æ·è¡¨';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."acc_name" IS '账户名';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."password" IS '账户密码';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."nick_name" IS '账户昵称';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."user_name" IS '用户名';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."id_card" IS '身份证号';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."mobile" IS '账户手机号';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."email" IS '账户邮箱';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."sex" IS '用户性别';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."init" IS '初始状态(1:是初始化账户)';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."status" IS '账户状态';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."settled_time" IS '入驻时间';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."expire_time" IS '过期时间';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."birth_day" IS '出生年月';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."del_flag" IS '逻辑删除';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."source" IS '来源';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."source_id" IS '来源id';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."platform" IS '平台';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."union_id" IS '来源方互通id';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."avatar_url" IS '头像路径';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."country" IS '国家';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."province" IS '省';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."city" IS '市';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."language" IS '语言';
+COMMENT ON COLUMN "public"."p_ucenter_acc"."perfection" IS '账户完善度（0: 未完善，1:已完善）';
+COMMENT ON TABLE "public"."p_ucenter_acc" IS '账户表';
 
 -- ----------------------------
 -- Table structure for p_ucenter_permission
@@ -244,20 +244,20 @@ CREATE TABLE "public"."p_ucenter_permission" (
   "keep_alive" bool DEFAULT false
 )
 ;
-COMMENT ON COLUMN "public"."p_ucenter_permission"."name" IS 'åç§°';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."code" IS 'ç¼å·';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."pcode" IS 'ç¶ç¼å·';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."ppcode" IS 'ç¥å®ç¼å·';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."strategy" IS 'æéç­ç¥';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."icon" IS 'å¾æ ';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."component" IS 'ç»ä»¶';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."url" IS 'è·³è½¬ç½é¡µé¾æ¥';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."sort_no" IS 'èåæåº';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."type" IS 'æéç±»å(0:èåæé  1:æé®æé  2:ç©ºæè¿°æé)';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."description" IS 'æè¿°';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."internal_or_external" IS 'å¤é¾èåæå¼æ¹å¼(0:åé¨æå¼ 1:å¤é¨æå¼)';
-COMMENT ON COLUMN "public"."p_ucenter_permission"."platform" IS 'æå±å¹³å°';
-COMMENT ON TABLE "public"."p_ucenter_permission" IS 'æéè¡¨';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."name" IS '名称';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."code" IS '编号';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."pcode" IS '父编号';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."ppcode" IS '祖宗编号';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."strategy" IS '权限策略';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."icon" IS '图标';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."component" IS '组件';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."url" IS '跳转网页链接';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."sort_no" IS '菜单排序';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."type" IS '权限类型(0:菜单权限  1:按钮权限  2:空描述权限)';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."description" IS '描述';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."internal_or_external" IS '外链菜单打开方式(0:内部打开 1:外部打开)';
+COMMENT ON COLUMN "public"."p_ucenter_permission"."platform" IS '所属平台';
+COMMENT ON TABLE "public"."p_ucenter_permission" IS '权限表';
 
 -- ----------------------------
 -- Table structure for p_ucenter_platform
@@ -276,8 +276,8 @@ CREATE TABLE "public"."p_ucenter_platform" (
   "updated_time" timestamp(6)
 )
 ;
-COMMENT ON COLUMN "public"."p_ucenter_platform"."name" IS 'åç§°';
-COMMENT ON COLUMN "public"."p_ucenter_platform"."code" IS 'ç¼å·';
+COMMENT ON COLUMN "public"."p_ucenter_platform"."name" IS '名称';
+COMMENT ON COLUMN "public"."p_ucenter_platform"."code" IS '编号';
 
 -- ----------------------------
 -- Table structure for p_ucenter_tenant
@@ -317,28 +317,28 @@ CREATE TABLE "public"."p_ucenter_tenant" (
   "del_flag" int2 DEFAULT 0
 )
 ;
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_name" IS 'ç§æ·å';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_code" IS 'ç§æ·ç¼å·';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."status" IS 'ç§æ·ç¶æ';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."settled_time" IS 'å¥é©»æ¶é´';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."expire_time" IS 'è¿ææ¶é´';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_id" IS 'éåæ¡æ¶å ä½';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_address" IS 'ç§æ·/æºææå¨å°å';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_contacts" IS 'èç³»äººå§å';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_phone" IS 'æå¡çµè¯';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_mail" IS 'èç³»é®ç®±';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."province_code" IS 'çä»½codeï¼è¯¦è§yl_elder.r_city_dictçå¸çº§èå­å¸è¡¨code';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."city_code" IS 'åå¸codeï¼è¯¦è§yl_elder.r_city_dictçå¸çº§èå­å¸è¡¨code';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."county_code" IS 'åºå¿codeï¼è¯¦è§yl_elder.r_city_dictçå¸çº§èå­å¸è¡¨code';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."street_code" IS 'è¡écodeï¼è¯¦è§yl_elder.r_city_dictçå¸çº§èå­å¸è¡¨code';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."area_fullname" IS 'æå¨åºåï¼ç-å¸-åºå¿-è¡éæ¼æ¥';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_coo" IS 'ç§æ·æºæç»çº¬åº¦åæ ';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."client_id" IS 'è¡¥åä¸´æ¶å­æ®µï¼ä½ç¨å¾å®';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."management" IS 'ç®¡æ§æé';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."manage_num" IS 'ç®¡æ§æ°é';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_name" IS '租户名';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_code" IS '租户编号';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."status" IS '租户状态';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."settled_time" IS '入驻时间';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."expire_time" IS '过期时间';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_id" IS '配合框架占位';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_address" IS '租户/机构所在地址';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_contacts" IS '联系人姓名';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_phone" IS '服务电话';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_mail" IS '联系邮箱';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."province_code" IS '省份code：详见yl_elder.r_city_dict省市级联字典表code';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."city_code" IS '城市code：详见yl_elder.r_city_dict省市级联字典表code';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."county_code" IS '区县code：详见yl_elder.r_city_dict省市级联字典表code';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."street_code" IS '街道code：详见yl_elder.r_city_dict省市级联字典表code';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."area_fullname" IS '所在区域：省-市-区县-街道拼接';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."tenant_coo" IS '租户机构经纬度坐标';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."client_id" IS '补充临时字段，作用待定';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."management" IS '管控权限';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."manage_num" IS '管控数量';
 COMMENT ON COLUMN "public"."p_ucenter_tenant"."logo" IS 'logo';
-COMMENT ON COLUMN "public"."p_ucenter_tenant"."tel" IS 'å®¢æçµè¯';
-COMMENT ON TABLE "public"."p_ucenter_tenant" IS 'ç§æ·è¡¨';
+COMMENT ON COLUMN "public"."p_ucenter_tenant"."tel" IS '客服电话';
+COMMENT ON TABLE "public"."p_ucenter_tenant" IS '租户表';
 
 -- ----------------------------
 -- Table structure for r_bom_d
@@ -364,15 +364,15 @@ CREATE TABLE "public"."r_bom_d" (
   "priority" int4
 )
 ;
-COMMENT ON COLUMN "public"."r_bom_d"."mat_id" IS 'ç©æid';
-COMMENT ON COLUMN "public"."r_bom_d"."mat_name" IS 'ç©æåç§°';
-COMMENT ON COLUMN "public"."r_bom_d"."mat_code" IS 'ç©æç¼å·';
-COMMENT ON COLUMN "public"."r_bom_d"."mcode" IS 'ä¸»ä½ç¼å·';
-COMMENT ON COLUMN "public"."r_bom_d"."mat_scale" IS 'ç©ææ°å¼ï¼å¯¹åºç©ææ¸åçç±»åï¼å³å®æ¯ç¾åæ¯è¿æ¯åºå®å¼ï¼';
-COMMENT ON COLUMN "public"."r_bom_d"."dev_no" IS 'è®¾å¤ç¼å·';
-COMMENT ON COLUMN "public"."r_bom_d"."attribute" IS 'ç»ä»½æ§è´¨ï¼0=ä¸»æï¼1=é¢æ··æï¼æ·»å åï¼,2=åæºæ,3=æ²¹,4=æ°´';
-COMMENT ON COLUMN "public"."r_bom_d"."priority" IS 'ä¼åçº§ï¼æ°å¼è¶å¤§ï¼ä¼åçº§è¶é«ï¼';
-COMMENT ON TABLE "public"."r_bom_d" IS 'éæ¹è¯¦æ';
+COMMENT ON COLUMN "public"."r_bom_d"."mat_id" IS '物料id';
+COMMENT ON COLUMN "public"."r_bom_d"."mat_name" IS '物料名称';
+COMMENT ON COLUMN "public"."r_bom_d"."mat_code" IS '物料编号';
+COMMENT ON COLUMN "public"."r_bom_d"."mcode" IS '主体编号';
+COMMENT ON COLUMN "public"."r_bom_d"."mat_scale" IS '物料数值（对应物料清单的类型，决定是百分比还是固定值）';
+COMMENT ON COLUMN "public"."r_bom_d"."dev_no" IS '设备编号';
+COMMENT ON COLUMN "public"."r_bom_d"."attribute" IS '组份性质：0=主料，1=预混料（添加剂）,2=回机料,3=油,4=水';
+COMMENT ON COLUMN "public"."r_bom_d"."priority" IS '优先级（数值越大，优先级越高）';
+COMMENT ON TABLE "public"."r_bom_d" IS '配方详情';
 
 -- ----------------------------
 -- Table structure for r_dg_d
@@ -384,10 +384,10 @@ CREATE TABLE "public"."r_dg_d" (
   "mat_id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-COMMENT ON COLUMN "public"."r_dg_d"."dg_id" IS 'è®¾å¤ç»id';
-COMMENT ON COLUMN "public"."r_dg_d"."d_id" IS 'è®¾å¤id';
-COMMENT ON COLUMN "public"."r_dg_d"."mat_id" IS 'ç©æid';
-COMMENT ON TABLE "public"."r_dg_d" IS 'è®¾å¤ç»å³è';
+COMMENT ON COLUMN "public"."r_dg_d"."dg_id" IS '设备组id';
+COMMENT ON COLUMN "public"."r_dg_d"."d_id" IS '设备id';
+COMMENT ON COLUMN "public"."r_dg_d"."mat_id" IS '物料id';
+COMMENT ON TABLE "public"."r_dg_d" IS '设备组关联';
 
 -- ----------------------------
 -- Table structure for r_dg_equip
@@ -401,9 +401,9 @@ CREATE TABLE "public"."r_dg_equip" (
   CONSTRAINT "uk_r_dg_equip" UNIQUE ("dg_id", "equip_id")
 )
 ;
-COMMENT ON COLUMN "public"."r_dg_equip"."dg_id" IS 'è®¾å¤è½åid';
-COMMENT ON COLUMN "public"."r_dg_equip"."equip_id" IS 'è®¾å¤idï¼t_equipï¼';
-COMMENT ON TABLE "public"."r_dg_equip" IS 'è®¾å¤è½åç»å®è®¾å¤';
+COMMENT ON COLUMN "public"."r_dg_equip"."dg_id" IS '设备能力id';
+COMMENT ON COLUMN "public"."r_dg_equip"."equip_id" IS '设备id（t_equip）';
+COMMENT ON TABLE "public"."r_dg_equip" IS '设备能力绑定设备';
 
 -- ----------------------------
 -- Table structure for r_dg_equip_mat
@@ -419,11 +419,11 @@ CREATE TABLE "public"."r_dg_equip_mat" (
   CONSTRAINT "uk_r_dg_equip_mat" UNIQUE ("dg_id", "equip_id", "mat_code")
 )
 ;
-COMMENT ON COLUMN "public"."r_dg_equip_mat"."dg_id" IS 'è®¾å¤è½åid';
-COMMENT ON COLUMN "public"."r_dg_equip_mat"."equip_id" IS 'è®¾å¤id';
-COMMENT ON COLUMN "public"."r_dg_equip_mat"."mat_code" IS 'åæç¼å·ï¼t_mat.self_codeï¼';
-COMMENT ON COLUMN "public"."r_dg_equip_mat"."max_capacity" IS 'è¯¥åæå¨æ¬è½åæ¹æ¡ä¸çå®¹é';
-COMMENT ON TABLE "public"."r_dg_equip_mat" IS 'è®¾å¤è½åå å·¥åæåå®¹é';
+COMMENT ON COLUMN "public"."r_dg_equip_mat"."dg_id" IS '设备能力id';
+COMMENT ON COLUMN "public"."r_dg_equip_mat"."equip_id" IS '设备id';
+COMMENT ON COLUMN "public"."r_dg_equip_mat"."mat_code" IS '原料编号（t_mat.self_code）';
+COMMENT ON COLUMN "public"."r_dg_equip_mat"."max_capacity" IS '该原料在本能力方案下的容量';
+COMMENT ON TABLE "public"."r_dg_equip_mat" IS '设备能力加工原料及容量';
 
 -- ----------------------------
 -- Table structure for r_gw_binding
@@ -431,11 +431,12 @@ COMMENT ON TABLE "public"."r_dg_equip_mat" IS 'è®¾å¤è½åå å�
 DROP TABLE IF EXISTS "public"."r_gw_binding";
 CREATE TABLE "public"."r_gw_binding" (
   "equip_id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
-  "gw_id" varchar(20) COLLATE "pg_catalog"."default"
+  "gw_id" varchar(20) COLLATE "pg_catalog"."default",
+  PRIMARY KEY ("equip_id")
 )
 ;
-COMMENT ON COLUMN "public"."r_gw_binding"."equip_id" IS 'è®¾å¤id';
-COMMENT ON COLUMN "public"."r_gw_binding"."gw_id" IS 'ç½å³id';
+COMMENT ON COLUMN "public"."r_gw_binding"."equip_id" IS '设备id';
+COMMENT ON COLUMN "public"."r_gw_binding"."gw_id" IS '网关id';
 
 -- ----------------------------
 -- Table structure for r_message_read
@@ -448,10 +449,10 @@ CREATE TABLE "public"."r_message_read" (
   "is_read" bool NOT NULL DEFAULT false
 )
 ;
-COMMENT ON COLUMN "public"."r_message_read"."message_id" IS 'æ¶æ¯id';
-COMMENT ON COLUMN "public"."r_message_read"."acc_id" IS 'è´¦æ·id';
-COMMENT ON COLUMN "public"."r_message_read"."time" IS 'è¯»åæ¶é´';
-COMMENT ON COLUMN "public"."r_message_read"."is_read" IS 'æ¯å¦å·²è¯»';
+COMMENT ON COLUMN "public"."r_message_read"."message_id" IS '消息id';
+COMMENT ON COLUMN "public"."r_message_read"."acc_id" IS '账户id';
+COMMENT ON COLUMN "public"."r_message_read"."time" IS '读取时间';
+COMMENT ON COLUMN "public"."r_message_read"."is_read" IS '是否已读';
 
 -- ----------------------------
 -- Table structure for r_mo_d
@@ -480,17 +481,17 @@ CREATE TABLE "public"."r_mo_d" (
   "dg_name" varchar(50) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."r_mo_d"."mat_id" IS 'ç©æid';
-COMMENT ON COLUMN "public"."r_mo_d"."mat_name" IS 'ç©æåç§°';
-COMMENT ON COLUMN "public"."r_mo_d"."mat_code" IS 'ç©æç¼å·';
-COMMENT ON COLUMN "public"."r_mo_d"."mat_num" IS 'ç©ææ°é';
-COMMENT ON COLUMN "public"."r_mo_d"."priority" IS 'ä¼åçº§ï¼æ°å¼è¶å¤§ï¼ä¼åçº§è¶é«ï¼';
-COMMENT ON COLUMN "public"."r_mo_d"."mcode" IS 'å½å±æ¸å';
-COMMENT ON COLUMN "public"."r_mo_d"."dev_no" IS 'è®¾å¤ç¼å·';
-COMMENT ON COLUMN "public"."r_mo_d"."dev_name" IS 'è®¾å¤å';
-COMMENT ON COLUMN "public"."r_mo_d"."dg_code" IS 'è®¾å¤è½åcode';
-COMMENT ON COLUMN "public"."r_mo_d"."dg_name" IS 'è®¾å¤è½åå';
-COMMENT ON TABLE "public"."r_mo_d" IS 'çäº§æ¸åè¯¦æ';
+COMMENT ON COLUMN "public"."r_mo_d"."mat_id" IS '物料id';
+COMMENT ON COLUMN "public"."r_mo_d"."mat_name" IS '物料名称';
+COMMENT ON COLUMN "public"."r_mo_d"."mat_code" IS '物料编号';
+COMMENT ON COLUMN "public"."r_mo_d"."mat_num" IS '物料数量';
+COMMENT ON COLUMN "public"."r_mo_d"."priority" IS '优先级（数值越大，优先级越高）';
+COMMENT ON COLUMN "public"."r_mo_d"."mcode" IS '归属清单';
+COMMENT ON COLUMN "public"."r_mo_d"."dev_no" IS '设备编号';
+COMMENT ON COLUMN "public"."r_mo_d"."dev_name" IS '设备名';
+COMMENT ON COLUMN "public"."r_mo_d"."dg_code" IS '设备能力code';
+COMMENT ON COLUMN "public"."r_mo_d"."dg_name" IS '设备能力名';
+COMMENT ON TABLE "public"."r_mo_d" IS '生产清单详情';
 
 -- ----------------------------
 -- Table structure for r_mps_d
@@ -522,20 +523,20 @@ CREATE TABLE "public"."r_mps_d" (
   "dg_name" varchar(50) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."r_mps_d"."mat_id" IS 'åæid';
-COMMENT ON COLUMN "public"."r_mps_d"."mat_name" IS 'åæåç§°';
-COMMENT ON COLUMN "public"."r_mps_d"."mat_code" IS 'åæç¼å·';
-COMMENT ON COLUMN "public"."r_mps_d"."mid" IS 'ä¸»ä½id';
-COMMENT ON COLUMN "public"."r_mps_d"."mat_num" IS 'çè®ºå¼';
-COMMENT ON COLUMN "public"."r_mps_d"."actual_num" IS 'å®éå¼';
-COMMENT ON COLUMN "public"."r_mps_d"."dev_no" IS 'è®¾å¤å·';
-COMMENT ON COLUMN "public"."r_mps_d"."dev_name" IS 'è®¾å¤å';
-COMMENT ON COLUMN "public"."r_mps_d"."attribute" IS 'ç»ä»½æ§è´¨ï¼0=ä¸»æï¼1=é¢æ··æï¼æ·»å åï¼,2=åæºæ,3=æ²¹,4=æ°´';
-COMMENT ON COLUMN "public"."r_mps_d"."priority" IS 'ææé¡ºåº';
-COMMENT ON COLUMN "public"."r_mps_d"."mo_code" IS 'å½å±æ¸å';
-COMMENT ON COLUMN "public"."r_mps_d"."dg_code" IS 'è®¾å¤è½åcode';
-COMMENT ON COLUMN "public"."r_mps_d"."dg_name" IS 'è®¾å¤è½åå';
-COMMENT ON TABLE "public"."r_mps_d" IS 'çäº§è®¡åè¯¦æ';
+COMMENT ON COLUMN "public"."r_mps_d"."mat_id" IS '原料id';
+COMMENT ON COLUMN "public"."r_mps_d"."mat_name" IS '原料名称';
+COMMENT ON COLUMN "public"."r_mps_d"."mat_code" IS '原料编号';
+COMMENT ON COLUMN "public"."r_mps_d"."mid" IS '主体id';
+COMMENT ON COLUMN "public"."r_mps_d"."mat_num" IS '理论值';
+COMMENT ON COLUMN "public"."r_mps_d"."actual_num" IS '实际值';
+COMMENT ON COLUMN "public"."r_mps_d"."dev_no" IS '设备号';
+COMMENT ON COLUMN "public"."r_mps_d"."dev_name" IS '设备名';
+COMMENT ON COLUMN "public"."r_mps_d"."attribute" IS '组份性质：0=主料，1=预混料（添加剂）,2=回机料,3=油,4=水';
+COMMENT ON COLUMN "public"."r_mps_d"."priority" IS '投料顺序';
+COMMENT ON COLUMN "public"."r_mps_d"."mo_code" IS '归属清单';
+COMMENT ON COLUMN "public"."r_mps_d"."dg_code" IS '设备能力code';
+COMMENT ON COLUMN "public"."r_mps_d"."dg_name" IS '设备能力名';
+COMMENT ON TABLE "public"."r_mps_d" IS '生产计划详情';
 
 -- ----------------------------
 -- Table structure for r_mps_tf
@@ -563,18 +564,18 @@ CREATE TABLE "public"."r_mps_tf" (
   "mo_code" varchar(50) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-COMMENT ON COLUMN "public"."r_mps_tf"."mps_id" IS 'æ§è¡è®¡åid';
-COMMENT ON COLUMN "public"."r_mps_tf"."self_code" IS 'å·¥èºæµç¨ç¼å·(å¯ä»¥ä¸å·¥èºè®¾ç½®è¿è¡æ å°)';
-COMMENT ON COLUMN "public"."r_mps_tf"."name" IS 'å·¥èºæµç¨åç§°';
-COMMENT ON COLUMN "public"."r_mps_tf"."start_time" IS 'å¼å§æ§è¡çæ¶é´';
-COMMENT ON COLUMN "public"."r_mps_tf"."end_time" IS 'æ§è¡å®ææ¶é´';
-COMMENT ON COLUMN "public"."r_mps_tf"."start_temperature" IS 'å¥æ§½æ¸©åº¦';
-COMMENT ON COLUMN "public"."r_mps_tf"."end_temperature" IS 'åºæ§½æ¸©åº¦';
-COMMENT ON COLUMN "public"."r_mps_tf"."status" IS 'æµç¨ç¶æ(0:å¾æ§è¡|1æ§è¡ä¸­|2å·²å®æ|3åæ­¢|4å¼å¸¸ä¸­æ­)';
-COMMENT ON COLUMN "public"."r_mps_tf"."pre" IS 'ä¸ä¸æµç¨ç¼å·';
-COMMENT ON COLUMN "public"."r_mps_tf"."nex" IS 'ä¸ä¸æµç¨ç¼å·';
-COMMENT ON COLUMN "public"."r_mps_tf"."mo_code" IS 'å½å±æ¸å';
-COMMENT ON TABLE "public"."r_mps_tf" IS 'å·¥èºæµç¨';
+COMMENT ON COLUMN "public"."r_mps_tf"."mps_id" IS '执行计划id';
+COMMENT ON COLUMN "public"."r_mps_tf"."self_code" IS '工艺流程编号(可以与工艺设置进行映射)';
+COMMENT ON COLUMN "public"."r_mps_tf"."name" IS '工艺流程名称';
+COMMENT ON COLUMN "public"."r_mps_tf"."start_time" IS '开始执行的时间';
+COMMENT ON COLUMN "public"."r_mps_tf"."end_time" IS '执行完成时间';
+COMMENT ON COLUMN "public"."r_mps_tf"."start_temperature" IS '入槽温度';
+COMMENT ON COLUMN "public"."r_mps_tf"."end_temperature" IS '出槽温度';
+COMMENT ON COLUMN "public"."r_mps_tf"."status" IS '流程状态(0:待执行|1执行中|2已完成|3停止|4异常中断)';
+COMMENT ON COLUMN "public"."r_mps_tf"."pre" IS '上一流程编号';
+COMMENT ON COLUMN "public"."r_mps_tf"."nex" IS '下一流程编号';
+COMMENT ON COLUMN "public"."r_mps_tf"."mo_code" IS '归属清单';
+COMMENT ON TABLE "public"."r_mps_tf" IS '工艺流程';
 
 -- ----------------------------
 -- Table structure for r_sync_resource
@@ -597,13 +598,13 @@ CREATE TABLE "public"."r_sync_resource" (
   "excep" text COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."r_sync_resource"."sync_id" IS 'åæ­¥äºå¡id';
-COMMENT ON COLUMN "public"."r_sync_resource"."point" IS 'å½åäºå¡èµæº';
-COMMENT ON COLUMN "public"."r_sync_resource"."status" IS 'å½åèµæºç¶æï¼start|error|endï¼';
-COMMENT ON COLUMN "public"."r_sync_resource"."req_data" IS 'å½åèµæºå¥å';
-COMMENT ON COLUMN "public"."r_sync_resource"."resp_data" IS 'å½åèµæºåºå';
-COMMENT ON COLUMN "public"."r_sync_resource"."excep" IS 'å¼å¸¸ä¿¡æ¯';
-COMMENT ON TABLE "public"."r_sync_resource" IS 'åæ­¥äºå¡èµæº';
+COMMENT ON COLUMN "public"."r_sync_resource"."sync_id" IS '同步事务id';
+COMMENT ON COLUMN "public"."r_sync_resource"."point" IS '当前事务资源';
+COMMENT ON COLUMN "public"."r_sync_resource"."status" IS '当前资源状态（start|error|end）';
+COMMENT ON COLUMN "public"."r_sync_resource"."req_data" IS '当前资源入参';
+COMMENT ON COLUMN "public"."r_sync_resource"."resp_data" IS '当前资源出参';
+COMMENT ON COLUMN "public"."r_sync_resource"."excep" IS '异常信息';
+COMMENT ON TABLE "public"."r_sync_resource" IS '同步事务资源';
 
 -- ----------------------------
 -- Table structure for r_ucenter_acc_role
@@ -614,9 +615,9 @@ CREATE TABLE "public"."r_ucenter_acc_role" (
   "acc_id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-COMMENT ON COLUMN "public"."r_ucenter_acc_role"."role_id" IS 'è§è²id';
-COMMENT ON COLUMN "public"."r_ucenter_acc_role"."acc_id" IS 'ç¨æ·id';
-COMMENT ON TABLE "public"."r_ucenter_acc_role" IS 'è´¦æ·è§è²';
+COMMENT ON COLUMN "public"."r_ucenter_acc_role"."role_id" IS '角色id';
+COMMENT ON COLUMN "public"."r_ucenter_acc_role"."acc_id" IS '用户id';
+COMMENT ON TABLE "public"."r_ucenter_acc_role" IS '账户角色';
 
 -- ----------------------------
 -- Table structure for r_ucenter_depart_role
@@ -627,9 +628,9 @@ CREATE TABLE "public"."r_ucenter_depart_role" (
   "depart_id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-COMMENT ON COLUMN "public"."r_ucenter_depart_role"."role_id" IS 'è§è²id';
-COMMENT ON COLUMN "public"."r_ucenter_depart_role"."depart_id" IS 'é¨é¨id';
-COMMENT ON TABLE "public"."r_ucenter_depart_role" IS 'é¨é¨è§è²';
+COMMENT ON COLUMN "public"."r_ucenter_depart_role"."role_id" IS '角色id';
+COMMENT ON COLUMN "public"."r_ucenter_depart_role"."depart_id" IS '部门id';
+COMMENT ON TABLE "public"."r_ucenter_depart_role" IS '部门角色';
 
 -- ----------------------------
 -- Table structure for r_ucenter_depart_users
@@ -640,9 +641,9 @@ CREATE TABLE "public"."r_ucenter_depart_users" (
   "acc_id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-COMMENT ON COLUMN "public"."r_ucenter_depart_users"."depart_id" IS 'ç¨æ·ç»id';
-COMMENT ON COLUMN "public"."r_ucenter_depart_users"."acc_id" IS 'ç¨æ·id';
-COMMENT ON TABLE "public"."r_ucenter_depart_users" IS 'ç¨æ·ç»ç¨æ·å³èè¡¨';
+COMMENT ON COLUMN "public"."r_ucenter_depart_users"."depart_id" IS '用户组id';
+COMMENT ON COLUMN "public"."r_ucenter_depart_users"."acc_id" IS '用户id';
+COMMENT ON TABLE "public"."r_ucenter_depart_users" IS '用户组用户关联表';
 
 -- ----------------------------
 -- Table structure for r_ucenter_role_permission
@@ -653,9 +654,9 @@ CREATE TABLE "public"."r_ucenter_role_permission" (
   "permission_id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-COMMENT ON COLUMN "public"."r_ucenter_role_permission"."role_id" IS 'è§è²id';
-COMMENT ON COLUMN "public"."r_ucenter_role_permission"."permission_id" IS 'æéid';
-COMMENT ON TABLE "public"."r_ucenter_role_permission" IS 'è§è²æé';
+COMMENT ON COLUMN "public"."r_ucenter_role_permission"."role_id" IS '角色id';
+COMMENT ON COLUMN "public"."r_ucenter_role_permission"."permission_id" IS '权限id';
+COMMENT ON TABLE "public"."r_ucenter_role_permission" IS '角色权限';
 
 -- ----------------------------
 -- Table structure for r_ucenter_tenant_acc
@@ -667,10 +668,10 @@ CREATE TABLE "public"."r_ucenter_tenant_acc" (
   "role" varchar(20) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-COMMENT ON COLUMN "public"."r_ucenter_tenant_acc"."tenant_id" IS 'ç§æ·id';
-COMMENT ON COLUMN "public"."r_ucenter_tenant_acc"."acc_id" IS 'ç¨æ·id';
-COMMENT ON COLUMN "public"."r_ucenter_tenant_acc"."role" IS 'è§è²';
-COMMENT ON TABLE "public"."r_ucenter_tenant_acc" IS 'ç§æ·ç¨æ·å³èè¡¨';
+COMMENT ON COLUMN "public"."r_ucenter_tenant_acc"."tenant_id" IS '租户id';
+COMMENT ON COLUMN "public"."r_ucenter_tenant_acc"."acc_id" IS '用户id';
+COMMENT ON COLUMN "public"."r_ucenter_tenant_acc"."role" IS '角色';
+COMMENT ON TABLE "public"."r_ucenter_tenant_acc" IS '租户用户关联表';
 
 -- ----------------------------
 -- Table structure for r_ucenter_tenant_permission
@@ -681,9 +682,9 @@ CREATE TABLE "public"."r_ucenter_tenant_permission" (
   "permission_id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-COMMENT ON COLUMN "public"."r_ucenter_tenant_permission"."tenant_id" IS 'ç§æ·id';
-COMMENT ON COLUMN "public"."r_ucenter_tenant_permission"."permission_id" IS 'æéid';
-COMMENT ON TABLE "public"."r_ucenter_tenant_permission" IS 'ç§æ·æé';
+COMMENT ON COLUMN "public"."r_ucenter_tenant_permission"."tenant_id" IS '租户id';
+COMMENT ON COLUMN "public"."r_ucenter_tenant_permission"."permission_id" IS '权限id';
+COMMENT ON TABLE "public"."r_ucenter_tenant_permission" IS '租户权限';
 
 -- ----------------------------
 -- Table structure for r_workshop_assign
@@ -694,9 +695,9 @@ CREATE TABLE "public"."r_workshop_assign" (
   "workshop_code" varchar(50) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-COMMENT ON COLUMN "public"."r_workshop_assign"."assign_id" IS 'è§è²id';
-COMMENT ON COLUMN "public"."r_workshop_assign"."workshop_code" IS 'åºæ¯ç¼å·';
-COMMENT ON TABLE "public"."r_workshop_assign" IS 'è§è²åºæ¯';
+COMMENT ON COLUMN "public"."r_workshop_assign"."assign_id" IS '角色id';
+COMMENT ON COLUMN "public"."r_workshop_assign"."workshop_code" IS '场景编号';
+COMMENT ON TABLE "public"."r_workshop_assign" IS '角色场景';
 
 -- ----------------------------
 -- Table structure for r_workshop_config_collect
@@ -708,9 +709,9 @@ CREATE TABLE "public"."r_workshop_config_collect" (
   "gateway_ids" text COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."r_workshop_config_collect"."workshop_id" IS 'è®¾å¤id';
-COMMENT ON COLUMN "public"."r_workshop_config_collect"."gateway_ids" IS 'å³èçç½å³IDåè¡¨ï¼ä» config.attrs è§£æ';
-COMMENT ON TABLE "public"."r_workshop_config_collect" IS 'åºæ¯éééç½®';
+COMMENT ON COLUMN "public"."r_workshop_config_collect"."workshop_id" IS '设备id';
+COMMENT ON COLUMN "public"."r_workshop_config_collect"."gateway_ids" IS '关联的网关ID列表，从 config.attrs 解析';
+COMMENT ON TABLE "public"."r_workshop_config_collect" IS '场景采集配置';
 
 -- ----------------------------
 -- Table structure for r_workshop_config_meta2d
@@ -770,11 +771,11 @@ CREATE TABLE "public"."t_bom" (
   "del_bit" int2 DEFAULT 0
 )
 ;
-COMMENT ON COLUMN "public"."t_bom"."self_code" IS 'éæ¹ç¼å·';
-COMMENT ON COLUMN "public"."t_bom"."classify_code" IS 'æå±åç±»ç¼å·';
-COMMENT ON COLUMN "public"."t_bom"."type" IS 'éæ¹ç±»å«ï¼0: åºå®æ°å¼ï¼1ï¼ç¾åæ¯æ°å¼ï¼';
-COMMENT ON COLUMN "public"."t_bom"."line" IS 'ææ¶æ ç¨';
-COMMENT ON TABLE "public"."t_bom" IS 'éæ¹';
+COMMENT ON COLUMN "public"."t_bom"."self_code" IS '配方编号';
+COMMENT ON COLUMN "public"."t_bom"."classify_code" IS '所属分类编号';
+COMMENT ON COLUMN "public"."t_bom"."type" IS '配方类别（0: 固定数值，1：百分比数值）';
+COMMENT ON COLUMN "public"."t_bom"."line" IS '暂时无用';
+COMMENT ON TABLE "public"."t_bom" IS '配方';
 
 -- ----------------------------
 -- Table structure for t_bom_c
@@ -797,12 +798,12 @@ CREATE TABLE "public"."t_bom_c" (
   "description" varchar(255) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_bom_c"."name" IS 'åç±»åç§°';
-COMMENT ON COLUMN "public"."t_bom_c"."self_code" IS 'åç±»ç¼å·';
-COMMENT ON COLUMN "public"."t_bom_c"."code" IS 'çº§èç¼å·';
-COMMENT ON COLUMN "public"."t_bom_c"."pcode" IS 'çº§èç¶ç¼å·';
-COMMENT ON COLUMN "public"."t_bom_c"."description" IS 'æè¿°';
-COMMENT ON TABLE "public"."t_bom_c" IS 'éæ¹åç±»';
+COMMENT ON COLUMN "public"."t_bom_c"."name" IS '分类名称';
+COMMENT ON COLUMN "public"."t_bom_c"."self_code" IS '分类编号';
+COMMENT ON COLUMN "public"."t_bom_c"."code" IS '级联编号';
+COMMENT ON COLUMN "public"."t_bom_c"."pcode" IS '级联父编号';
+COMMENT ON COLUMN "public"."t_bom_c"."description" IS '描述';
+COMMENT ON TABLE "public"."t_bom_c" IS '配方分类';
 
 -- ----------------------------
 -- Table structure for t_connect
@@ -830,14 +831,14 @@ CREATE TABLE "public"."t_connect" (
   "collect_cron" varchar(64) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_connect"."server_name" IS 'æå¡å';
+COMMENT ON COLUMN "public"."t_connect"."server_name" IS '服务名';
 COMMENT ON COLUMN "public"."t_connect"."host" IS 'ip';
-COMMENT ON COLUMN "public"."t_connect"."suffix" IS 'åç¼';
-COMMENT ON COLUMN "public"."t_connect"."protocol" IS 'åè®®ç±»å';
-COMMENT ON COLUMN "public"."t_connect"."enabled" IS 'æ¯å¦å¯ç¨';
-COMMENT ON COLUMN "public"."t_connect"."valid_type" IS 'è®¤è¯ç±»åï¼0:æ è®¤è¯ï¼ 1:Baiscï¼';
-COMMENT ON COLUMN "public"."t_connect"."collect_cron" IS 'éécronè¡¨è¾¾å¼';
-COMMENT ON TABLE "public"."t_connect" IS 'ç½å³';
+COMMENT ON COLUMN "public"."t_connect"."suffix" IS '后缀';
+COMMENT ON COLUMN "public"."t_connect"."protocol" IS '协议类型';
+COMMENT ON COLUMN "public"."t_connect"."enabled" IS '是否启用';
+COMMENT ON COLUMN "public"."t_connect"."valid_type" IS '认证类型（0:无认证， 1:Baisc）';
+COMMENT ON COLUMN "public"."t_connect"."collect_cron" IS '采集cron表达式';
+COMMENT ON TABLE "public"."t_connect" IS '网关';
 
 -- ----------------------------
 -- Table structure for t_dg
@@ -857,8 +858,8 @@ CREATE TABLE "public"."t_dg" (
   "self_code" varchar(50) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_dg"."self_code" IS 'ç¼å·';
-COMMENT ON TABLE "public"."t_dg" IS 'è®¾å¤è½å';
+COMMENT ON COLUMN "public"."t_dg"."self_code" IS '编号';
+COMMENT ON TABLE "public"."t_dg" IS '设备能力';
 
 -- ----------------------------
 -- Table structure for t_equip
@@ -877,18 +878,20 @@ CREATE TABLE "public"."t_equip" (
   "name" varchar(30) COLLATE "pg_catalog"."default" NOT NULL,
   "self_code" varchar(150) COLLATE "pg_catalog"."default" NOT NULL,
   "type" varchar(64) COLLATE "pg_catalog"."default",
+  "model_id" varchar(20) COLLATE "pg_catalog"."default",
   "workshop_code" varchar(50) COLLATE "pg_catalog"."default",
   "enable_date" timestamp(6),
   "health_template_id" varchar(64) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_equip"."name" IS 'è®¾å¤å';
-COMMENT ON COLUMN "public"."t_equip"."self_code" IS 'è®¾å¤ç¼å·';
-COMMENT ON COLUMN "public"."t_equip"."type" IS 'è®¾å¤ç±»å«';
-COMMENT ON COLUMN "public"."t_equip"."workshop_code" IS 'åºæ¯ç¼å·';
-COMMENT ON COLUMN "public"."t_equip"."enable_date" IS 'å¯ç¨æ¥æï¼ç¨äºå¥åº·åä½¿ç¨å¹´éè®¡ç®';
-COMMENT ON COLUMN "public"."t_equip"."health_template_id" IS 'å³èå¥åº·è§åæ¨¡æ¿ID';
-COMMENT ON TABLE "public"."t_equip" IS 'è®¾å¤è¡¨';
+COMMENT ON COLUMN "public"."t_equip"."name" IS '设备名';
+COMMENT ON COLUMN "public"."t_equip"."self_code" IS '设备编号';
+COMMENT ON COLUMN "public"."t_equip"."type" IS '设备类别';
+COMMENT ON COLUMN "public"."t_equip"."model_id" IS '所属产品型号ID（t_product_model.id）';
+COMMENT ON COLUMN "public"."t_equip"."workshop_code" IS '场景编号';
+COMMENT ON COLUMN "public"."t_equip"."enable_date" IS '启用日期，用于健康分使用年限计算';
+COMMENT ON COLUMN "public"."t_equip"."health_template_id" IS '关联健康规则模板ID';
+COMMENT ON TABLE "public"."t_equip" IS '设备表';
 
 -- ----------------------------
 -- Table structure for t_equip_collect
@@ -909,9 +912,9 @@ CREATE TABLE "public"."t_equip_collect" (
   "time" timestamp(6) NOT NULL
 )
 ;
-COMMENT ON COLUMN "public"."t_equip_collect"."sn" IS 'è®¾å¤snå·';
-COMMENT ON COLUMN "public"."t_equip_collect"."data" IS 'ééçæ°æ®';
-COMMENT ON COLUMN "public"."t_equip_collect"."time" IS 'ééæ¶é´';
+COMMENT ON COLUMN "public"."t_equip_collect"."sn" IS '设备sn号';
+COMMENT ON COLUMN "public"."t_equip_collect"."data" IS '采集的数据';
+COMMENT ON COLUMN "public"."t_equip_collect"."time" IS '采集时间';
 
 -- ----------------------------
 -- Table structure for t_equip_health_indicator
@@ -942,21 +945,21 @@ CREATE TABLE "public"."t_equip_health_indicator" (
   "tenant_id" varchar(20) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."id" IS 'ä¸»é®';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."equip_id" IS 'è®¾å¤ID';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."sn" IS 'è®¾å¤èªç¼ç ';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."stat_time" IS 'ç»è®¡æ¶é´ç¹';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."period_start" IS 'å¨æå¼å§';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."period_end" IS 'å¨æç»æ';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."score" IS 'å¥åº·å¾å0-100';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."health_level" IS 'å¥åº·ç­çº§0=å¥åº·,1=å³æ³¨,2=é¢è­¦,3=æé';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."alarm_count" IS 'æ¥è­¦æ¬¡æ°';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."alarm_duration_minutes" IS 'æ¥è­¦æ»æ¶é¿(åé)';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."run_duration_minutes" IS 'è¿è¡æ»æ¶é¿(åé)';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."online_duration_minutes" IS 'å¨çº¿æ»æ¶é¿(åé)';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."period_minutes" IS 'ç»è®¡å¨æ(åé)';
-COMMENT ON COLUMN "public"."t_equip_health_indicator"."template_id" IS 'è§åæ¨¡æ¿ID';
-COMMENT ON TABLE "public"."t_equip_health_indicator" IS 'è®¾å¤å¥åº·ææ ';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."id" IS '主键';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."equip_id" IS '设备ID';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."sn" IS '设备自编码';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."stat_time" IS '统计时间点';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."period_start" IS '周期开始';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."period_end" IS '周期结束';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."score" IS '健康得分0-100';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."health_level" IS '健康等级0=健康,1=关注,2=预警,3=故障';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."alarm_count" IS '报警次数';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."alarm_duration_minutes" IS '报警总时长(分钟)';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."run_duration_minutes" IS '运行总时长(分钟)';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."online_duration_minutes" IS '在线总时长(分钟)';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."period_minutes" IS '统计周期(分钟)';
+COMMENT ON COLUMN "public"."t_equip_health_indicator"."template_id" IS '规则模板ID';
+COMMENT ON TABLE "public"."t_equip_health_indicator" IS '设备健康指标';
 
 -- ----------------------------
 -- Table structure for t_equip_health_rule_template
@@ -976,10 +979,10 @@ CREATE TABLE "public"."t_equip_health_rule_template" (
   "config" text COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_equip_health_rule_template"."id" IS 'ä¸»é®';
-COMMENT ON COLUMN "public"."t_equip_health_rule_template"."name" IS 'æ¨¡æ¿åç§°';
-COMMENT ON COLUMN "public"."t_equip_health_rule_template"."config" IS 'è§åéç½®JSON';
-COMMENT ON TABLE "public"."t_equip_health_rule_template" IS 'è®¾å¤å¥åº·è§åæ¨¡æ¿';
+COMMENT ON COLUMN "public"."t_equip_health_rule_template"."id" IS '主键';
+COMMENT ON COLUMN "public"."t_equip_health_rule_template"."name" IS '模板名称';
+COMMENT ON COLUMN "public"."t_equip_health_rule_template"."config" IS '规则配置JSON';
+COMMENT ON TABLE "public"."t_equip_health_rule_template" IS '设备健康规则模板';
 
 -- ----------------------------
 -- Table structure for t_equip_realtime
@@ -1029,19 +1032,19 @@ CREATE TABLE "public"."t_equip_record_alarm" (
   "start_time" timestamp(6) NOT NULL,
   "end_time" timestamp(6),
   "state" int2 NOT NULL,
-  "reason" varchar(255) COLLATE "pg_catalog"."default" DEFAULT 0,
+  "reason" varchar(255) COLLATE "pg_catalog"."default",
   "level" int2,
   "event_id" varchar(60) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_equip_record_alarm"."sn" IS 'è®¾å¤snå·';
-COMMENT ON COLUMN "public"."t_equip_record_alarm"."start_time" IS 'æç»­å¼å§æ¶é´';
-COMMENT ON COLUMN "public"."t_equip_record_alarm"."end_time" IS 'æç»­ç»ææ¶é´';
-COMMENT ON COLUMN "public"."t_equip_record_alarm"."state" IS 'ç¶æ';
-COMMENT ON COLUMN "public"."t_equip_record_alarm"."reason" IS 'æ¥è­¦åå ';
-COMMENT ON COLUMN "public"."t_equip_record_alarm"."level" IS 'æ¥è­¦ç­çº§: 0=è½»å¾®, 1=ä¸è¬, 2=ä¸¥é, 3=æé';
-COMMENT ON COLUMN "public"."t_equip_record_alarm"."event_id" IS 'äºä»¶id';
-COMMENT ON TABLE "public"."t_equip_record_alarm" IS 'è®¾å¤æ¥è­¦ç¶æè®°å½';
+COMMENT ON COLUMN "public"."t_equip_record_alarm"."sn" IS '设备sn号';
+COMMENT ON COLUMN "public"."t_equip_record_alarm"."start_time" IS '持续开始时间';
+COMMENT ON COLUMN "public"."t_equip_record_alarm"."end_time" IS '持续结束时间';
+COMMENT ON COLUMN "public"."t_equip_record_alarm"."state" IS '状态';
+COMMENT ON COLUMN "public"."t_equip_record_alarm"."reason" IS '报警原因';
+COMMENT ON COLUMN "public"."t_equip_record_alarm"."level" IS '报警等级: 0=轻微, 1=一般, 2=严重, 3=故障';
+COMMENT ON COLUMN "public"."t_equip_record_alarm"."event_id" IS '事件id';
+COMMENT ON TABLE "public"."t_equip_record_alarm" IS '设备报警状态记录';
 
 -- ----------------------------
 -- Table structure for t_equip_record_online
@@ -1064,12 +1067,12 @@ CREATE TABLE "public"."t_equip_record_online" (
   "event_id" varchar(60) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_equip_record_online"."sn" IS 'è®¾å¤snå·';
-COMMENT ON COLUMN "public"."t_equip_record_online"."start_time" IS 'æç»­å¼å§æ¶é´';
-COMMENT ON COLUMN "public"."t_equip_record_online"."end_time" IS 'æç»­ç»ææ¶é´';
-COMMENT ON COLUMN "public"."t_equip_record_online"."state" IS 'ç¶æ';
-COMMENT ON COLUMN "public"."t_equip_record_online"."event_id" IS 'äºä»¶id';
-COMMENT ON TABLE "public"."t_equip_record_online" IS 'è®¾å¤å¨çº¿è®°å½';
+COMMENT ON COLUMN "public"."t_equip_record_online"."sn" IS '设备sn号';
+COMMENT ON COLUMN "public"."t_equip_record_online"."start_time" IS '持续开始时间';
+COMMENT ON COLUMN "public"."t_equip_record_online"."end_time" IS '持续结束时间';
+COMMENT ON COLUMN "public"."t_equip_record_online"."state" IS '状态';
+COMMENT ON COLUMN "public"."t_equip_record_online"."event_id" IS '事件id';
+COMMENT ON TABLE "public"."t_equip_record_online" IS '设备在线记录';
 
 -- ----------------------------
 -- Table structure for t_equip_record_run
@@ -1094,14 +1097,14 @@ CREATE TABLE "public"."t_equip_record_run" (
   "event_id" varchar(60) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_equip_record_run"."sn" IS 'è®¾å¤snå·';
-COMMENT ON COLUMN "public"."t_equip_record_run"."start_time" IS 'è¿è¡å¼å§æ¶é´';
-COMMENT ON COLUMN "public"."t_equip_record_run"."end_time" IS 'è¿è¡ç»ææ¶é´';
-COMMENT ON COLUMN "public"."t_equip_record_run"."power_start" IS 'å¼å§æ¶çµé';
-COMMENT ON COLUMN "public"."t_equip_record_run"."power_end" IS 'ç»ææ¶çµé';
-COMMENT ON COLUMN "public"."t_equip_record_run"."state" IS 'è¿è¡ç¶æ';
-COMMENT ON COLUMN "public"."t_equip_record_run"."event_id" IS 'äºä»¶id';
-COMMENT ON TABLE "public"."t_equip_record_run" IS 'è®¾å¤è¿è¡è¡¨';
+COMMENT ON COLUMN "public"."t_equip_record_run"."sn" IS '设备sn号';
+COMMENT ON COLUMN "public"."t_equip_record_run"."start_time" IS '运行开始时间';
+COMMENT ON COLUMN "public"."t_equip_record_run"."end_time" IS '运行结束时间';
+COMMENT ON COLUMN "public"."t_equip_record_run"."power_start" IS '开始时电量';
+COMMENT ON COLUMN "public"."t_equip_record_run"."power_end" IS '结束时电量';
+COMMENT ON COLUMN "public"."t_equip_record_run"."state" IS '运行状态';
+COMMENT ON COLUMN "public"."t_equip_record_run"."event_id" IS '事件id';
+COMMENT ON TABLE "public"."t_equip_record_run" IS '设备运行表';
 
 -- ----------------------------
 -- Table structure for t_equip_state_snapshot
@@ -1124,12 +1127,12 @@ CREATE TABLE "public"."t_equip_state_snapshot" (
   "online_state" int2
 )
 ;
-COMMENT ON COLUMN "public"."t_equip_state_snapshot"."sn" IS 'è®¾å¤snå·';
-COMMENT ON COLUMN "public"."t_equip_state_snapshot"."time" IS 'è®°å½æ¶é´';
-COMMENT ON COLUMN "public"."t_equip_state_snapshot"."run_state" IS 'è¿è¡ç¶æ';
-COMMENT ON COLUMN "public"."t_equip_state_snapshot"."alarm_state" IS 'æ¥è­¦ç¶æ';
-COMMENT ON COLUMN "public"."t_equip_state_snapshot"."online_state" IS 'å¨çº¿ç¶æ';
-COMMENT ON TABLE "public"."t_equip_state_snapshot" IS 'è®¾å¤ç¶æå¿«ç§';
+COMMENT ON COLUMN "public"."t_equip_state_snapshot"."sn" IS '设备sn号';
+COMMENT ON COLUMN "public"."t_equip_state_snapshot"."time" IS '记录时间';
+COMMENT ON COLUMN "public"."t_equip_state_snapshot"."run_state" IS '运行状态';
+COMMENT ON COLUMN "public"."t_equip_state_snapshot"."alarm_state" IS '报警状态';
+COMMENT ON COLUMN "public"."t_equip_state_snapshot"."online_state" IS '在线状态';
+COMMENT ON TABLE "public"."t_equip_state_snapshot" IS '设备状态快照';
 
 -- ----------------------------
 -- Table structure for t_system_config
@@ -1150,9 +1153,9 @@ CREATE TABLE "public"."t_system_config" (
   CONSTRAINT "uk_t_system_config_key" UNIQUE ("config_key")
 )
 ;
-COMMENT ON COLUMN "public"."t_system_config"."config_key" IS 'éç½®é®ï¼å¦ app';
-COMMENT ON COLUMN "public"."t_system_config"."config" IS 'éç½®åå®¹ JSON';
-COMMENT ON TABLE "public"."t_system_config" IS 'ç³»ç»éç½®';
+COMMENT ON COLUMN "public"."t_system_config"."config_key" IS '配置键，如 app';
+COMMENT ON COLUMN "public"."t_system_config"."config" IS '配置内容 JSON';
+COMMENT ON TABLE "public"."t_system_config" IS '系统配置';
 
 -- ----------------------------
 -- Table structure for t_gateway
@@ -1180,15 +1183,15 @@ CREATE TABLE "public"."t_gateway" (
   "collect_cron" varchar(64) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_gateway"."server_name" IS 'æå¡å';
-COMMENT ON COLUMN "public"."t_gateway"."uri" IS 'å°å';
-COMMENT ON COLUMN "public"."t_gateway"."topic" IS 'ä¸»é¢';
-COMMENT ON COLUMN "public"."t_gateway"."params" IS 'åæ°';
-COMMENT ON COLUMN "public"."t_gateway"."protocol" IS 'åè®®ç±»å';
-COMMENT ON COLUMN "public"."t_gateway"."enabled" IS 'æ¯å¦å¯ç¨';
-COMMENT ON COLUMN "public"."t_gateway"."valid_type" IS 'è®¤è¯ç±»åï¼0:æ è®¤è¯ï¼ 1:Baiscï¼';
-COMMENT ON COLUMN "public"."t_gateway"."collect_cron" IS 'éécronè¡¨è¾¾å¼';
-COMMENT ON TABLE "public"."t_gateway" IS 'ç½å³';
+COMMENT ON COLUMN "public"."t_gateway"."server_name" IS '服务名';
+COMMENT ON COLUMN "public"."t_gateway"."uri" IS '地址';
+COMMENT ON COLUMN "public"."t_gateway"."topic" IS '主题';
+COMMENT ON COLUMN "public"."t_gateway"."params" IS '参数';
+COMMENT ON COLUMN "public"."t_gateway"."protocol" IS '协议类型';
+COMMENT ON COLUMN "public"."t_gateway"."enabled" IS '是否启用';
+COMMENT ON COLUMN "public"."t_gateway"."valid_type" IS '认证类型（0:无认证， 1:Baisc）';
+COMMENT ON COLUMN "public"."t_gateway"."collect_cron" IS '采集cron表达式';
+COMMENT ON TABLE "public"."t_gateway" IS '网关';
 
 -- ----------------------------
 -- Table structure for t_inspect_item
@@ -1212,12 +1215,12 @@ CREATE TABLE "public"."t_inspect_item" (
   "required_flag" int2
 )
 ;
-COMMENT ON COLUMN "public"."t_inspect_item"."item_name" IS 'å·¡æ£é¡¹åç§°';
-COMMENT ON COLUMN "public"."t_inspect_item"."item_type" IS 'ç±»åï¼1éæ© 2æ°å¼ 3æ¯å¦';
-COMMENT ON COLUMN "public"."t_inspect_item"."unit" IS 'åä½æéé¡¹ï¼æ°å¼å¡«A/MPaç­ï¼éæ©å¯å¡« æ­£å¸¸/ä¸è¶³ãæ¾å¨/æ­£å¸¸';
-COMMENT ON COLUMN "public"."t_inspect_item"."min_value" IS 'æå°å¼';
-COMMENT ON COLUMN "public"."t_inspect_item"."max_value" IS 'æå¤§å¼';
-COMMENT ON COLUMN "public"."t_inspect_item"."required_flag" IS 'æ¯å¦å¿å¡«ï¼0å¦ 1æ¯';
+COMMENT ON COLUMN "public"."t_inspect_item"."item_name" IS '巡检项名称';
+COMMENT ON COLUMN "public"."t_inspect_item"."item_type" IS '类型：1选择 2数值 3是否';
+COMMENT ON COLUMN "public"."t_inspect_item"."unit" IS '单位或选项：数值填A/MPa等；选择可填 正常/不足、松动/正常';
+COMMENT ON COLUMN "public"."t_inspect_item"."min_value" IS '最小值';
+COMMENT ON COLUMN "public"."t_inspect_item"."max_value" IS '最大值';
+COMMENT ON COLUMN "public"."t_inspect_item"."required_flag" IS '是否必填：0否 1是';
 
 -- ----------------------------
 -- Table structure for t_inspect_person
@@ -1241,12 +1244,12 @@ CREATE TABLE "public"."t_inspect_person" (
   "revision" int4
 )
 ;
-COMMENT ON COLUMN "public"."t_inspect_person"."name" IS 'å§å';
-COMMENT ON COLUMN "public"."t_inspect_person"."account_id" IS 'å³èè´¦æ·ID';
-COMMENT ON COLUMN "public"."t_inspect_person"."account_name" IS 'å³èè´¦æ·åç§°';
-COMMENT ON COLUMN "public"."t_inspect_person"."mobile" IS 'ææºå·';
-COMMENT ON COLUMN "public"."t_inspect_person"."job_number" IS 'å·¥å·';
-COMMENT ON COLUMN "public"."t_inspect_person"."remark" IS 'å¤æ³¨';
+COMMENT ON COLUMN "public"."t_inspect_person"."name" IS '姓名';
+COMMENT ON COLUMN "public"."t_inspect_person"."account_id" IS '关联账户ID';
+COMMENT ON COLUMN "public"."t_inspect_person"."account_name" IS '关联账户名称';
+COMMENT ON COLUMN "public"."t_inspect_person"."mobile" IS '手机号';
+COMMENT ON COLUMN "public"."t_inspect_person"."job_number" IS '工号';
+COMMENT ON COLUMN "public"."t_inspect_person"."remark" IS '备注';
 
 -- ----------------------------
 -- Table structure for t_inspect_plan
@@ -1272,16 +1275,16 @@ CREATE TABLE "public"."t_inspect_plan" (
   "template_id" varchar(64) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_inspect_plan"."id" IS 'ä¸»é®';
-COMMENT ON COLUMN "public"."t_inspect_plan"."name" IS 'è®¡ååç§°';
-COMMENT ON COLUMN "public"."t_inspect_plan"."cycle_type" IS 'å¨æç±»åï¼1æ¯æ¥ 2æ¯å¨ 3æ¯æ';
-COMMENT ON COLUMN "public"."t_inspect_plan"."cycle_config" IS 'å¨æéç½®';
-COMMENT ON COLUMN "public"."t_inspect_plan"."workshop_code" IS 'åºæ¯ç¼å·';
-COMMENT ON COLUMN "public"."t_inspect_plan"."equip_ids" IS 'å³èè®¾å¤IDåè¡¨';
-COMMENT ON COLUMN "public"."t_inspect_plan"."status" IS 'ç¶æï¼0ç¦ç¨ 1å¯ç¨';
-COMMENT ON COLUMN "public"."t_inspect_plan"."remark" IS 'å¤æ³¨';
-COMMENT ON COLUMN "public"."t_inspect_plan"."template_id" IS 'å³èå·¡æ£æ¨¡æ¿ID';
-COMMENT ON TABLE "public"."t_inspect_plan" IS 'å·¡æ£è®¡å';
+COMMENT ON COLUMN "public"."t_inspect_plan"."id" IS '主键';
+COMMENT ON COLUMN "public"."t_inspect_plan"."name" IS '计划名称';
+COMMENT ON COLUMN "public"."t_inspect_plan"."cycle_type" IS '周期类型：1每日 2每周 3每月';
+COMMENT ON COLUMN "public"."t_inspect_plan"."cycle_config" IS '周期配置';
+COMMENT ON COLUMN "public"."t_inspect_plan"."workshop_code" IS '场景编号';
+COMMENT ON COLUMN "public"."t_inspect_plan"."equip_ids" IS '关联设备ID列表';
+COMMENT ON COLUMN "public"."t_inspect_plan"."status" IS '状态：0禁用 1启用';
+COMMENT ON COLUMN "public"."t_inspect_plan"."remark" IS '备注';
+COMMENT ON COLUMN "public"."t_inspect_plan"."template_id" IS '关联巡检模板ID';
+COMMENT ON TABLE "public"."t_inspect_plan" IS '巡检计划';
 
 -- ----------------------------
 -- Table structure for t_inspect_project
@@ -1303,10 +1306,10 @@ CREATE TABLE "public"."t_inspect_project" (
   "revision" int4
 )
 ;
-COMMENT ON COLUMN "public"."t_inspect_project"."name" IS 'é¡¹ç®åç§°';
-COMMENT ON COLUMN "public"."t_inspect_project"."code" IS 'é¡¹ç®ç¼å·';
-COMMENT ON COLUMN "public"."t_inspect_project"."status" IS 'ç¶æï¼0ç¦ç¨ 1å¯ç¨';
-COMMENT ON COLUMN "public"."t_inspect_project"."remark" IS 'å¤æ³¨';
+COMMENT ON COLUMN "public"."t_inspect_project"."name" IS '项目名称';
+COMMENT ON COLUMN "public"."t_inspect_project"."code" IS '项目编号';
+COMMENT ON COLUMN "public"."t_inspect_project"."status" IS '状态：0禁用 1启用';
+COMMENT ON COLUMN "public"."t_inspect_project"."remark" IS '备注';
 
 -- ----------------------------
 -- Table structure for t_inspect_record
@@ -1333,17 +1336,17 @@ CREATE TABLE "public"."t_inspect_record" (
   "tenant_id" varchar(20) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_inspect_record"."id" IS 'ä¸»é®';
-COMMENT ON COLUMN "public"."t_inspect_record"."task_id" IS 'å·¡æ£ä»»å¡ID';
-COMMENT ON COLUMN "public"."t_inspect_record"."equip_id" IS 'è®¾å¤ID';
-COMMENT ON COLUMN "public"."t_inspect_record"."equip_name" IS 'è®¾å¤ç¼å·/åç§°';
-COMMENT ON COLUMN "public"."t_inspect_record"."score" IS 'å·¡æ£åå¼';
-COMMENT ON COLUMN "public"."t_inspect_record"."item_name" IS 'å·¡æ£é¡¹åç§°';
-COMMENT ON COLUMN "public"."t_inspect_record"."result" IS 'å·¡æ£ç»æï¼0æ­£å¸¸ 1å¼å¸¸';
-COMMENT ON COLUMN "public"."t_inspect_record"."remark" IS 'å¤æ³¨';
-COMMENT ON COLUMN "public"."t_inspect_record"."photo_urls" IS 'ç§çURLï¼å¤å¼ éå·åé';
-COMMENT ON COLUMN "public"."t_inspect_record"."record_time" IS 'è®°å½æ¶é´';
-COMMENT ON TABLE "public"."t_inspect_record" IS 'å·¡æ£è®°å½';
+COMMENT ON COLUMN "public"."t_inspect_record"."id" IS '主键';
+COMMENT ON COLUMN "public"."t_inspect_record"."task_id" IS '巡检任务ID';
+COMMENT ON COLUMN "public"."t_inspect_record"."equip_id" IS '设备ID';
+COMMENT ON COLUMN "public"."t_inspect_record"."equip_name" IS '设备编号/名称';
+COMMENT ON COLUMN "public"."t_inspect_record"."score" IS '巡检分值';
+COMMENT ON COLUMN "public"."t_inspect_record"."item_name" IS '巡检项名称';
+COMMENT ON COLUMN "public"."t_inspect_record"."result" IS '巡检结果：0正常 1异常';
+COMMENT ON COLUMN "public"."t_inspect_record"."remark" IS '备注';
+COMMENT ON COLUMN "public"."t_inspect_record"."photo_urls" IS '照片URL，多张逗号分隔';
+COMMENT ON COLUMN "public"."t_inspect_record"."record_time" IS '记录时间';
+COMMENT ON TABLE "public"."t_inspect_record" IS '巡检记录';
 
 -- ----------------------------
 -- Table structure for t_inspect_record_item
@@ -1370,16 +1373,16 @@ CREATE TABLE "public"."t_inspect_record_item" (
   "revision" int4
 )
 ;
-COMMENT ON COLUMN "public"."t_inspect_record_item"."record_id" IS 'å·¡æ£è®°å½IDï¼ä¸»è¡¨ï¼';
-COMMENT ON COLUMN "public"."t_inspect_record_item"."item_id" IS 'å·¡æ£é¡¹IDï¼æ¨¡æ¿é¡¹ä¸»é®ï¼';
-COMMENT ON COLUMN "public"."t_inspect_record_item"."item_name" IS 'å·¡æ£é¡¹åç§°';
-COMMENT ON COLUMN "public"."t_inspect_record_item"."content" IS 'å·¡æ£é¡¹åå®¹ï¼å¡«åå¼/ç»æææ¬';
-COMMENT ON COLUMN "public"."t_inspect_record_item"."result" IS 'å·¡æ£ç»æï¼0æ­£å¸¸ 1å¼å¸¸';
-COMMENT ON COLUMN "public"."t_inspect_record_item"."rule_score" IS 'è§ååå¼ï¼éç½®é¡¹å¹éå¾åï¼æªä¹æéï¼';
-COMMENT ON COLUMN "public"."t_inspect_record_item"."score" IS 'è¯¥é¡¹å¾åï¼ææéä¸éç½®è§åè®¡ç®ï¼';
-COMMENT ON COLUMN "public"."t_inspect_record_item"."remark" IS 'å¤æ³¨';
-COMMENT ON COLUMN "public"."t_inspect_record_item"."photo_urls" IS 'ç§çURLï¼å¤å¼ éå·åé';
-COMMENT ON TABLE "public"."t_inspect_record_item" IS 'å·¡æ£è®°å½æç»ï¼éè¡¨ï¼';
+COMMENT ON COLUMN "public"."t_inspect_record_item"."record_id" IS '巡检记录ID（主表）';
+COMMENT ON COLUMN "public"."t_inspect_record_item"."item_id" IS '巡检项ID（模板项主键）';
+COMMENT ON COLUMN "public"."t_inspect_record_item"."item_name" IS '巡检项名称';
+COMMENT ON COLUMN "public"."t_inspect_record_item"."content" IS '巡检项内容：填写值/结果文本';
+COMMENT ON COLUMN "public"."t_inspect_record_item"."result" IS '巡检结果：0正常 1异常';
+COMMENT ON COLUMN "public"."t_inspect_record_item"."rule_score" IS '规则分值（配置项匹配得分，未乘权重）';
+COMMENT ON COLUMN "public"."t_inspect_record_item"."score" IS '该项得分（按权重与配置规则计算）';
+COMMENT ON COLUMN "public"."t_inspect_record_item"."remark" IS '备注';
+COMMENT ON COLUMN "public"."t_inspect_record_item"."photo_urls" IS '照片URL，多张逗号分隔';
+COMMENT ON TABLE "public"."t_inspect_record_item" IS '巡检记录明细（附表）';
 
 -- ----------------------------
 -- Table structure for t_inspect_task
@@ -1408,19 +1411,19 @@ CREATE TABLE "public"."t_inspect_task" (
   "template_id" varchar(64) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_inspect_task"."id" IS 'ä¸»é®';
-COMMENT ON COLUMN "public"."t_inspect_task"."plan_id" IS 'å·¡æ£è®¡åID';
-COMMENT ON COLUMN "public"."t_inspect_task"."scheduled_time" IS 'è®¡åæ§è¡æ¶é´';
-COMMENT ON COLUMN "public"."t_inspect_task"."status" IS 'ç¶æï¼0å¾æ§è¡ 1æ§è¡ä¸­ 2å·²å®æ 3å·²é¾æ';
-COMMENT ON COLUMN "public"."t_inspect_task"."executor_id" IS 'æ§è¡äººID';
-COMMENT ON COLUMN "public"."t_inspect_task"."executor_name" IS 'æ§è¡äººå§å';
-COMMENT ON COLUMN "public"."t_inspect_task"."actual_start_time" IS 'å®éå¼å§æ¶é´';
-COMMENT ON COLUMN "public"."t_inspect_task"."actual_end_time" IS 'å®éå®ææ¶é´';
-COMMENT ON COLUMN "public"."t_inspect_task"."remark" IS 'å¤æ³¨';
-COMMENT ON COLUMN "public"."t_inspect_task"."workshop_code" IS 'å³èè®¾å¤IDåè¡¨';
-COMMENT ON COLUMN "public"."t_inspect_task"."executor_person_id" IS 'ææ´¾çå·¡æ£äººåID';
-COMMENT ON COLUMN "public"."t_inspect_task"."template_id" IS 'å³èå·¡æ£æ¨¡æ¿IDï¼æ¥èªè®¡åï¼';
-COMMENT ON TABLE "public"."t_inspect_task" IS 'å·¡æ£ä»»å¡';
+COMMENT ON COLUMN "public"."t_inspect_task"."id" IS '主键';
+COMMENT ON COLUMN "public"."t_inspect_task"."plan_id" IS '巡检计划ID';
+COMMENT ON COLUMN "public"."t_inspect_task"."scheduled_time" IS '计划执行时间';
+COMMENT ON COLUMN "public"."t_inspect_task"."status" IS '状态：0待执行 1执行中 2已完成 3已逾期';
+COMMENT ON COLUMN "public"."t_inspect_task"."executor_id" IS '执行人ID';
+COMMENT ON COLUMN "public"."t_inspect_task"."executor_name" IS '执行人姓名';
+COMMENT ON COLUMN "public"."t_inspect_task"."actual_start_time" IS '实际开始时间';
+COMMENT ON COLUMN "public"."t_inspect_task"."actual_end_time" IS '实际完成时间';
+COMMENT ON COLUMN "public"."t_inspect_task"."remark" IS '备注';
+COMMENT ON COLUMN "public"."t_inspect_task"."workshop_code" IS '关联设备ID列表';
+COMMENT ON COLUMN "public"."t_inspect_task"."executor_person_id" IS '指派的巡检人员ID';
+COMMENT ON COLUMN "public"."t_inspect_task"."template_id" IS '关联巡检模板ID（来自计划）';
+COMMENT ON TABLE "public"."t_inspect_task" IS '巡检任务';
 
 -- ----------------------------
 -- Table structure for t_inspect_template
@@ -1440,8 +1443,8 @@ CREATE TABLE "public"."t_inspect_template" (
   "revision" int4
 )
 ;
-COMMENT ON COLUMN "public"."t_inspect_template"."name" IS 'æ¨¡æ¿åç§°';
-COMMENT ON COLUMN "public"."t_inspect_template"."remark" IS 'å¤æ³¨';
+COMMENT ON COLUMN "public"."t_inspect_template"."name" IS '模板名称';
+COMMENT ON COLUMN "public"."t_inspect_template"."remark" IS '备注';
 
 -- ----------------------------
 -- Table structure for t_inspect_template_item
@@ -1466,18 +1469,18 @@ CREATE TABLE "public"."t_inspect_template_item" (
   "updated_id" varchar(64) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_inspect_template_item"."id" IS 'ä¸»é®';
-COMMENT ON COLUMN "public"."t_inspect_template_item"."template_id" IS 'æå±æ¨¡æ¿ID';
-COMMENT ON COLUMN "public"."t_inspect_template_item"."product_code" IS 'æå±äº§åç¼å·ï¼æ¨¡æ¿ä¸­çäº§ååï¼';
-COMMENT ON COLUMN "public"."t_inspect_template_item"."reference_item_id" IS 'å¼ç¨çå·¡æ£é¡¹IDï¼ä»å·¡æ£é¡¹æ± è½½å¥æ¶ç»å®ï¼';
-COMMENT ON COLUMN "public"."t_inspect_template_item"."sort_order" IS 'æåºå·';
-COMMENT ON COLUMN "public"."t_inspect_template_item"."weight" IS 'æéï¼æ¨¡æ¿åè¯¥é¡¹çæéï¼';
-COMMENT ON COLUMN "public"."t_inspect_template_item"."weight_rate" IS 'ç¾åæ¯æéï¼è¯¥é¡¹æé/åäº§ååæéæ»å¼ï¼å¦0.3ï¼';
-COMMENT ON COLUMN "public"."t_inspect_template_item"."rule_config" IS 'è§åéç½®JSONï¼å¦æ°å¼åºé´/æ¯å¦/éé¡¹ä¸åå¼';
-COMMENT ON COLUMN "public"."t_inspect_template_item"."created_time" IS 'åå»ºæ¶é´';
-COMMENT ON COLUMN "public"."t_inspect_template_item"."updated_time" IS 'æ´æ°æ¶é´';
-COMMENT ON COLUMN "public"."t_inspect_template_item"."tenant_id" IS 'ç§æ·ID';
-COMMENT ON TABLE "public"."t_inspect_template_item" IS 'æ¨¡æ¿-å·¡æ£é¡¹å³èè¡¨';
+COMMENT ON COLUMN "public"."t_inspect_template_item"."id" IS '主键';
+COMMENT ON COLUMN "public"."t_inspect_template_item"."template_id" IS '所属模板ID';
+COMMENT ON COLUMN "public"."t_inspect_template_item"."product_code" IS '所属产品编号（模板中的产品块）';
+COMMENT ON COLUMN "public"."t_inspect_template_item"."reference_item_id" IS '引用的巡检项ID（从巡检项池载入时绑定）';
+COMMENT ON COLUMN "public"."t_inspect_template_item"."sort_order" IS '排序号';
+COMMENT ON COLUMN "public"."t_inspect_template_item"."weight" IS '权重（模板内该项的权重）';
+COMMENT ON COLUMN "public"."t_inspect_template_item"."weight_rate" IS '百分比权重（该项权重/同产品块权重总值，如0.3）';
+COMMENT ON COLUMN "public"."t_inspect_template_item"."rule_config" IS '规则配置JSON，如数值区间/是否/选项与分值';
+COMMENT ON COLUMN "public"."t_inspect_template_item"."created_time" IS '创建时间';
+COMMENT ON COLUMN "public"."t_inspect_template_item"."updated_time" IS '更新时间';
+COMMENT ON COLUMN "public"."t_inspect_template_item"."tenant_id" IS '租户ID';
+COMMENT ON TABLE "public"."t_inspect_template_item" IS '模板-巡检项关联表';
 
 -- ----------------------------
 -- Table structure for t_inspect_template_item_rule
@@ -1499,16 +1502,16 @@ CREATE TABLE "public"."t_inspect_template_item_rule" (
   "revision" int4
 )
 ;
-COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."id" IS 'ä¸»é®';
-COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."template_item_id" IS 'æ¨¡æ¿å·¡æ£é¡¹IDï¼å³è t_inspect_template_item.id';
-COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."rule_type" IS 'è§åç±»åï¼1=æ¯å¦åï¼2=æ°å¼èå´ï¼3=éæ©å¼';
-COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."bool_value" IS 'æ¯å¦åï¼0=å¦ 1=æ¯ï¼rule_type=1æ¶ææï¼';
-COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."min_value" IS 'æ°å¼åï¼æå°å¼ï¼å«ï¼ï¼rule_type=2';
-COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."max_value" IS 'æ°å¼åï¼æå¤§å¼ï¼å«ï¼ï¼rule_type=2';
-COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."option_value" IS 'éæ©åï¼éé¡¹å¼ææ¬ï¼rule_type=3';
-COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."weight" IS 'è¯¥æ¡ä»¶å½ä¸­æ¶çå¾å/æé';
-COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."sort_order" IS 'æåºï¼åä¸é¡¹å¤æ¡è§åæ¶çä¼åçº§ï¼';
-COMMENT ON TABLE "public"."t_inspect_template_item_rule" IS 'æ¨¡æ¿å·¡æ£é¡¹è¯åè§å';
+COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."id" IS '主键';
+COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."template_item_id" IS '模板巡检项ID，关联 t_inspect_template_item.id';
+COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."rule_type" IS '规则类型：1=是否型，2=数值范围，3=选择值';
+COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."bool_value" IS '是否型：0=否 1=是（rule_type=1时有效）';
+COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."min_value" IS '数值型：最小值（含），rule_type=2';
+COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."max_value" IS '数值型：最大值（含），rule_type=2';
+COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."option_value" IS '选择型：选项值文本，rule_type=3';
+COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."weight" IS '该条件命中时的得分/权重';
+COMMENT ON COLUMN "public"."t_inspect_template_item_rule"."sort_order" IS '排序（同一项多条规则时的优先级）';
+COMMENT ON TABLE "public"."t_inspect_template_item_rule" IS '模板巡检项评分规则';
 
 -- ----------------------------
 -- Table structure for t_line
@@ -1541,28 +1544,50 @@ CREATE TABLE "public"."t_line" (
   "map_offset" varchar(100) COLLATE "pg_catalog"."default"
 )
 ;
-COMMENT ON COLUMN "public"."t_line"."self_code" IS 'äº§çº¿ç¼å·(å¯ä»¥ä¸å·¥èºè®¾ç½®è¿è¡æ å°)';
-COMMENT ON COLUMN "public"."t_line"."name" IS 'äº§çº¿åç§°';
-COMMENT ON COLUMN "public"."t_line"."product_code" IS 'å å·¥å¯¹è±¡ç¼å·';
-COMMENT ON COLUMN "public"."t_line"."product_name" IS 'å å·¥å¯¹è±¡åç§°';
-COMMENT ON COLUMN "public"."t_line"."material_code" IS 'åææç¼å·';
-COMMENT ON COLUMN "public"."t_line"."material_name" IS 'åææåç§°';
-COMMENT ON COLUMN "public"."t_line"."version_no" IS 'çæ¬å·';
-COMMENT ON COLUMN "public"."t_line"."throughput" IS 'ååé(åæ¬¡çäº§æ»é)';
-COMMENT ON COLUMN "public"."t_line"."step_interval" IS 'æ­¥è¿å¼ï¼åä½ç§ï¼';
-COMMENT ON COLUMN "public"."t_line"."type" IS 'ç±»å(0:åºå®æ å° 1:åæ°æ å° 2:æµç¨æ å°)';
-COMMENT ON COLUMN "public"."t_line"."plc_time" IS 'plcä¸è½½æ¶é´';
-COMMENT ON COLUMN "public"."t_line"."sync_time" IS 'åæ­¥æ¶é´';
-COMMENT ON COLUMN "public"."t_line"."map_db" IS 'æ å°db';
-COMMENT ON COLUMN "public"."t_line"."map_offset" IS 'æ å°åç§»';
-COMMENT ON TABLE "public"."t_line" IS 'äº§çº¿/å·¥èº';
+COMMENT ON COLUMN "public"."t_line"."self_code" IS '产线编号(可以与工艺设置进行映射)';
+COMMENT ON COLUMN "public"."t_line"."name" IS '产线名称';
+COMMENT ON COLUMN "public"."t_line"."product_code" IS '加工对象编号';
+COMMENT ON COLUMN "public"."t_line"."product_name" IS '加工对象名称';
+COMMENT ON COLUMN "public"."t_line"."material_code" IS '原材料编号';
+COMMENT ON COLUMN "public"."t_line"."material_name" IS '原材料名称';
+COMMENT ON COLUMN "public"."t_line"."version_no" IS '版本号';
+COMMENT ON COLUMN "public"."t_line"."throughput" IS '吞吐量(单次生产总量)';
+COMMENT ON COLUMN "public"."t_line"."step_interval" IS '步进值（单位秒）';
+COMMENT ON COLUMN "public"."t_line"."type" IS '类型(0:固定映射 1:参数映射 2:流程映射)';
+COMMENT ON COLUMN "public"."t_line"."plc_time" IS 'plc下载时间';
+COMMENT ON COLUMN "public"."t_line"."sync_time" IS '同步时间';
+COMMENT ON COLUMN "public"."t_line"."map_db" IS '映射db';
+COMMENT ON COLUMN "public"."t_line"."map_offset" IS '映射偏移';
+COMMENT ON TABLE "public"."t_line" IS '产线/工艺';
 
 -- ----------------------------
 -- Table structure for t_mat
 -- ----------------------------
+DROP TABLE IF EXISTS "public"."t_mat";
+CREATE TABLE "public"."t_mat" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "self_code" varchar(50) COLLATE "pg_catalog"."default",
+  "name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "classify_code" varchar(50) COLLATE "pg_catalog"."default",
+  "del_bit" int2 DEFAULT 0,
+  CONSTRAINT "t_mat_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_mat"."self_code" IS '物料编号';
+COMMENT ON COLUMN "public"."t_mat"."name" IS '物料名称';
+COMMENT ON COLUMN "public"."t_mat"."classify_code" IS '所属分类编号';
+COMMENT ON COLUMN "public"."t_mat"."del_bit" IS '逻辑删除';
+COMMENT ON TABLE "public"."t_mat" IS '物料';
 
 -- ----------------------------
--- Table structure for t_mo (²¹ÆëÈ±±í£¬ÓëÊµÌå¶ÔÆë)
+-- Table structure for t_mo
 -- ----------------------------
 DROP TABLE IF EXISTS "public"."t_mo";
 CREATE TABLE "public"."t_mo" (
@@ -1660,3 +1685,414 @@ COMMENT ON COLUMN "public"."t_mo_adjust_log"."request_id" IS 'idempotency key';
 COMMENT ON COLUMN "public"."t_mo_adjust_log"."adjust_type" IS 'CANCEL_MO/CANCEL_MPS/RESCHEDULE/PRIORITY/CHANGE_LINE/CHANGE_DEV/QTY_UP/QTY_DOWN';
 COMMENT ON COLUMN "public"."t_mo_adjust_log"."status" IS '0PENDING 1SUCCESS 2FAILED';
 COMMENT ON TABLE "public"."t_mo_adjust_log" IS 'mo adjust audit log';
+
+-- ----------------------------
+-- Table structure for t_mc
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_mc";
+CREATE TABLE "public"."t_mc" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "self_code" varchar(50) COLLATE "pg_catalog"."default",
+  "code" varchar(60) COLLATE "pg_catalog"."default",
+  "pcode" varchar(60) COLLATE "pg_catalog"."default",
+  "name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  CONSTRAINT "t_mc_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_mc"."self_code" IS '分类编号';
+COMMENT ON COLUMN "public"."t_mc"."code" IS '级联编号';
+COMMENT ON COLUMN "public"."t_mc"."pcode" IS '级联父编号';
+COMMENT ON COLUMN "public"."t_mc"."name" IS '分类名称';
+COMMENT ON TABLE "public"."t_mc" IS '物料分类';
+
+-- ----------------------------
+-- Table structure for t_message
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_message";
+CREATE TABLE "public"."t_message" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "tenant_id" varchar(20) COLLATE "pg_catalog"."default",
+  "title" varchar(255) COLLATE "pg_catalog"."default",
+  "context" text COLLATE "pg_catalog"."default",
+  "type" int4,
+  "platform" varchar(64) COLLATE "pg_catalog"."default",
+  "notify_id" varchar(20) COLLATE "pg_catalog"."default",
+  "source" varchar(64) COLLATE "pg_catalog"."default",
+  "source_id" varchar(64) COLLATE "pg_catalog"."default",
+  CONSTRAINT "t_message_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_message"."title" IS '标题';
+COMMENT ON COLUMN "public"."t_message"."context" IS '内容';
+COMMENT ON COLUMN "public"."t_message"."type" IS '消息类型';
+COMMENT ON COLUMN "public"."t_message"."platform" IS '平台';
+COMMENT ON COLUMN "public"."t_message"."notify_id" IS '通知id';
+COMMENT ON COLUMN "public"."t_message"."source" IS '来源';
+COMMENT ON COLUMN "public"."t_message"."source_id" IS '来源id';
+COMMENT ON TABLE "public"."t_message" IS '消息';
+
+-- ----------------------------
+-- Table structure for t_notify
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_notify";
+CREATE TABLE "public"."t_notify" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "tenant_id" varchar(20) COLLATE "pg_catalog"."default",
+  "title" varchar(255) COLLATE "pg_catalog"."default",
+  "context" text COLLATE "pg_catalog"."default",
+  "type" int4,
+  "status" int4,
+  "platform" varchar(255) COLLATE "pg_catalog"."default",
+  "step" int4 DEFAULT 0,
+  "source" varchar(64) COLLATE "pg_catalog"."default",
+  "source_id" varchar(64) COLLATE "pg_catalog"."default",
+  CONSTRAINT "t_notify_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_notify"."title" IS '标题';
+COMMENT ON COLUMN "public"."t_notify"."context" IS '内容';
+COMMENT ON COLUMN "public"."t_notify"."type" IS '通知类型';
+COMMENT ON COLUMN "public"."t_notify"."status" IS '状态';
+COMMENT ON COLUMN "public"."t_notify"."platform" IS '平台，多个以|分隔';
+COMMENT ON COLUMN "public"."t_notify"."step" IS '推送步骤';
+COMMENT ON COLUMN "public"."t_notify"."source" IS '来源';
+COMMENT ON COLUMN "public"."t_notify"."source_id" IS '来源id';
+COMMENT ON TABLE "public"."t_notify" IS '通知';
+
+-- ----------------------------
+-- Table structure for t_product
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_product";
+CREATE TABLE "public"."t_product" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "tenant_id" varchar(20) COLLATE "pg_catalog"."default",
+  "name" varchar(128) COLLATE "pg_catalog"."default",
+  "code" varchar(64) COLLATE "pg_catalog"."default",
+  "image_url" varchar(512) COLLATE "pg_catalog"."default",
+  "attr_config" jsonb,
+  CONSTRAINT "t_product_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_product"."name" IS '产品名称';
+COMMENT ON COLUMN "public"."t_product"."code" IS '产品编号';
+COMMENT ON COLUMN "public"."t_product"."image_url" IS '产品图片地址';
+COMMENT ON COLUMN "public"."t_product"."attr_config" IS '产品属性模板JSON';
+COMMENT ON TABLE "public"."t_product" IS '产品';
+
+-- ----------------------------
+-- Table structure for t_product_model
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_product_model";
+CREATE TABLE "public"."t_product_model" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "tenant_id" varchar(20) COLLATE "pg_catalog"."default",
+  "product_code" varchar(64) COLLATE "pg_catalog"."default",
+  "name" varchar(128) COLLATE "pg_catalog"."default",
+  "code" varchar(64) COLLATE "pg_catalog"."default",
+  "attr_config" jsonb,
+  CONSTRAINT "t_product_model_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_product_model"."product_code" IS '所属产品编号';
+COMMENT ON COLUMN "public"."t_product_model"."name" IS '型号名称';
+COMMENT ON COLUMN "public"."t_product_model"."code" IS '型号编号';
+COMMENT ON COLUMN "public"."t_product_model"."attr_config" IS '型号采集映射JSON';
+COMMENT ON TABLE "public"."t_product_model" IS '产品型号';
+
+-- ----------------------------
+-- Table structure for t_qa
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_qa";
+CREATE TABLE "public"."t_qa" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "tenant_id" varchar(20) COLLATE "pg_catalog"."default",
+  "mps_id" varchar(20) COLLATE "pg_catalog"."default",
+  "mps_tf_id" varchar(20) COLLATE "pg_catalog"."default",
+  "msg" text COLLATE "pg_catalog"."default",
+  "result" int4,
+  "pass" numeric(10,4),
+  CONSTRAINT "t_qa_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_qa"."mps_id" IS '生产计划id';
+COMMENT ON COLUMN "public"."t_qa"."mps_tf_id" IS '工艺流程id';
+COMMENT ON COLUMN "public"."t_qa"."msg" IS '质检说明';
+COMMENT ON COLUMN "public"."t_qa"."result" IS '质检结果';
+COMMENT ON COLUMN "public"."t_qa"."pass" IS '合格量';
+COMMENT ON TABLE "public"."t_qa" IS '质检记录';
+
+-- ----------------------------
+-- Table structure for t_sync
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_sync";
+CREATE TABLE "public"."t_sync" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "tenant_id" varchar(20) COLLATE "pg_catalog"."default",
+  "sync_tx" varchar(64) COLLATE "pg_catalog"."default",
+  "part_start_timestamp" timestamp(6),
+  "part_end_timestamp" timestamp(6),
+  "status" varchar(20) COLLATE "pg_catalog"."default",
+  "pre_min" varchar(64) COLLATE "pg_catalog"."default",
+  "pre_max" varchar(64) COLLATE "pg_catalog"."default",
+  "part_min" varchar(64) COLLATE "pg_catalog"."default",
+  "part_max" varchar(64) COLLATE "pg_catalog"."default",
+  CONSTRAINT "t_sync_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_sync"."sync_tx" IS '同步分类';
+COMMENT ON COLUMN "public"."t_sync"."part_start_timestamp" IS '分片开始时间戳';
+COMMENT ON COLUMN "public"."t_sync"."part_end_timestamp" IS '分片结束时间戳';
+COMMENT ON COLUMN "public"."t_sync"."status" IS '同步状态';
+COMMENT ON COLUMN "public"."t_sync"."pre_min" IS '上一分片的最小值';
+COMMENT ON COLUMN "public"."t_sync"."pre_max" IS '上一分片的最大值';
+COMMENT ON COLUMN "public"."t_sync"."part_min" IS '分片最小值';
+COMMENT ON COLUMN "public"."t_sync"."part_max" IS '分片最大值';
+COMMENT ON TABLE "public"."t_sync" IS '同步事务';
+
+-- ----------------------------
+-- Table structure for t_task
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_task";
+CREATE TABLE "public"."t_task" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "name" varchar(50) COLLATE "pg_catalog"."default",
+  "type" varchar(50) COLLATE "pg_catalog"."default",
+  "cron" varchar(64) COLLATE "pg_catalog"."default",
+  "status" int4,
+  CONSTRAINT "t_task_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_task"."name" IS '名称';
+COMMENT ON COLUMN "public"."t_task"."type" IS '任务类型';
+COMMENT ON COLUMN "public"."t_task"."cron" IS 'cron表达式';
+COMMENT ON COLUMN "public"."t_task"."status" IS '任务状态';
+COMMENT ON TABLE "public"."t_task" IS '定时任务';
+
+-- ----------------------------
+-- Table structure for t_tf
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_tf";
+CREATE TABLE "public"."t_tf" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "tenant_id" varchar(20) COLLATE "pg_catalog"."default",
+  "self_code" varchar(50) COLLATE "pg_catalog"."default",
+  "name" varchar(50) COLLATE "pg_catalog"."default",
+  "step_no" int4,
+  "step_content" text COLLATE "pg_catalog"."default",
+  "equip_json" text COLLATE "pg_catalog"."default",
+  "tooling_json" text COLLATE "pg_catalog"."default",
+  "line_id" varchar(20) COLLATE "pg_catalog"."default",
+  "step_script" text COLLATE "pg_catalog"."default",
+  "step_engine_config" text COLLATE "pg_catalog"."default",
+  CONSTRAINT "t_tf_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_tf"."self_code" IS '工序编号';
+COMMENT ON COLUMN "public"."t_tf"."name" IS '工序名称';
+COMMENT ON COLUMN "public"."t_tf"."step_no" IS '工序序号';
+COMMENT ON COLUMN "public"."t_tf"."step_content" IS '工序内容';
+COMMENT ON COLUMN "public"."t_tf"."equip_json" IS '设备JSON';
+COMMENT ON COLUMN "public"."t_tf"."tooling_json" IS '工装JSON';
+COMMENT ON COLUMN "public"."t_tf"."line_id" IS '产线id';
+COMMENT ON COLUMN "public"."t_tf"."step_script" IS '工序执行脚本JSON';
+COMMENT ON COLUMN "public"."t_tf"."step_engine_config" IS '流程引擎编译配置JSON';
+COMMENT ON TABLE "public"."t_tf" IS '工序';
+
+-- ----------------------------
+-- Table structure for t_tf_edge
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_tf_edge";
+CREATE TABLE "public"."t_tf_edge" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "tenant_id" varchar(20) COLLATE "pg_catalog"."default",
+  "line_id" varchar(20) COLLATE "pg_catalog"."default",
+  "from_tf_id" varchar(20) COLLATE "pg_catalog"."default",
+  "to_tf_id" varchar(20) COLLATE "pg_catalog"."default",
+  CONSTRAINT "t_tf_edge_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_tf_edge"."line_id" IS '产线id';
+COMMENT ON COLUMN "public"."t_tf_edge"."from_tf_id" IS '起始工序id';
+COMMENT ON COLUMN "public"."t_tf_edge"."to_tf_id" IS '目标工序id';
+COMMENT ON TABLE "public"."t_tf_edge" IS '工序流转';
+
+-- ----------------------------
+-- Table structure for t_ucenter_depart
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_ucenter_depart";
+CREATE TABLE "public"."t_ucenter_depart" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(64) COLLATE "pg_catalog"."default",
+  "created_id" varchar(64) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(64) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(64) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "tenant_id" varchar(20) COLLATE "pg_catalog"."default",
+  "name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "code" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "pcode" varchar(50) COLLATE "pg_catalog"."default",
+  "ppcode" varchar(500) COLLATE "pg_catalog"."default",
+  CONSTRAINT "t_ucenter_depart_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_ucenter_depart"."name" IS '部门名';
+COMMENT ON COLUMN "public"."t_ucenter_depart"."code" IS '部门编号';
+COMMENT ON COLUMN "public"."t_ucenter_depart"."pcode" IS '上级部门编号';
+COMMENT ON COLUMN "public"."t_ucenter_depart"."ppcode" IS '全部上级部门编号，分号分隔';
+COMMENT ON TABLE "public"."t_ucenter_depart" IS '部门';
+
+-- ----------------------------
+-- Table structure for t_ucenter_role
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_ucenter_role";
+CREATE TABLE "public"."t_ucenter_role" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(64) COLLATE "pg_catalog"."default",
+  "created_id" varchar(64) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(64) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(64) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "tenant_id" varchar(20) COLLATE "pg_catalog"."default",
+  "name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "code" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "description" varchar(250) COLLATE "pg_catalog"."default",
+  "type" int4,
+  CONSTRAINT "t_ucenter_role_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_ucenter_role"."name" IS '角色名';
+COMMENT ON COLUMN "public"."t_ucenter_role"."code" IS '角色编号';
+COMMENT ON COLUMN "public"."t_ucenter_role"."description" IS '角色描述';
+COMMENT ON COLUMN "public"."t_ucenter_role"."type" IS '角色类别';
+COMMENT ON TABLE "public"."t_ucenter_role" IS '角色';
+
+-- ----------------------------
+-- Table structure for t_workshop
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_workshop";
+CREATE TABLE "public"."t_workshop" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL,
+  "self_code" varchar(50) COLLATE "pg_catalog"."default",
+  "code" varchar(60) COLLATE "pg_catalog"."default",
+  "pcode" varchar(60) COLLATE "pg_catalog"."default",
+  "lng" numeric(12,8),
+  "lat" numeric(12,8),
+  "address" varchar(255) COLLATE "pg_catalog"."default",
+  CONSTRAINT "t_workshop_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_workshop"."name" IS '场景名称';
+COMMENT ON COLUMN "public"."t_workshop"."self_code" IS '场景编号';
+COMMENT ON COLUMN "public"."t_workshop"."code" IS '级联编号';
+COMMENT ON COLUMN "public"."t_workshop"."pcode" IS '级联父编号';
+COMMENT ON COLUMN "public"."t_workshop"."lng" IS '经度';
+COMMENT ON COLUMN "public"."t_workshop"."lat" IS '纬度';
+COMMENT ON COLUMN "public"."t_workshop"."address" IS '地址';
+COMMENT ON TABLE "public"."t_workshop" IS '场景';
+
+-- ----------------------------
+-- Table structure for t_workshop_collect
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."t_workshop_collect";
+CREATE TABLE "public"."t_workshop_collect" (
+  "id" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
+  "revision" int4,
+  "created_by" varchar(20) COLLATE "pg_catalog"."default",
+  "created_id" varchar(20) COLLATE "pg_catalog"."default",
+  "created_time" timestamp(6),
+  "updated_by" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_id" varchar(20) COLLATE "pg_catalog"."default",
+  "updated_time" timestamp(6),
+  "tenant_id" varchar(20) COLLATE "pg_catalog"."default",
+  "workshop_id" varchar(20) COLLATE "pg_catalog"."default",
+  "data" jsonb,
+  "time" timestamp(6),
+  CONSTRAINT "t_workshop_collect_pkey" PRIMARY KEY ("id")
+)
+;
+COMMENT ON COLUMN "public"."t_workshop_collect"."workshop_id" IS '场景id';
+COMMENT ON COLUMN "public"."t_workshop_collect"."data" IS '采集数据';
+COMMENT ON COLUMN "public"."t_workshop_collect"."time" IS '采集时间';
+COMMENT ON TABLE "public"."t_workshop_collect" IS '场景采集';

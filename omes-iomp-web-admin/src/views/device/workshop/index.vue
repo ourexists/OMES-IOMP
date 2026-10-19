@@ -11,7 +11,6 @@ import {
   ExpandAltOutlined,
   FolderOutlined,
   LayoutOutlined,
-  PictureOutlined,
   PlusOutlined,
   ReloadOutlined,
   SearchOutlined,
@@ -22,7 +21,6 @@ import type { WorkshopNode } from '@/api/device'
 import { deleteWorkshops, fetchWorkshopTree } from '@/api/device'
 import WorkshopCollectDrawer from './components/WorkshopCollectDrawer.vue'
 import WorkshopFormModal from './components/WorkshopFormModal.vue'
-import WorkshopMeta2dDrawer from './components/WorkshopMeta2dDrawer.vue'
 import WorkshopScadaDrawer from './components/WorkshopScadaDrawer.vue'
 import {
   buildWorkshopTreeIndex,
@@ -57,7 +55,6 @@ const parentCode = ref<string>()
 
 const collectOpen = ref(false)
 const scadaOpen = ref(false)
-const meta2dOpen = ref(false)
 const configWorkshop = ref<WorkshopNode | null>(null)
 
 const treeBodyRef = ref<HTMLElement | null>(null)
@@ -221,11 +218,6 @@ function openCollect(record: WorkshopNode) {
 function openScada(record: WorkshopNode) {
   configWorkshop.value = record
   scadaOpen.value = true
-}
-
-function openMeta2d(record: WorkshopNode) {
-  configWorkshop.value = record
-  meta2dOpen.value = true
 }
 
 function confirmDelete(record: WorkshopNode) {
@@ -467,7 +459,7 @@ onUnmounted(() => {
 
             <div class="detail-section">
               <div class="section-label">{{ t('workshopPage.actionsConfig') }}</div>
-              <div class="action-grid action-grid--triple">
+              <div class="action-grid">
                 <button type="button" class="action-tile" @click="openCollect(selectedNode)">
                   <span class="action-tile__icon action-tile__icon--cyan"><SettingOutlined /></span>
                   <span class="action-tile__text">{{ t('workshopPage.collect') }}</span>
@@ -475,10 +467,6 @@ onUnmounted(() => {
                 <button type="button" class="action-tile" @click="openScada(selectedNode)">
                   <span class="action-tile__icon action-tile__icon--purple"><LayoutOutlined /></span>
                   <span class="action-tile__text">{{ t('workshopPage.scada') }}</span>
-                </button>
-                <button type="button" class="action-tile" @click="openMeta2d(selectedNode)">
-                  <span class="action-tile__icon action-tile__icon--gold"><PictureOutlined /></span>
-                  <span class="action-tile__text">{{ t('workshopPage.meta2d') }}</span>
                 </button>
               </div>
             </div>
@@ -509,7 +497,6 @@ onUnmounted(() => {
     />
     <WorkshopCollectDrawer v-model:open="collectOpen" :workshop="configWorkshop" />
     <WorkshopScadaDrawer v-model:open="scadaOpen" :workshop="configWorkshop" />
-    <WorkshopMeta2dDrawer v-model:open="meta2dOpen" :workshop="configWorkshop" />
   </div>
 </template>
 
@@ -934,12 +921,8 @@ onUnmounted(() => {
 
 .action-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
-}
-
-.action-grid--triple {
-  grid-template-columns: repeat(3, 1fr);
 }
 
 .action-tile {
@@ -948,6 +931,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  min-width: 0;
   min-height: 72px;
   padding: 12px 8px;
   border: 1px solid var(--omes-color-border);
@@ -995,16 +979,13 @@ onUnmounted(() => {
   color: var(--omes-color-accent-purple-from);
 }
 
-.action-tile__icon--gold {
-  background: #fffbe6;
-  color: #d48806;
-}
-
 .action-tile__text {
+  max-width: 100%;
   font-size: 13px;
   color: var(--omes-color-text-label);
   line-height: 1.2;
   text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .detail-danger {
@@ -1047,16 +1028,6 @@ onUnmounted(() => {
   font-size: 14px;
   color: var(--omes-color-text-quaternary);
   line-height: 1.6;
-}
-
-@media (max-width: 1200px) {
-  .action-grid--triple {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .action-grid--triple .action-tile:last-child {
-    grid-column: 1 / -1;
-  }
 }
 
 @media (max-width: 992px) {
@@ -1106,13 +1077,8 @@ onUnmounted(() => {
 }
 
 @media (max-width: 576px) {
-  .action-grid,
-  .action-grid--triple {
+  .action-grid {
     grid-template-columns: 1fr;
-  }
-
-  .action-grid--triple .action-tile:last-child {
-    grid-column: auto;
   }
 }
 </style>

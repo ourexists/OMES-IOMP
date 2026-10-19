@@ -164,34 +164,6 @@
             <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
         </dependency>
 
-        <!-- Apache PLC4X connection cache (plc4j) -->
-        <dependency>
-            <groupId>org.apache.plc4x</groupId>
-            <artifactId>plc4j-connection-cache</artifactId>
-            <version>0.13.1</version>
-        </dependency>
-
-        <!-- Apache PLC4X Modbus driver (plc4j) for Modbus TCP polling -->
-        <dependency>
-            <groupId>org.apache.plc4x</groupId>
-            <artifactId>plc4j-driver-modbus</artifactId>
-            <version>0.13.1</version>
-        </dependency>
-
-        <!-- Apache PLC4X OPC UA driver (plc4j) for OPC UA polling -->
-        <dependency>
-            <groupId>org.apache.plc4x</groupId>
-            <artifactId>plc4j-driver-opcua</artifactId>
-            <version>0.13.1</version>
-        </dependency>
-
-        <!-- S7Connector (nodave) for Siemens S7 PLC -->
-        <dependency>
-            <groupId>com.github.s7connector</groupId>
-            <artifactId>s7connector</artifactId>
-            <version>2.1</version>
-        </dependency>
-
     </dependencies>
 
     <build>
