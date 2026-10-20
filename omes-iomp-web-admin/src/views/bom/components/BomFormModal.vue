@@ -67,6 +67,10 @@ const scaleSumDisplay = computed(() => {
   return isPercentType.value ? sum.toFixed(2) : sum.toFixed(4)
 })
 
+const percentFill = computed(() => Math.min(100, Math.max(0, scaleSum.value)))
+
+const detailScroll = computed(() => (details.value.length > 8 ? { y: 320 } : undefined))
+
 const percentSumValid = computed(() => {
   if (!isPercentType.value || !details.value.length) {
     return true
@@ -302,7 +306,8 @@ async function handleSubmit() {
       </div>
     </template>
 
-    <a-spin :spinning="loading">
+    <a-spin :spinning="loading" class="bom-form-spin">
+      <div class="bom-form-scroll">
       <a-form layout="vertical" class="bom-form">
         <div class="form-section">
           <div class="section-title">
@@ -363,9 +368,17 @@ async function handleSubmit() {
             </a-space>
           </div>
 
-          <a-alert type="info" show-icon class="scale-hint" :message="scaleHint" />
+          <p class="scale-hint">
+            <InfoCircleOutlined />
+            <span>{{ scaleHint }}</span>
+          </p>
 
-          <a-empty v-if="!details.length" class="detail-empty" :description="t('bomPage.detailEmpty')" />
+          <a-empty
+            v-if="!details.length"
+            class="detail-empty"
+            :image-style="{ height: '56px' }"
+            :description="t('bomPage.detailEmpty')"
+          />
 
           <template v-else>
             <div class="detail-table-wrap">
@@ -378,7 +391,7 @@ async function handleSubmit() {
                 :data-source="details"
                 :pagination="false"
                 :row-selection="detailRowSelection"
-                :scroll="{ y: 260 }"
+                :scroll="detailScroll"
               >
                 <template #bodyCell="{ column, record, index }">
                   <template v-if="column.key === 'index'">
@@ -411,23 +424,33 @@ async function handleSubmit() {
             </div>
 
             <div class="detail-summary">
-              <span class="detail-summary__item">
-                {{ t('bomPage.detailStatCount', { count: details.length }) }}
-              </span>
-              <span class="detail-summary__item detail-summary__item--emphasis">
-                {{
-                  isPercentType
-                    ? t('bomPage.detailStatPercentSum', { sum: scaleSumDisplay })
-                    : t('bomPage.detailStatQtySum', { sum: scaleSumDisplay })
-                }}
-              </span>
-              <a-tag v-if="isPercentType" :color="percentSumValid ? 'success' : 'warning'">
-                {{ percentSumValid ? t('bomPage.detailPercentOk') : t('bomPage.detailPercentWarn') }}
-              </a-tag>
+              <div class="detail-summary__row">
+                <span class="detail-summary__item">
+                  {{ t('bomPage.detailStatCount', { count: details.length }) }}
+                </span>
+                <span class="detail-summary__item detail-summary__item--emphasis">
+                  {{
+                    isPercentType
+                      ? t('bomPage.detailStatPercentSum', { sum: scaleSumDisplay })
+                      : t('bomPage.detailStatQtySum', { sum: scaleSumDisplay })
+                  }}
+                </span>
+                <a-tag v-if="isPercentType" :color="percentSumValid ? 'success' : 'warning'">
+                  {{ percentSumValid ? t('bomPage.detailPercentOk') : t('bomPage.detailPercentWarn') }}
+                </a-tag>
+              </div>
+              <div
+                v-if="isPercentType"
+                class="percent-meter"
+                :class="percentSumValid ? 'is-ok' : 'is-warn'"
+              >
+                <div class="percent-meter__fill" :style="{ width: `${percentFill}%` }" />
+              </div>
             </div>
           </template>
         </div>
       </a-form>
+      </div>
     </a-spin>
 
     <div class="modal-footer">
@@ -447,9 +470,29 @@ async function handleSubmit() {
 
 <style scoped>
 .bom-form-modal :deep(.ant-modal-body) {
-  padding: 16px 24px 0;
-  max-height: min(78vh, 720px);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  max-height: min(78vh, 760px);
+  overflow: hidden;
+}
+
+.bom-form-spin {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.bom-form-spin :deep(.ant-spin-container) {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.bom-form-scroll {
+  min-height: 0;
   overflow-y: auto;
+  padding: 16px 24px 12px;
 }
 
 .modal-title-wrap {
@@ -465,14 +508,23 @@ async function handleSubmit() {
   color: var(--omes-color-text);
 }
 
+.bom-form :deep(.ant-form-item) {
+  margin-bottom: 0;
+}
+
 .bom-form :deep(.ant-form-item-label > label) {
   font-weight: 500;
   color: var(--omes-color-text-label);
 }
 
+.bom-form :deep(.ant-input-affix-wrapper-disabled) {
+  background: var(--omes-color-bg-layout);
+  color: var(--omes-color-text-secondary);
+}
+
 .form-section {
   padding: 16px 18px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   background: var(--omes-color-bg-elevated);
   border: 1px solid var(--omes-color-border);
   border-radius: var(--omes-radius-lg);
@@ -489,7 +541,7 @@ async function handleSubmit() {
   margin-bottom: 14px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--omes-color-text);
+  color: var(--omes-color-text-heading);
 }
 
 .section-title::before {
@@ -513,25 +565,32 @@ async function handleSubmit() {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .items-head .section-title {
   margin-bottom: 0;
 }
 
-.items-head .section-title::before {
-  display: none;
+.scale-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0 0 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--omes-color-text-tertiary);
 }
 
-.scale-hint {
-  margin-bottom: 12px;
-  border-radius: var(--omes-radius-md);
+.scale-hint :deep(.anticon) {
+  margin-top: 2px;
+  flex-shrink: 0;
+  color: var(--omes-color-primary);
 }
 
 .detail-empty {
-  margin: 24px 0;
-  padding: 24px;
+  margin: 4px 0 0;
+  padding: 20px 16px;
   border: 1px dashed var(--omes-color-border-hover);
   border-radius: var(--omes-radius-lg);
   background: var(--omes-color-bg-container);
@@ -541,14 +600,19 @@ async function handleSubmit() {
   border: 1px solid var(--omes-color-border-secondary);
   border-radius: var(--omes-radius-lg);
   background: var(--omes-color-bg-container);
-  padding: 8px;
   overflow: hidden;
 }
 
+.detail-table :deep(.ant-table-container) {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
 .detail-table :deep(.ant-table-thead > tr > th) {
-  background: linear-gradient(180deg, var(--omes-color-bg-elevated) 0%, var(--omes-color-bg-layout) 100%);
+  background: var(--omes-color-bg-table-head);
   font-weight: 600;
   font-size: 13px;
+  border-bottom: 1px solid var(--omes-color-border-secondary);
 }
 
 .detail-table :deep(.ant-table-tbody > tr:nth-child(even) > td) {
@@ -556,24 +620,26 @@ async function handleSubmit() {
 }
 
 .detail-table :deep(.ant-table-tbody > tr:hover > td) {
-  background: #f0f7ff !important;
-}
-
-.detail-table :deep(td[data-column-key='matScale']) {
-  background: rgba(22, 119, 255, 0.04);
+  background: var(--omes-color-bg-table-hover) !important;
 }
 
 .detail-summary {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 16px;
+  flex-direction: column;
+  gap: 8px;
   margin-top: 12px;
   padding: 10px 14px;
-  background: #f8f9fc;
+  background: var(--omes-color-bg-muted);
   border: 1px solid var(--omes-color-border-secondary);
   border-radius: var(--omes-radius-md);
   font-size: 13px;
+}
+
+.detail-summary__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
 }
 
 .detail-summary__item {
@@ -586,6 +652,24 @@ async function handleSubmit() {
   font-variant-numeric: tabular-nums;
 }
 
+.percent-meter {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--omes-color-border-secondary);
+  overflow: hidden;
+}
+
+.percent-meter__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--omes-color-warning);
+  transition: width 0.2s ease;
+}
+
+.percent-meter.is-ok .percent-meter__fill {
+  background: var(--omes-color-success);
+}
+
 .mat-name-cell {
   font-weight: 500;
   color: var(--omes-color-text);
@@ -595,14 +679,14 @@ async function handleSubmit() {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 12px;
   color: var(--omes-color-primary);
-  background: #f0f5ff;
+  background: var(--omes-color-primary-bg);
   border: 1px solid var(--omes-color-primary-border);
   padding: 2px 8px;
   border-radius: var(--omes-radius-sm);
 }
 
 .empty-cell {
-  color: rgba(0, 0, 0, 0.25);
+  color: var(--omes-color-text-placeholder);
 }
 
 .scale-input {
@@ -612,6 +696,7 @@ async function handleSubmit() {
 .scale-input :deep(.ant-input-number-input) {
   text-align: right;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .input-prefix-icon {
@@ -637,8 +722,10 @@ async function handleSubmit() {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  margin-top: 16px;
-  padding: 16px 0 8px;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 12px 24px 16px;
   border-top: 1px solid var(--omes-color-border);
+  background: var(--omes-color-bg-container);
 }
 </style>

@@ -108,6 +108,12 @@
 
   --omes-color-accent-purple-to: #881798;
 
+  --omes-color-accent-purple-bg: color-mix(in srgb, var(--omes-color-accent-purple-from) 10%, var(--omes-color-bg-container));
+
+  --omes-color-accent-purple-bg-strong: color-mix(in srgb, var(--omes-color-accent-purple-from) 18%, var(--omes-color-bg-container));
+
+  --omes-color-accent-purple-border: color-mix(in srgb, var(--omes-color-accent-purple-from) 28%, var(--omes-color-border));
+
   --omes-color-accent-orange-from: #da3b01;
 
   --omes-color-accent-orange-to: #ca5010;

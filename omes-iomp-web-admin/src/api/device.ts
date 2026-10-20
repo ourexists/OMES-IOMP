@@ -38,6 +38,8 @@ export interface EquipRecord {
   selfCode?: string
   type?: string | number
   typeDesc?: string
+  /** 所属产品图片，分页/详情由后端按产品回填 */
+  productImage?: string
   modelId?: string
   modelName?: string
   enableDate?: string

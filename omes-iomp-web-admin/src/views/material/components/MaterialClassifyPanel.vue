@@ -126,7 +126,7 @@ onMounted(() => {
 
     <a-spin :spinning="loading" class="classify-panel__spin">
       <div v-if="showEmpty" class="classify-panel__empty-wrap">
-        <a-empty :description="t('materialPage.classifyEmpty')" :image-style="{ height: '56px' }" />
+        <a-empty :description="t('materialPage.classifyNone')" :image-style="{ height: '56px' }" />
       </div>
       <div v-else class="classify-panel__list">
         <div

@@ -84,6 +84,7 @@ onMounted(() => loadPlatforms())
       <div class="platform-list">
         <a-tree
           v-if="platformList.length"
+          class="platform-list__tree"
           :tree-data="platformList"
           :selected-keys="selectedKeys"
           :field-names="{ title: 'name', key: 'code', children: 'children' }"
@@ -117,6 +118,12 @@ onMounted(() => loadPlatforms())
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0;
+}
+
+.platform-manage :deep(.ant-spin-nested-loading),
+.platform-manage :deep(.ant-spin-container) {
+  height: 100%;
 }
 
 .platform-list {
@@ -125,20 +132,47 @@ onMounted(() => loadPlatforms())
   overflow: auto;
 }
 
+.platform-list__tree {
+  background: transparent;
+}
+
+.platform-list :deep(.ant-tree-list-holder-inner) {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .platform-list :deep(.ant-tree-treenode) {
   width: 100%;
-  align-items: center;
+  padding: 0;
+  align-items: stretch;
+}
+
+.platform-list :deep(.ant-tree-switcher-noop) {
+  width: 0;
 }
 
 .platform-list :deep(.ant-tree-node-content-wrapper) {
   flex: 1;
   min-width: 0;
-  line-height: 1.4;
-  border-radius: var(--omes-radius-sm);
+  min-height: 44px;
+  padding: 8px 12px;
+  line-height: 1.3;
+  border: 1px solid var(--omes-color-border);
+  border-radius: var(--omes-radius-md);
+  background: var(--omes-color-bg-container);
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 .platform-list :deep(.ant-tree-node-content-wrapper:hover) {
+  border-color: var(--omes-color-primary-border);
   background: var(--omes-color-primary-bg-hover);
+}
+
+.platform-list :deep(.ant-tree-node-content-wrapper.ant-tree-node-selected) {
+  border-color: var(--omes-color-primary);
+  background: var(--omes-color-primary-bg);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--omes-color-primary) 18%, transparent);
 }
 
 .platform-list :deep(.ant-tree-title) {
@@ -152,7 +186,6 @@ onMounted(() => loadPlatforms())
   justify-content: space-between;
   gap: 8px;
   min-width: 0;
-  padding-right: 4px;
 }
 
 .node-info {
@@ -163,15 +196,20 @@ onMounted(() => loadPlatforms())
 }
 
 .node-name {
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--omes-color-text);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.platform-list :deep(.ant-tree-node-selected) .node-name {
+  color: var(--omes-color-primary);
+}
+
 .node-code {
   font-size: 12px;
-  color: var(--omes-color-text-quaternary);
+  color: var(--omes-color-text-secondary);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -181,13 +219,6 @@ onMounted(() => loadPlatforms())
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  opacity: 0.55;
-  transition: opacity 0.2s;
-}
-
-.platform-list :deep(.ant-tree-node-content-wrapper:hover) .node-actions,
-.node-actions:focus-within {
-  opacity: 1;
 }
 
 .node-actions :deep(.ant-btn-link) {

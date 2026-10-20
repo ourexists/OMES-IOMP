@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import type { EquipRecord } from '@/api/device'
+import EquipProductThumb from '@/components/EquipProductThumb.vue'
 import {
   equipStatusDotClass,
   formatAlarmSignalTitle,
@@ -50,6 +51,9 @@ function rowClass(item: EquipRecord): Record<string, boolean> {
       @click="emit('open', item)"
     >
       <span class="col-name">
+        <span class="list-thumb">
+          <EquipProductThumb :path="item.productImage" />
+        </span>
         <span class="card-vendor-tag">{{ workshopLabel(item) }}</span>
         <span class="card-device-name">{{ item.name }}</span>
         <span
@@ -136,6 +140,15 @@ function rowClass(item: EquipRecord): Record<string, boolean> {
   align-items: center;
   gap: 8px;
   min-width: 0;
+}
+
+.list-thumb {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
 }
 
 .card-vendor-tag {

@@ -73,9 +73,9 @@ const metaLine = computed(() => {
   gap: 16px;
   padding: 16px 20px;
   background: var(--omes-color-bg-container);
-  border: 1px solid #e8eef5;
+  border: 1px solid var(--omes-color-primary-border);
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--omes-color-text) 6%, transparent);
 }
 
 .detail-overview {
@@ -95,8 +95,8 @@ const metaLine = computed(() => {
   font-size: 28px;
   flex-shrink: 0;
   color: var(--omes-color-primary);
-  background: linear-gradient(135deg, var(--omes-color-primary-bg) 0%, #f0f7ff 100%);
-  border: 1px solid #bae0ff;
+  background: linear-gradient(135deg, var(--omes-color-primary-bg) 0%, var(--omes-color-primary-bg-hover) 100%);
+  border: 1px solid var(--omes-color-primary-border);
 }
 
 .detail-main {
@@ -114,7 +114,7 @@ const metaLine = computed(() => {
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--omes-color-text-heading);
 }
 
 .detail-remark {

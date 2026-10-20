@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ClusterOutlined, ReloadOutlined, RollbackOutlined } from '@ant-design/icons-vue'
 import type { EquipRecord } from '@/api/device'
+import EquipProductThumb from '@/components/EquipProductThumb.vue'
 import { resolveEquipStatusView } from '@/utils/equip-status'
 
 const props = defineProps<{
@@ -34,7 +35,8 @@ const statusLabel = computed(() => {
         class="detail-icon equip-status-icon"
         :class="statusView ? `equip-status-icon--${statusView.tone}` : ''"
       >
-        <ClusterOutlined />
+        <EquipProductThumb v-if="equip?.productImage" :path="equip.productImage" />
+        <ClusterOutlined v-else />
       </div>
       <div class="detail-main">
         <div class="detail-name-row">
@@ -94,6 +96,7 @@ const statusLabel = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   font-size: 28px;
   flex-shrink: 0;
 }

@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { BellOutlined, SendOutlined } from '@ant-design/icons-vue'
 import type { PlatformNode } from '@/api/ucenter'
 import { fetchPlatforms } from '@/api/ucenter'
 import { fetchMessageSourceMap, fetchMessageTypeMap, saveNotify } from '@/api/notify'
@@ -104,16 +105,26 @@ async function handleSubmit() {
 <template>
   <a-modal
     :open="open"
-    :title="title"
     width="720px"
     destroy-on-close
-    class="notify-form-modal"
+    class="admin-form-modal"
     @update:open="emit('update:open', $event)"
     @ok="handleSubmit"
   >
-    <a-form layout="vertical" class="notify-form">
-      <div class="form-section">
-        <div class="section-title">{{ t('notifyPage.formBasic') }}</div>
+    <template #title>
+      <span class="modal-title">
+        <span class="modal-title__icon modal-title__icon--primary">
+          <BellOutlined />
+        </span>
+        {{ title }}
+      </span>
+    </template>
+    <a-form layout="vertical" class="system-form">
+      <div class="system-form-section">
+        <div class="system-form-section__title">
+          <BellOutlined />
+          {{ t('notifyPage.formBasic') }}
+        </div>
         <a-form-item :label="t('notifyPage.colTitle')" required>
           <a-input v-model:value="formState.title" :placeholder="t('notifyPage.titlePlaceholder')" />
         </a-form-item>
@@ -126,8 +137,11 @@ async function handleSubmit() {
         </a-form-item>
       </div>
 
-      <div class="form-section">
-        <div class="section-title">{{ t('notifyPage.formRule') }}</div>
+      <div class="system-form-section">
+        <div class="system-form-section__title">
+          <SendOutlined />
+          {{ t('notifyPage.formRule') }}
+        </div>
         <a-row :gutter="16">
           <a-col :span="12">
             <a-form-item :label="t('notifyPage.colType')" required>
@@ -188,35 +202,22 @@ async function handleSubmit() {
 </template>
 
 <style scoped>
-.notify-form {
-  padding-top: 4px;
-}
-
-.form-section + .form-section {
-  margin-top: 8px;
-}
-
-.section-title {
-  margin-bottom: 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--omes-color-text);
-}
-
-.section-title::before {
-  content: '';
-  display: inline-block;
-  width: 3px;
-  height: 14px;
-  margin-right: 8px;
-  vertical-align: -2px;
-  background: var(--omes-color-primary);
-  border-radius: 2px;
-}
-
 .platform-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  gap: 8px;
+}
+
+.platform-group :deep(.ant-checkbox-wrapper) {
+  margin-inline-start: 0;
+  padding: 6px 10px;
+  border: 1px solid var(--omes-color-border);
+  border-radius: var(--omes-radius-md);
+  background: var(--omes-color-bg-container);
+}
+
+.platform-group :deep(.ant-checkbox-wrapper-checked) {
+  border-color: var(--omes-color-primary);
+  background: var(--omes-color-primary-bg);
 }
 </style>

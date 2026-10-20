@@ -137,34 +137,40 @@
 }
 
 /* 表单弹窗 */
-.system-form-modal .ant-modal-header {
+.system-form-modal .ant-modal-header,
+.admin-form-modal .ant-modal-header {
   padding: 14px 20px;
   border-bottom: 1px solid var(--omes-color-border-secondary);
   background: var(--omes-gradient-card-head);
 }
 
-.system-form-modal .ant-modal-title {
+.system-form-modal .ant-modal-title,
+.admin-form-modal .ant-modal-title {
   font-weight: 600;
 }
 
-.system-form-modal .ant-modal-body {
+.system-form-modal .ant-modal-body,
+.admin-form-modal .ant-modal-body {
   padding: 16px 20px 8px;
   max-height: min(72vh, 640px);
   overflow-y: auto;
 }
 
-.system-form-modal .ant-modal-footer {
+.system-form-modal .ant-modal-footer,
+.admin-form-modal .ant-modal-footer {
   padding: 12px 20px 16px;
   border-top: 1px solid var(--omes-color-border-secondary);
 }
 
-.system-form-modal .modal-title {
+.system-form-modal .modal-title,
+.admin-form-modal .modal-title {
   display: inline-flex;
   align-items: center;
   gap: 8px;
 }
 
-.system-form-modal .modal-title__icon {
+.system-form-modal .modal-title__icon,
+.admin-form-modal .modal-title__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -181,6 +187,14 @@
 
 .system-form-modal .modal-title__icon--task {
   background: var(--omes-gradient-accent-orange);
+}
+
+.admin-form-modal .modal-title__icon--purple {
+  background: var(--omes-gradient-accent-purple);
+}
+
+.admin-form-modal .modal-title__icon--primary {
+  background: var(--omes-gradient-primary);
 }
 
 .system-form-section {

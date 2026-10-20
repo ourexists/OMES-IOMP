@@ -307,7 +307,11 @@ const currentThemeLabel = computed(() =>
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  gap: 12px;
+  height: 64px;
+  padding: 0 16px 0 8px;
+  line-height: 1.4;
+  overflow: hidden;
   background: var(--omes-color-bg-container);
   border-bottom: 1px solid var(--omes-color-border);
 }
@@ -317,15 +321,36 @@ const currentThemeLabel = computed(() =>
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+}
+
+.header-left {
+  flex: 1 1 auto;
+}
+
+.header-right {
+  flex: 0 1 auto;
 }
 
 .trigger {
   font-size: 18px;
+  flex-shrink: 0;
 }
 
 .page-title {
+  min-width: 0;
+  overflow: hidden;
   font-size: 16px;
   font-weight: var(--omes-font-weight-semibold);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 1100px) {
+  .lang-switch span,
+  .theme-switch span {
+    display: none;
+  }
 }
 
 .lang-switch,

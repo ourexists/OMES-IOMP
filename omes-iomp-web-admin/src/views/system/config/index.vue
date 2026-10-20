@@ -268,8 +268,8 @@ onMounted(() => {
 
 .system-config-section__status--warn {
   color: var(--omes-color-warning);
-  background: color-mix(in srgb, var(--omes-color-warning) 8%, #fff);
-  border: 1px solid color-mix(in srgb, var(--omes-color-warning) 28%, #fff);
+  background: color-mix(in srgb, var(--omes-color-warning) 8%, var(--omes-color-bg-container));
+  border: 1px solid color-mix(in srgb, var(--omes-color-warning) 28%, var(--omes-color-bg-container));
 }
 
 .system-config-section__body {

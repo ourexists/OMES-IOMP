@@ -2,6 +2,7 @@
 import { computed, reactive, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import dayjs, { type Dayjs } from 'dayjs'
+import { CalendarOutlined, IdcardOutlined, UserOutlined } from '@ant-design/icons-vue'
 import type { AccountRecord, PlatformNode } from '@/api/ucenter'
 import { modifyAccount, registerAccount } from '@/api/ucenter'
 import { message } from 'ant-design-vue'
@@ -108,16 +109,26 @@ async function handleSubmit() {
 <template>
   <a-modal
     :open="open"
-    :title="title"
     width="760px"
     destroy-on-close
-    class="account-form-modal"
+    class="admin-form-modal"
     @update:open="emit('update:open', $event)"
     @ok="handleSubmit"
   >
-    <a-form layout="vertical" class="account-form">
-      <div class="form-section">
-        <div class="section-title">{{ t('accountPage.formLogin') }}</div>
+    <template #title>
+      <span class="modal-title">
+        <span class="modal-title__icon modal-title__icon--purple">
+          <UserOutlined />
+        </span>
+        {{ title }}
+      </span>
+    </template>
+    <a-form layout="vertical" class="system-form">
+      <div class="system-form-section">
+        <div class="system-form-section__title">
+          <UserOutlined />
+          {{ t('accountPage.formLogin') }}
+        </div>
         <a-form-item :label="t('accountPage.account')" required>
           <a-input
             v-model:value="formState.accName"
@@ -130,8 +141,11 @@ async function handleSubmit() {
         </a-form-item>
       </div>
 
-      <div class="form-section">
-        <div class="section-title">{{ t('accountPage.formProfile') }}</div>
+      <div class="system-form-section">
+        <div class="system-form-section__title">
+          <IdcardOutlined />
+          {{ t('accountPage.formProfile') }}
+        </div>
         <a-row :gutter="16">
           <a-col :span="8">
             <a-form-item :label="t('accountPage.colNickname')" required>
@@ -169,8 +183,11 @@ async function handleSubmit() {
         </a-form-item>
       </div>
 
-      <div class="form-section">
-        <div class="section-title">{{ t('accountPage.formValidity') }}</div>
+      <div class="system-form-section">
+        <div class="system-form-section__title">
+          <CalendarOutlined />
+          {{ t('accountPage.formValidity') }}
+        </div>
         <a-row :gutter="16">
           <a-col :span="12">
             <a-form-item :label="t('accountPage.colSettledTime')">
@@ -187,33 +204,3 @@ async function handleSubmit() {
     </a-form>
   </a-modal>
 </template>
-
-<style scoped>
-.account-form {
-  padding-top: 4px;
-}
-
-.form-section + .form-section {
-  margin-top: 8px;
-  padding-top: 16px;
-  border-top: 1px solid var(--omes-color-border);
-}
-
-.section-title {
-  margin-bottom: 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--omes-color-text);
-}
-
-.section-title::before {
-  content: '';
-  display: inline-block;
-  width: 3px;
-  height: 14px;
-  margin-right: 8px;
-  vertical-align: -2px;
-  background: var(--omes-color-primary);
-  border-radius: 2px;
-}
-</style>

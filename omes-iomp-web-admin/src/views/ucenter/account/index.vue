@@ -35,14 +35,14 @@ const editingRecord = ref<AccountRecord | null>(null)
 const roleAccountId = ref('')
 
 const columns = computed(() => [
-  { title: t('accountPage.colAccount'), dataIndex: 'accName', key: 'accName', width: 140, ellipsis: true },
-  { title: t('accountPage.colNickname'), dataIndex: 'nickName', key: 'nickName', width: 120, ellipsis: true },
-  { title: t('accountPage.colStatus'), dataIndex: 'statusDesc', key: 'statusDesc', width: 100 },
-  { title: t('accountPage.colMobile'), dataIndex: 'mobile', key: 'mobile', width: 130, ellipsis: true },
-  { title: t('accountPage.colSettledTime'), dataIndex: 'settledTime', key: 'settledTime', width: 170, ellipsis: true },
-  { title: t('accountPage.colExpireTime'), dataIndex: 'expireTime', key: 'expireTime', width: 170, ellipsis: true },
-  { title: t('accountPage.colSource'), dataIndex: 'source', key: 'source', width: 100, ellipsis: true },
-  { title: t('accountPage.colAction'), key: 'action', width: 240, fixed: 'right' as const },
+  { title: t('accountPage.colAccount'), dataIndex: 'accName', key: 'accName', width: 120, ellipsis: true },
+  { title: t('accountPage.colNickname'), dataIndex: 'nickName', key: 'nickName', width: 100, ellipsis: true },
+  { title: t('accountPage.colStatus'), dataIndex: 'statusDesc', key: 'statusDesc', width: 88, align: 'center' as const },
+  { title: t('accountPage.colMobile'), dataIndex: 'mobile', key: 'mobile', width: 120, ellipsis: true },
+  { title: t('accountPage.colSettledTime'), dataIndex: 'settledTime', key: 'settledTime', width: 156, ellipsis: true },
+  { title: t('accountPage.colExpireTime'), dataIndex: 'expireTime', key: 'expireTime', width: 156, ellipsis: true },
+  { title: t('accountPage.colSource'), dataIndex: 'source', key: 'source', width: 88, ellipsis: true },
+  { title: t('accountPage.colAction'), key: 'action', width: 220 },
 ])
 
 const rowSelection = computed(() => ({
@@ -156,7 +156,7 @@ watch(selectedPlatform, () => {
 <template>
   <div class="admin-page account-page">
     <a-row :gutter="16" class="admin-page-row page-body">
-      <a-col :xs="24" :lg="6" class="admin-page-col">
+      <a-col :xs="24" :lg="5" class="admin-page-col">
         <a-card size="small" class="admin-panel-card panel-card platform-panel">
           <template #title>
             <AdminPanelTitle>
@@ -168,7 +168,7 @@ watch(selectedPlatform, () => {
         </a-card>
       </a-col>
 
-      <a-col :xs="24" :lg="18" class="admin-page-col">
+      <a-col :xs="24" :lg="19" class="admin-page-col">
         <a-card size="small" class="admin-panel-card panel-card account-panel">
           <template #title>
             <AdminPanelTitle>
@@ -243,7 +243,7 @@ watch(selectedPlatform, () => {
               :columns="columns"
               :data-source="dataSource"
               :row-selection="rowSelection"
-              :scroll="{ x: 1200, y: scrollY }"
+              :scroll="{ y: scrollY }"
               :pagination="{
                 current: pagination.current,
                 pageSize: pagination.pageSize,
@@ -262,8 +262,11 @@ watch(selectedPlatform, () => {
                     {{ record.statusDesc || (record.status === 0 ? t('accountPage.statusActive') : t('accountPage.statusFrozen')) }}
                   </a-tag>
                 </template>
+                <template v-else-if="column.key === 'source'">
+                  {{ record.source || '—' }}
+                </template>
                 <template v-else-if="column.key === 'action'">
-                  <a-space wrap size="small" class="action-group">
+                  <a-space size="small" class="action-group">
                     <a-button type="link" size="small" @click="openEdit(record)">
                       {{ t('accountPage.edit') }}
                     </a-button>
@@ -342,6 +345,8 @@ watch(selectedPlatform, () => {
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 280px);
+  padding: 12px;
+  background: var(--omes-color-bg-elevated);
 }
 
 .account-panel :deep(.ant-card-body) {
@@ -393,8 +398,12 @@ watch(selectedPlatform, () => {
   color: var(--omes-color-text);
 }
 
+.action-group {
+  white-space: nowrap;
+}
+
 .action-group :deep(.ant-btn-link) {
-  padding-inline: 4px;
+  padding-inline: 2px;
 }
 
 .empty-panel {

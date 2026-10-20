@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { TeamOutlined } from '@ant-design/icons-vue'
 import type { RoleRecord } from '@/api/ucenter'
 import { bindAccountRoles, fetchAllRoles, fetchRolesByAccount } from '@/api/ucenter'
 import { message } from 'ant-design-vue'
@@ -68,13 +69,21 @@ async function handleSubmit() {
 <template>
   <a-modal
     :open="open"
-    :title="t('accountPage.assignRole')"
     width="520px"
     :confirm-loading="loading"
     destroy-on-close
+    class="admin-form-modal"
     @update:open="emit('update:open', $event)"
     @ok="handleSubmit"
   >
+    <template #title>
+      <span class="modal-title">
+        <span class="modal-title__icon modal-title__icon--purple">
+          <TeamOutlined />
+        </span>
+        {{ t('accountPage.assignRole') }}
+      </span>
+    </template>
     <a-spin :spinning="loading">
       <div v-if="roleOptions.length" class="role-list">
         <a-checkbox-group v-model:value="checkedRoleIds" class="role-group">
@@ -117,14 +126,25 @@ async function handleSubmit() {
   border-color: var(--omes-color-primary-border);
 }
 
+.role-item:has(.ant-checkbox-checked) {
+  border-color: var(--omes-color-primary);
+  background: var(--omes-color-primary-bg);
+}
+
 .role-name {
   margin-right: 8px;
   font-weight: 500;
 }
 
 .role-code {
+  display: inline-block;
+  padding: 0 6px;
+  border-radius: 4px;
   font-size: 12px;
-  color: var(--omes-color-text-quaternary);
+  line-height: 18px;
+  color: var(--omes-color-primary);
+  background: var(--omes-color-bg-container);
+  border: 1px solid var(--omes-color-primary-border);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 </style>

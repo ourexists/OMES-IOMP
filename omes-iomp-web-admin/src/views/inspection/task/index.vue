@@ -62,7 +62,7 @@ const columns = computed(() => [
   { title: t('inspectTaskPage.colActualStart'), dataIndex: 'actualStartTime', key: 'actualStartTime', width: 170 },
   { title: t('inspectTaskPage.colActualEnd'), dataIndex: 'actualEndTime', key: 'actualEndTime', width: 170 },
   { title: t('inspectTaskPage.colRemark'), dataIndex: 'remark', key: 'remark', minWidth: 120, ellipsis: true },
-  { title: t('inspectTaskPage.colAction'), key: 'action', width: 200, fixed: 'right' as const },
+  { title: t('inspectTaskPage.colAction'), key: 'action', width: 220, fixed: 'right' as const },
 ])
 
 const rowSelection = computed(() => ({
@@ -371,7 +371,7 @@ onMounted(async () => {
                   <span class="time-cell">{{ record.actualEndTime || '—' }}</span>
                 </template>
                 <template v-else-if="column.key === 'action'">
-                  <a-space wrap size="small" class="action-group">
+                  <a-space size="small" class="action-group">
                     <a-button
                       v-if="record.status === TASK_STATUS_PENDING"
                       type="link"

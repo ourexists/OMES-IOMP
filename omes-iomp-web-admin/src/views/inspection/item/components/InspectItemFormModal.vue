@@ -454,8 +454,8 @@ async function handleSubmit() {
 }
 
 .form-section--choice {
-  background: linear-gradient(180deg, #fdfaff 0%, #f9f0ff 100%);
-  border-color: #efdbff;
+  background: linear-gradient(180deg, var(--omes-color-bg-container) 0%, var(--omes-color-accent-purple-bg) 100%);
+  border-color: var(--omes-color-accent-purple-border);
 }
 
 .section-title {
@@ -533,14 +533,14 @@ async function handleSubmit() {
 }
 
 .type-card:hover {
-  border-color: #91caff;
+  border-color: var(--omes-color-primary-border);
   box-shadow: 0 2px 8px rgba(22, 119, 255, 0.08);
 }
 
 .type-card--active {
   border-color: var(--omes-color-primary);
-  background: #f0f7ff;
-  box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.12);
+  background: var(--omes-color-primary-bg);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--omes-color-primary) 16%, transparent);
 }
 
 .type-card__icon {
@@ -555,7 +555,7 @@ async function handleSubmit() {
 
 .type-card--choice .type-card__icon {
   color: var(--omes-color-accent-purple-from);
-  background: #f9f0ff;
+  background: var(--omes-color-accent-purple-bg);
 }
 
 .type-card--numeric .type-card__icon {
@@ -565,22 +565,22 @@ async function handleSubmit() {
 
 .type-card--bool .type-card__icon {
   color: var(--omes-color-success);
-  background: #f6ffed;
+  background: var(--omes-color-success-bg);
 }
 
 .type-card--active.type-card--choice .type-card__icon {
-  color: #531dab;
-  background: #efdbff;
+  color: var(--omes-color-accent-purple-from);
+  background: var(--omes-color-accent-purple-bg-strong);
 }
 
 .type-card--active.type-card--numeric .type-card__icon {
   color: var(--omes-color-primary-active);
-  background: #bae0ff;
+  background: var(--omes-color-primary-border);
 }
 
 .type-card--active.type-card--bool .type-card__icon {
-  color: #389e0d;
-  background: #d9f7be;
+  color: var(--omes-color-success);
+  background: var(--omes-color-success-border);
 }
 
 .type-card__label {

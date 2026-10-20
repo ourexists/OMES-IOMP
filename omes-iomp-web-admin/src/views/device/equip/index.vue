@@ -20,6 +20,7 @@ import {
   fetchHealthTemplates,
 } from '@/api/device'
 import { fetchGatewayList, type GatewayRecord } from '@/api/gateway'
+import EquipProductThumb from '@/components/EquipProductThumb.vue'
 import WorkshopTree from '@/components/WorkshopTree.vue'
 import TableScrollWrap from '@/components/common/TableScrollWrap.vue'
 import EquipAttrConfigModal from './components/EquipAttrConfigModal.vue'
@@ -398,7 +399,12 @@ onMounted(async () => {
             >
               <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'name'">
-                  <span class="name-cell">{{ record.name || '—' }}</span>
+                  <span class="name-cell">
+                    <span class="name-cell__thumb">
+                      <EquipProductThumb :path="record.productImage" />
+                    </span>
+                    <span class="name-cell__text">{{ record.name || '—' }}</span>
+                  </span>
                 </template>
                 <template v-else-if="column.key === 'selfCode'">
                   <span v-if="record.selfCode" class="code-cell">{{ record.selfCode }}</span>
@@ -442,7 +448,8 @@ onMounted(async () => {
           <div v-if="selectedEquip" class="detail-body">
             <div class="detail-hero">
               <div class="detail-hero__icon">
-                <ClusterOutlined />
+                <EquipProductThumb v-if="selectedEquip.productImage" :path="selectedEquip.productImage" />
+                <ClusterOutlined v-else />
               </div>
               <div class="detail-hero__meta">
                 <div class="detail-hero__tags">
@@ -770,8 +777,29 @@ onMounted(async () => {
 }
 
 .name-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  min-width: 0;
   font-weight: 500;
   color: var(--omes-color-text);
+}
+
+.name-cell__thumb {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.name-cell__text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .code-cell {
@@ -838,12 +866,13 @@ onMounted(async () => {
 
 .detail-hero__icon {
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 56px;
+  height: 56px;
   border-radius: var(--omes-radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   font-size: 18px;
   background: var(--omes-color-bg-container);
   color: var(--omes-color-accent-purple-from);

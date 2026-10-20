@@ -1212,7 +1212,7 @@ CREATE TABLE "public"."t_inspect_item" (
   "revision" int4,
   "min_value" float8,
   "max_value" float8,
-  "required_flag" int2
+  "required_flag" bool
 )
 ;
 COMMENT ON COLUMN "public"."t_inspect_item"."item_name" IS '巡检项名称';
@@ -1220,7 +1220,7 @@ COMMENT ON COLUMN "public"."t_inspect_item"."item_type" IS '类型：1选择 2�
 COMMENT ON COLUMN "public"."t_inspect_item"."unit" IS '单位或选项：数值填A/MPa等；选择可填 正常/不足、松动/正常';
 COMMENT ON COLUMN "public"."t_inspect_item"."min_value" IS '最小值';
 COMMENT ON COLUMN "public"."t_inspect_item"."max_value" IS '最大值';
-COMMENT ON COLUMN "public"."t_inspect_item"."required_flag" IS '是否必填：0否 1是';
+COMMENT ON COLUMN "public"."t_inspect_item"."required_flag" IS '是否必填';
 
 -- ----------------------------
 -- Table structure for t_inspect_person

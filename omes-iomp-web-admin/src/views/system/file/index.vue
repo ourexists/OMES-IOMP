@@ -56,7 +56,7 @@ const columns = computed(() => [
   { title: t('filePage.colName'), key: 'name', dataIndex: 'name', ellipsis: true },
   { title: t('filePage.colSize'), key: 'size', width: 120 },
   { title: t('filePage.colModified'), key: 'modified', width: 180 },
-  { title: t('filePage.colAction'), key: 'action', width: 280, fixed: 'right' as const },
+  { title: t('filePage.colAction'), key: 'action', width: 248 },
 ])
 
 function formatModified(value?: number | null): string {
@@ -244,7 +244,7 @@ onMounted(load)
       >
         <div v-if="dragging" class="file-drop__hint">{{ t('filePage.dropHint') }}</div>
 
-        <div class="table-toolbar">
+        <div class="table-toolbar file-toolbar">
           <a-space wrap>
             <a-breadcrumb>
               <a-breadcrumb-item>
@@ -284,7 +284,7 @@ onMounted(load)
               :data-source="entries"
               :loading="loading"
               :pagination="false"
-              :scroll="{ x: 860, ...(scrollReady ? { y: scrollY } : {}) }"
+              :scroll="scrollReady ? { y: scrollY } : undefined"
             >
               <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'name'">
@@ -304,7 +304,7 @@ onMounted(load)
                   {{ formatModified(record.lastModified) }}
                 </template>
                 <template v-else-if="column.key === 'action'">
-                  <a-space wrap size="small">
+                  <a-space size="small" class="action-group">
                     <a-button
                       v-if="!record.directory"
                       type="link"
@@ -345,11 +345,19 @@ onMounted(load)
 
     <a-modal
       v-model:open="folderOpen"
-      :title="t('filePage.newFolder')"
+      class="admin-form-modal"
       :ok-text="t('filePage.confirm')"
       :cancel-text="t('filePage.cancel')"
       @ok="submitFolder"
     >
+      <template #title>
+        <span class="modal-title">
+          <span class="modal-title__icon modal-title__icon--primary">
+            <FolderOutlined />
+          </span>
+          {{ t('filePage.newFolder') }}
+        </span>
+      </template>
       <a-input
         v-model:value="folderName"
         :placeholder="t('filePage.folderNamePlaceholder')"
@@ -359,11 +367,19 @@ onMounted(load)
 
     <a-modal
       v-model:open="renameOpen"
-      :title="t('filePage.rename')"
+      class="admin-form-modal"
       :ok-text="t('filePage.confirm')"
       :cancel-text="t('filePage.cancel')"
       @ok="submitRename"
     >
+      <template #title>
+        <span class="modal-title">
+          <span class="modal-title__icon modal-title__icon--primary">
+            <EditOutlined />
+          </span>
+          {{ t('filePage.rename') }}
+        </span>
+      </template>
       <a-input
         v-model:value="renameName"
         :placeholder="t('filePage.renamePlaceholder')"
@@ -373,10 +389,18 @@ onMounted(load)
 
     <a-modal
       :open="previewOpen"
-      :title="previewName || t('filePage.preview')"
+      class="admin-form-modal"
       :footer="null"
       @cancel="closePreview"
     >
+      <template #title>
+        <span class="modal-title">
+          <span class="modal-title__icon modal-title__icon--primary">
+            <EyeOutlined />
+          </span>
+          {{ previewName || t('filePage.preview') }}
+        </span>
+      </template>
       <img v-if="previewUrl" class="preview-image" :src="previewUrl" :alt="previewName" />
     </a-modal>
   </div>
@@ -387,8 +411,12 @@ onMounted(load)
   position: relative;
 }
 
+.file-toolbar {
+  justify-content: space-between;
+}
+
 .file-drop--active {
-  outline: 2px dashed var(--omes-color-primary, #1677ff);
+  outline: 2px dashed var(--omes-color-primary);
   outline-offset: -8px;
 }
 
@@ -399,8 +427,9 @@ onMounted(load)
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.86);
+  background: color-mix(in srgb, var(--omes-color-bg-container) 88%, transparent);
   font-size: 16px;
+  color: var(--omes-color-text);
 }
 
 .name-link {

@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { AlertOutlined } from '@ant-design/icons-vue'
 import type { EquipRecord } from '@/api/device'
+import EquipProductThumb from '@/components/EquipProductThumb.vue'
 import {
   equipCardToneClass,
   equipStatusDotClass,
@@ -77,20 +78,25 @@ function attrDisplayValue(value: unknown): string {
 <template>
   <article class="rt-card equip-card-tone" :class="cardToneClass" @click="emit('open', item)">
     <header class="rt-card__head">
-      <div class="rt-card__head-top">
-        <span class="rt-card__badge" :title="badgeLabel">{{ badgeLabel }}</span>
-        <div class="rt-card__dots" aria-hidden="true">
-          <i :class="onlineDotClass" :title="onlineLabel" />
-          <i :class="runDotClass" :title="runLabel" />
-          <i :class="alarmDotClass" :title="alarmLabel" />
+      <span class="rt-card__thumb">
+        <EquipProductThumb :path="item.productImage" />
+      </span>
+      <div class="rt-card__head-body">
+        <div class="rt-card__head-top">
+          <span class="rt-card__badge" :title="badgeLabel">{{ badgeLabel }}</span>
+          <div class="rt-card__dots" aria-hidden="true">
+            <i :class="onlineDotClass" :title="onlineLabel" />
+            <i :class="runDotClass" :title="runLabel" />
+            <i :class="alarmDotClass" :title="alarmLabel" />
+          </div>
         </div>
-      </div>
 
-      <h3 class="rt-card__name" :title="item.name">{{ item.name }}</h3>
+        <h3 class="rt-card__name" :title="item.name">{{ item.name }}</h3>
 
-      <div class="rt-card__meta">
-        <span class="rt-card__sn">{{ item.selfCode || '—' }}</span>
-        <span v-if="showTypeTag" class="rt-card__type">{{ typeLabel }}</span>
+        <div class="rt-card__meta">
+          <span class="rt-card__sn">{{ item.selfCode || '—' }}</span>
+          <span v-if="showTypeTag" class="rt-card__type">{{ typeLabel }}</span>
+        </div>
       </div>
     </header>
 
@@ -166,8 +172,25 @@ function attrDisplayValue(value: unknown): string {
 .rt-card__head {
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   padding: 12px 14px 11px 15px;
   border-bottom: 1px solid #f1f5f9;
+}
+
+.rt-card__thumb {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  border: 1px solid #eef2f6;
+  overflow: hidden;
+}
+
+.rt-card__head-body {
+  min-width: 0;
+  flex: 1;
 }
 
 .rt-card__head-top {

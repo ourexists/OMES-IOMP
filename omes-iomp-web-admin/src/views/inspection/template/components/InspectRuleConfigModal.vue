@@ -387,8 +387,8 @@ function onSave() {
 }
 
 .type-badge--choice {
-  background: #f9f0ff;
-  border-color: #efdbff;
+  background: var(--omes-color-accent-purple-bg);
+  border-color: var(--omes-color-accent-purple-border);
 }
 
 .type-badge--choice .type-badge__icon {
@@ -398,7 +398,7 @@ function onSave() {
 
 .type-badge--numeric {
   background: var(--omes-color-primary-bg);
-  border-color: #bae0ff;
+  border-color: var(--omes-color-primary-border);
 }
 
 .type-badge--numeric .type-badge__icon {
@@ -407,8 +407,8 @@ function onSave() {
 }
 
 .type-badge--bool {
-  background: #f6ffed;
-  border-color: #d9f7be;
+  background: var(--omes-color-success-bg);
+  border-color: var(--omes-color-success-border);
 }
 
 .type-badge--bool .type-badge__icon {
@@ -459,13 +459,13 @@ function onSave() {
 }
 
 .form-section--choice {
-  background: linear-gradient(180deg, #fdfaff 0%, #f9f0ff 100%);
-  border-color: #efdbff;
+  background: linear-gradient(180deg, var(--omes-color-bg-container) 0%, var(--omes-color-accent-purple-bg) 100%);
+  border-color: var(--omes-color-accent-purple-border);
 }
 
 .form-section--bool {
-  background: linear-gradient(180deg, #f9fff6 0%, #f6ffed 100%);
-  border-color: #d9f7be;
+  background: linear-gradient(180deg, var(--omes-color-bg-container) 0%, var(--omes-color-success-bg) 100%);
+  border-color: var(--omes-color-success-border);
 }
 
 .section-title {
@@ -591,7 +591,7 @@ function onSave() {
   font-size: 13px;
   color: var(--omes-color-text-placeholder);
   background: rgba(255, 255, 255, 0.6);
-  border: 1px dashed #d9d9d9;
+  border: 1px dashed var(--omes-color-border-secondary);
   border-radius: var(--omes-radius-md);
 }
 

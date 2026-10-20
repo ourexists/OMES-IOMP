@@ -52,8 +52,14 @@ export function setupRouterGuards(router: Router) {
 
       await setupDynamicRoutes(router)
 
-      if (to.matched.length === 0) {
-        return { ...to, replace: true }
+      // 刷新时先匹配到无标题的占位路由，动态路由替换后要再解析一次，否则顶栏标题停在 OMES
+      const resolved = router.resolve({ path: to.path, query: to.query, hash: to.hash })
+      const matchedPlaceholder = to.matched.some((record) => record.meta.constantView)
+      const resolvedReal =
+        resolved.matched.some((record) => record.meta.title || record.meta.i18n || record.meta.permission) &&
+        !resolved.matched.some((record) => record.meta.constantView)
+      if (to.matched.length === 0 || (matchedPlaceholder && resolvedReal)) {
+        return { path: to.path, query: to.query, hash: to.hash, replace: true }
       }
 
       if (!isPublic && !permissionStore.canAccessPath(to.path)) {

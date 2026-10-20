@@ -829,7 +829,7 @@ function formatCondition(rule: InspectRuleRecord, itemType: number) {
 }
 
 .form-section--items {
-  background: linear-gradient(180deg, #fafcff 0%, var(--omes-color-primary-bg-hover) 100%);
+  background: linear-gradient(180deg, var(--omes-color-bg-container) 0%, var(--omes-color-primary-bg-hover) 100%);
   border-color: var(--omes-color-primary-border);
   flex: 1 1 auto;
   min-height: 0;
@@ -941,7 +941,7 @@ function formatCondition(rule: InspectRuleRecord, itemType: number) {
 
 .product-block {
   background: var(--omes-color-bg-container);
-  border: 1px solid #e8eef5;
+  border: 1px solid var(--omes-color-primary-border);
   border-top: none;
   border-radius: 0 0 12px 12px;
   overflow: hidden;
@@ -1045,18 +1045,18 @@ function formatCondition(rule: InspectRuleRecord, itemType: number) {
 }
 
 .item-card:hover {
-  border-color: #d9d9d9;
+  border-color: var(--omes-color-border-secondary);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 .item-card--manual {
   border-style: dashed;
-  border-color: #d9d9d9;
+  border-color: var(--omes-color-border-secondary);
   background: var(--omes-color-bg-elevated);
 }
 
 .item-card--manual:hover {
-  border-color: #bfbfbf;
+  border-color: var(--omes-color-border-hover);
   background: var(--omes-color-bg-container);
 }
 
@@ -1151,20 +1151,20 @@ function formatCondition(rule: InspectRuleRecord, itemType: number) {
 
 .type-tag--choice {
   color: var(--omes-color-accent-purple-from);
-  background: #f9f0ff;
-  border-color: #efdbff;
+  background: var(--omes-color-accent-purple-bg);
+  border-color: var(--omes-color-accent-purple-border);
 }
 
 .type-tag--numeric {
   color: var(--omes-color-primary);
   background: var(--omes-color-primary-bg);
-  border-color: #bae0ff;
+  border-color: var(--omes-color-primary-border);
 }
 
 .type-tag--bool {
   color: var(--omes-color-success);
-  background: #f6ffed;
-  border-color: #d9f7be;
+  background: var(--omes-color-success-bg);
+  border-color: var(--omes-color-success-border);
 }
 
 .field-row--meta {
@@ -1253,8 +1253,8 @@ function formatCondition(rule: InspectRuleRecord, itemType: number) {
 }
 
 .rule-chip--choice {
-  background: #fdfaff;
-  border-color: #efdbff;
+  background: var(--omes-color-accent-purple-bg);
+  border-color: var(--omes-color-accent-purple-border);
 }
 
 .rule-chip--numeric {
@@ -1263,8 +1263,8 @@ function formatCondition(rule: InspectRuleRecord, itemType: number) {
 }
 
 .rule-chip--bool {
-  background: #f9fff6;
-  border-color: #d9f7be;
+  background: var(--omes-color-success-bg);
+  border-color: var(--omes-color-success-border);
 }
 
 .rule-chip__condition {

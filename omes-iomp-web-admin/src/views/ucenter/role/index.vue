@@ -29,7 +29,7 @@ const editingRecord = ref<RoleRecord | null>(null)
 const assignRoleId = ref('')
 
 const columns = computed(() => [
-  { title: t('rolePage.colCode'), dataIndex: 'code', key: 'code', width: 180, ellipsis: true },
+  { title: t('rolePage.colCode'), dataIndex: 'code', key: 'code', width: 160 },
   { title: t('rolePage.colName'), dataIndex: 'name', key: 'name', width: 180, ellipsis: true },
   { title: t('rolePage.colDescription'), dataIndex: 'description', key: 'description', ellipsis: true },
   { title: t('rolePage.colAction'), key: 'action', width: 260, fixed: 'right' as const },
@@ -281,15 +281,14 @@ loadTable()
 
 .code-cell {
   display: inline-block;
-  max-width: 100%;
   font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
   font-size: 12px;
+  line-height: 20px;
   color: var(--omes-color-primary);
-  background: #f0f5ff;
-  padding: 2px 8px;
+  background: var(--omes-color-primary-bg);
+  border: 1px solid var(--omes-color-primary-border);
+  padding: 0 8px;
   border-radius: 4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 

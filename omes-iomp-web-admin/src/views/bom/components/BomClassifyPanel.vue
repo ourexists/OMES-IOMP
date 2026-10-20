@@ -82,9 +82,16 @@ async function loadTree() {
     nodeByCode.value = index.nodeByCode
     expandedKeys.value = collectBomExpandableKeys(treeData.value, 1)
     emit('loaded', { nodeCount: index.nodeCount })
-    if (selectedKeys.value.length) {
-      const node = nodeByCode.value.get(selectedKeys.value[0])
-      emit('select', node || null)
+    const current = selectedKeys.value[0]
+    const node = current ? nodeByCode.value.get(current) : undefined
+    if (node) {
+      emit('select', node)
+    } else if (treeData.value[0]?.selfCode) {
+      selectedKeys.value = [treeData.value[0].selfCode]
+      emit('select', treeData.value[0])
+    } else if (current) {
+      selectedKeys.value = []
+      emit('select', null)
     }
   } finally {
     loading.value = false

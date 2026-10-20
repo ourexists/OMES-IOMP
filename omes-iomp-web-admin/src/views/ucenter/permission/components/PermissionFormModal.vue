@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { ApartmentOutlined, MenuOutlined } from '@ant-design/icons-vue'
 import type { PermissionRecord, PlatformNode } from '@/api/ucenter'
 import {
   addPermission,
@@ -112,16 +113,26 @@ async function handleSubmit() {
 <template>
   <a-modal
     :open="open"
-    :title="title"
     width="760px"
     destroy-on-close
-    class="permission-form-modal"
+    class="admin-form-modal"
     @update:open="emit('update:open', $event)"
     @ok="handleSubmit"
   >
-    <a-form layout="vertical" class="permission-form">
-      <div class="form-section">
-        <div class="section-title">{{ t('permissionPage.formBasic') }}</div>
+    <template #title>
+      <span class="modal-title">
+        <span class="modal-title__icon modal-title__icon--purple">
+          <ApartmentOutlined />
+        </span>
+        {{ title }}
+      </span>
+    </template>
+    <a-form layout="vertical" class="system-form">
+      <div class="system-form-section">
+        <div class="system-form-section__title">
+          <ApartmentOutlined />
+          {{ t('permissionPage.formBasic') }}
+        </div>
         <a-form-item :label="t('permissionPage.formCode')" required>
           <a-input
             v-model:value="formState.code"
@@ -155,8 +166,11 @@ async function handleSubmit() {
         </a-row>
       </div>
 
-      <div class="form-section">
-        <div class="section-title">{{ t('permissionPage.formMenu') }}</div>
+      <div class="system-form-section">
+        <div class="system-form-section__title">
+          <MenuOutlined />
+          {{ t('permissionPage.formMenu') }}
+        </div>
         <a-row :gutter="16">
           <a-col :span="8">
             <a-form-item :label="t('permissionPage.formIcon')">
@@ -181,33 +195,3 @@ async function handleSubmit() {
     </a-form>
   </a-modal>
 </template>
-
-<style scoped>
-.permission-form {
-  padding-top: 4px;
-}
-
-.form-section + .form-section {
-  margin-top: 8px;
-  padding-top: 16px;
-  border-top: 1px solid var(--omes-color-border);
-}
-
-.section-title {
-  margin-bottom: 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--omes-color-text);
-}
-
-.section-title::before {
-  content: '';
-  display: inline-block;
-  width: 3px;
-  height: 14px;
-  margin-right: 8px;
-  vertical-align: -2px;
-  background: var(--omes-color-primary);
-  border-radius: 2px;
-}
-</style>

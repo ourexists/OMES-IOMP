@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import { computed, reactive, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { TeamOutlined } from '@ant-design/icons-vue'
 import type { RoleRecord } from '@/api/ucenter'
 import { saveRole } from '@/api/ucenter'
 import { message } from 'ant-design-vue'
@@ -54,16 +55,26 @@ async function handleSubmit() {
 <template>
   <a-modal
     :open="open"
-    :title="title"
     width="560px"
     destroy-on-close
-    class="role-form-modal"
+    class="admin-form-modal"
     @update:open="emit('update:open', $event)"
     @ok="handleSubmit"
   >
-    <a-form layout="vertical" class="role-form">
-      <div class="form-section">
-        <div class="section-title">{{ t('rolePage.formBasic') }}</div>
+    <template #title>
+      <span class="modal-title">
+        <span class="modal-title__icon modal-title__icon--purple">
+          <TeamOutlined />
+        </span>
+        {{ title }}
+      </span>
+    </template>
+    <a-form layout="vertical" class="system-form">
+      <div class="system-form-section">
+        <div class="system-form-section__title">
+          <TeamOutlined />
+          {{ t('rolePage.formBasic') }}
+        </div>
         <a-form-item :label="t('rolePage.colName')" required>
           <a-input v-model:value="formState.name" :placeholder="t('rolePage.namePlaceholder')" />
         </a-form-item>
@@ -85,27 +96,3 @@ async function handleSubmit() {
     </a-form>
   </a-modal>
 </template>
-
-<style scoped>
-.role-form {
-  padding-top: 4px;
-}
-
-.section-title {
-  margin-bottom: 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--omes-color-text);
-}
-
-.section-title::before {
-  content: '';
-  display: inline-block;
-  width: 3px;
-  height: 14px;
-  margin-right: 8px;
-  vertical-align: -2px;
-  background: var(--omes-color-primary);
-  border-radius: 2px;
-}
-</style>

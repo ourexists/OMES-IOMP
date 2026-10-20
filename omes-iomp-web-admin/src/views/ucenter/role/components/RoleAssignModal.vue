@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { SafetyCertificateOutlined } from '@ant-design/icons-vue'
 import type { PermissionRecord, PlatformNode } from '@/api/ucenter'
 import {
   assignRolePermissions,
@@ -204,14 +205,21 @@ async function handleSubmit() {
 <template>
   <a-modal
     :open="open"
-    :title="t('rolePage.assign')"
     width="860px"
     :confirm-loading="loading"
     destroy-on-close
-    class="role-assign-modal"
+    class="admin-form-modal"
     @update:open="emit('update:open', $event)"
     @ok="handleSubmit"
   >
+    <template #title>
+      <span class="modal-title">
+        <span class="modal-title__icon modal-title__icon--purple">
+          <SafetyCertificateOutlined />
+        </span>
+        {{ t('rolePage.assign') }}
+      </span>
+    </template>
     <a-spin :spinning="loading">
       <div v-if="platforms.length" class="assign-layout">
         <div class="platform-pane">
@@ -308,8 +316,8 @@ async function handleSubmit() {
 
 .platform-item.active {
   border-color: var(--omes-color-primary);
-  background: #f0f5ff;
-  box-shadow: 0 0 0 1px rgba(22, 119, 255, 0.15);
+  background: var(--omes-color-primary-bg);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--omes-color-primary) 18%, transparent);
 }
 
 .platform-name {

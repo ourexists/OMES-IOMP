@@ -34,9 +34,9 @@ const formOpen = ref(false)
 const editingRecord = ref<InspectItemRecord | null>(null)
 
 const columns = computed(() => [
-  { title: t('inspectItemPage.colName'), dataIndex: 'itemName', key: 'itemName', ellipsis: true, minWidth: 160 },
-  { title: t('inspectItemPage.colType'), key: 'itemType', width: 100 },
-  { title: t('inspectItemPage.colUnit'), dataIndex: 'unit', key: 'unit', width: 140, ellipsis: true },
+  { title: t('inspectItemPage.colName'), dataIndex: 'itemName', key: 'itemName', ellipsis: true, width: 220 },
+  { title: t('inspectItemPage.colType'), key: 'itemType', width: 110, align: 'center' as const },
+  { title: t('inspectItemPage.colUnit'), dataIndex: 'unit', key: 'unit', width: 180, ellipsis: true },
   { title: t('inspectItemPage.colMin'), dataIndex: 'minValue', key: 'minValue', width: 100 },
   { title: t('inspectItemPage.colMax'), dataIndex: 'maxValue', key: 'maxValue', width: 100 },
   { title: t('inspectItemPage.colRequired'), key: 'requiredFlag', width: 90, align: 'center' as const },
@@ -51,6 +51,16 @@ const rowSelection = computed(() => ({
 }))
 
 const hasSelection = computed(() => selectedRowKeys.value.length > 0)
+
+function typeTone(type?: number): string {
+  if (type === 1) {
+    return 'choice'
+  }
+  if (type === 3) {
+    return 'bool'
+  }
+  return 'numeric'
+}
 
 function typeLabel(record: InspectItemRecord): string {
   if (record.itemTypeDesc) {
@@ -187,7 +197,7 @@ onMounted(loadTable)
               :columns="columns"
               :data-source="dataSource"
               :row-selection="rowSelection"
-              :scroll="{ x: 900, y: scrollY }"
+              :scroll="{ x: 1040, y: scrollY }"
               :pagination="{
                 current: pagination.current,
                 pageSize: pagination.pageSize,
@@ -198,8 +208,13 @@ onMounted(loadTable)
               @change="onTableChange"
             >
               <template #bodyCell="{ column, record }">
-                <template v-if="column.key === 'itemType'">
-                  {{ typeLabel(record) }}
+                <template v-if="column.key === 'itemName'">
+                  <span class="item-name">{{ record.itemName || '—' }}</span>
+                </template>
+                <template v-else-if="column.key === 'itemType'">
+                  <span class="type-tag" :class="`type-tag--${typeTone(record.itemType)}`">
+                    {{ typeLabel(record) }}
+                  </span>
                 </template>
                 <template v-else-if="column.key === 'minValue'">
                   {{ record.itemType === 2 && record.minValue != null ? record.minValue : '-' }}
@@ -291,6 +306,39 @@ onMounted(loadTable)
 .inspect-item-table :deep(.ant-table-thead > tr > th) {
   background: var(--omes-color-bg-elevated);
   font-weight: 600;
+}
+
+.item-name {
+  font-weight: 600;
+}
+
+.type-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 20px;
+  border: 1px solid transparent;
+}
+
+.type-tag--choice {
+  color: var(--omes-color-accent-purple-from);
+  background: var(--omes-color-accent-purple-bg);
+  border-color: var(--omes-color-accent-purple-border);
+}
+
+.type-tag--numeric {
+  color: var(--omes-color-primary);
+  background: var(--omes-color-primary-bg);
+  border-color: var(--omes-color-primary-border);
+}
+
+.type-tag--bool {
+  color: var(--omes-color-success);
+  background: var(--omes-color-success-bg);
+  border-color: var(--omes-color-success-border);
 }
 
 .flag-yes {

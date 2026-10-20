@@ -146,9 +146,9 @@ const canRestart = computed(() => props.task?.status === TASK_STATUS_OVERDUE)
   gap: 16px;
   padding: 16px 20px;
   background: var(--omes-color-bg-container);
-  border: 1px solid #e8eef5;
+  border: 1px solid var(--omes-color-primary-border);
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--omes-color-text) 6%, transparent);
 }
 
 .detail-overview {
@@ -168,8 +168,12 @@ const canRestart = computed(() => props.task?.status === TASK_STATUS_OVERDUE)
   font-size: 28px;
   flex-shrink: 0;
   color: var(--omes-color-accent-cyan-from);
-  background: linear-gradient(135deg, #e6fffb 0%, #f0fffe 100%);
-  border: 1px solid #87e8de;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--omes-color-accent-cyan-from) 14%, var(--omes-color-bg-container)) 0%,
+    color-mix(in srgb, var(--omes-color-accent-cyan-to) 8%, var(--omes-color-bg-container)) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--omes-color-accent-cyan-border) 35%, var(--omes-color-border));
 }
 
 .detail-main {
@@ -187,7 +191,7 @@ const canRestart = computed(() => props.task?.status === TASK_STATUS_OVERDUE)
   margin: 0;
   font-size: 20px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--omes-color-text-heading);
 }
 
 .detail-meta {

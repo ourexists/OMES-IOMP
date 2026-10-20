@@ -173,9 +173,9 @@ watch(
   gap: 16px;
   padding: 18px 20px;
   background: var(--omes-color-bg-container);
-  border: 1px solid #e8eef5;
+  border: 1px solid var(--omes-color-primary-border);
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--omes-color-text) 6%, transparent);
 }
 
 .record-summary__overview {
@@ -196,8 +196,8 @@ watch(
   font-size: 24px;
   flex-shrink: 0;
   color: var(--omes-color-primary);
-  background: linear-gradient(135deg, var(--omes-color-primary-bg) 0%, #f0f7ff 100%);
-  border: 1px solid #bae0ff;
+  background: linear-gradient(135deg, var(--omes-color-primary-bg) 0%, var(--omes-color-primary-bg-hover) 100%);
+  border: 1px solid var(--omes-color-primary-border);
 }
 
 .record-summary__main {
@@ -208,7 +208,7 @@ watch(
   margin: 0;
   font-size: 18px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--omes-color-text-heading);
   line-height: 1.35;
 }
 
@@ -240,12 +240,12 @@ watch(
   padding: 12px 16px;
   border-radius: 12px;
   background: var(--omes-color-bg-toolbar-from);
-  border: 1px solid #e8eef5;
+  border: 1px solid var(--omes-color-primary-border);
 }
 
 .stat-card--score {
-  background: linear-gradient(180deg, #f0f7ff 0%, var(--omes-color-primary-bg) 100%);
-  border-color: #bae0ff;
+  background: linear-gradient(180deg, var(--omes-color-primary-bg-hover) 0%, var(--omes-color-primary-bg) 100%);
+  border-color: var(--omes-color-primary-border);
 }
 
 .stat-card__value {
@@ -264,10 +264,10 @@ watch(
 
 .detail-panel {
   background: var(--omes-color-bg-container);
-  border: 1px solid #e8eef5;
+  border: 1px solid var(--omes-color-primary-border);
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--omes-color-text) 6%, transparent);
 }
 
 .detail-panel__head {

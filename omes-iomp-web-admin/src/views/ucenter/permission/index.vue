@@ -185,7 +185,7 @@ watch(selectedPlatform, () => {
 <template>
   <div class="permission-page">
     <a-row :gutter="16" class="page-body">
-      <a-col :xs="24" :lg="6">
+      <a-col :xs="24" :lg="5">
         <a-card size="small" class="panel-card platform-panel">
           <template #title>
             <AdminPanelTitle>
@@ -197,7 +197,7 @@ watch(selectedPlatform, () => {
         </a-card>
       </a-col>
 
-      <a-col :xs="24" :lg="18">
+      <a-col :xs="24" :lg="19">
         <a-card size="small" class="panel-card permission-panel">
           <template #title>
             <span class="card-title">{{ t('permissionPage.management') }}</span>
@@ -349,6 +349,8 @@ watch(selectedPlatform, () => {
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 280px);
+  padding: 12px;
+  background: var(--omes-color-bg-elevated);
 }
 
 .permission-panel :deep(.ant-card-body) {
@@ -378,13 +380,13 @@ watch(selectedPlatform, () => {
 }
 
 .search-icon {
-  color: rgba(0, 0, 0, 0.25);
+  color: var(--omes-color-text-placeholder);
 }
 
 .tree-header,
 .permission-node {
   display: grid;
-  grid-template-columns: minmax(160px, 1.6fr) minmax(120px, 1fr) 90px 110px 180px;
+  grid-template-columns: minmax(140px, 1.4fr) minmax(100px, 1fr) 88px 108px 168px;
   align-items: center;
   gap: 12px;
   width: 100%;
@@ -478,8 +480,9 @@ watch(selectedPlatform, () => {
   font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
   font-size: 12px;
   color: var(--omes-color-primary);
-  background: #f0f5ff;
-  padding: 2px 8px;
+  background: var(--omes-color-primary-bg);
+  border: 1px solid var(--omes-color-primary-border);
+  padding: 0 8px;
   border-radius: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -494,14 +497,8 @@ watch(selectedPlatform, () => {
 .node-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   flex-wrap: nowrap;
-  opacity: 0.55;
-  transition: opacity 0.2s;
-}
-
-.tree-container :deep(.ant-tree-node-content-wrapper:hover) .node-actions,
-.node-actions:focus-within {
-  opacity: 1;
 }
 
 .node-actions :deep(.ant-btn-link) {

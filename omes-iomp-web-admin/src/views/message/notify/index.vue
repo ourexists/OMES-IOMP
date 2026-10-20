@@ -52,7 +52,7 @@ const columns = computed(() => [
   { title: t('notifyPage.colType'), dataIndex: 'typeDesc', key: 'typeDesc', width: 110 },
   { title: t('notifyPage.colStatus'), dataIndex: 'statusDesc', key: 'statusDesc', width: 120 },
   { title: t('notifyPage.colInterval'), dataIndex: 'step', key: 'step', width: 110 },
-  { title: t('notifyPage.colAction'), key: 'action', width: 220, fixed: 'right' as const },
+  { title: t('notifyPage.colAction'), key: 'action', width: 200 },
 ])
 
 const rowSelection = computed(() => ({
@@ -203,7 +203,7 @@ onMounted(async () => {
             <a-select size="small"
               v-model:value="searchForm.type"
               allow-clear
-              :placeholder="t('notifyPage.all')"
+              :placeholder="t('notifyPage.colType')"
               :options="typeOptions"
               class="search-select"
             />
@@ -212,7 +212,7 @@ onMounted(async () => {
             <a-select size="small"
               v-model:value="searchForm.status"
               allow-clear
-              :placeholder="t('notifyPage.all')"
+              :placeholder="t('notifyPage.colStatus')"
               :options="statusOptions"
               class="search-select"
             />
@@ -221,7 +221,7 @@ onMounted(async () => {
             <a-select size="small"
               v-model:value="searchForm.platform"
               allow-clear
-              :placeholder="t('notifyPage.all')"
+              :placeholder="t('notifyPage.colPlatforms')"
               class="search-select"
             >
               <a-select-option
@@ -267,7 +267,7 @@ onMounted(async () => {
         :columns="columns"
         :data-source="dataSource"
         :row-selection="rowSelection"
-        :scroll="{ x: 1100, y: scrollY }"
+        :scroll="{ y: scrollY }"
         :pagination="{
           current: pagination.current,
           pageSize: pagination.pageSize,
@@ -294,7 +294,7 @@ onMounted(async () => {
             {{ record.step ?? 0 }}
           </template>
           <template v-else-if="column.key === 'action'">
-            <a-space wrap size="small" class="action-group">
+            <a-space size="small" class="action-group">
               <a-button
                 v-if="record.status === NOTIFY_STATUS.READY"
                 type="link"
