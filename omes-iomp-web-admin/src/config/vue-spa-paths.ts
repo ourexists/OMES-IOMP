@@ -52,6 +52,7 @@ export const VUE_SPA_VIEW_PATHS = [
   '/view/mps_tables',
   '/view/mps_form_edit',
   '/view/mps_queue',
+  '/view/im_desk',
 ] as const
 
 const VUE_SPA_VIEW_PATH_SET = new Set<string>(VUE_SPA_VIEW_PATHS)

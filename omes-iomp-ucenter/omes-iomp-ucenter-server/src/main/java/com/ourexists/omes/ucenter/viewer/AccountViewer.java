@@ -17,6 +17,7 @@ import com.ourexists.omes.ucenter.account.service.AccountService;
 import com.ourexists.omes.ucenter.enums.AccRoleEnum;
 import com.ourexists.omes.ucenter.enums.AccStatusEnum;
 import com.ourexists.omes.ucenter.feign.AccountFeign;
+import com.ourexists.omes.ucenter.im.ImChatService;
 import com.ourexists.omes.ucenter.tenant.TenantUVo;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -44,6 +45,9 @@ public class AccountViewer implements AccountFeign {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private ImChatService imChatService;
 
     @Operation(summary = "分页查询")
     @PostMapping("/selectByPage")
@@ -109,6 +113,9 @@ public class AccountViewer implements AccountFeign {
     @PostMapping("/delete")
     public JsonResponseEntity<Boolean> delete(@RequestBody IdsDto idsDto) {
         accountService.removeBatchByIds(idsDto.getIds());
+        if (idsDto.getIds() != null) {
+            idsDto.getIds().forEach(imChatService::onAccountClosed);
+        }
         return JsonResponseEntity.success(true);
     }
 
@@ -116,6 +123,7 @@ public class AccountViewer implements AccountFeign {
     @GetMapping("/frozen")
     public JsonResponseEntity<Boolean> frozen(@RequestParam String accId) {
         accountService.modifyStatus(accId, AccStatusEnum.FROZEN);
+        imChatService.onAccountClosed(accId);
         return JsonResponseEntity.success(true);
     }
 
@@ -123,6 +131,7 @@ public class AccountViewer implements AccountFeign {
     @GetMapping("/invalid")
     public JsonResponseEntity<Boolean> invalid(@RequestParam String accId) {
         accountService.modifyStatus(accId, AccStatusEnum.INVALID);
+        imChatService.onAccountClosed(accId);
         return JsonResponseEntity.success(true);
     }
 

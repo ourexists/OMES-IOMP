@@ -1495,6 +1495,7 @@ export default {
     localFile: 'File Manager',
     realtime: 'Realtime Devices',
     systemConfig: 'System Config',
+    imDesk: 'Service Desk',
   },
   equipHealth: {
     templateAdd: 'Add Template',
@@ -2184,5 +2185,17 @@ export default {
     baiduMapAkPlaceholder: 'Enter Baidu Map browser AK',
     baiduMapAkHint: 'Apply a browser AK on Baidu LBS and whitelist your domains.',
     openConsole: 'Open console',
+  },
+  imChat: {
+    title: 'Contact support',
+    close: 'Close',
+    deskTitle: 'Service desk',
+    placeholder: 'Type a message, Enter to send',
+    send: 'Send',
+    empty: 'No messages',
+    sessions: 'Conversations',
+    noSession: 'No customer messages yet',
+    unavailable: 'Support chat is unavailable',
+    peer: 'Support',
   },
 }

@@ -1495,6 +1495,7 @@ export default {
     localFile: '文件管理',
     realtime: '实时设备',
     systemConfig: '系统配置',
+    imDesk: '客服工作台',
   },
   equipHealth: {
     templateAdd: '新增模板',
@@ -2184,5 +2185,17 @@ export default {
     baiduMapAkPlaceholder: '请输入百度地图浏览器端 AK',
     baiduMapAkHint: '在百度地图开放平台申请浏览器端 AK，并配置域名白名单。',
     openConsole: '打开控制台',
+  },
+  imChat: {
+    title: '联系客服',
+    close: '关闭',
+    deskTitle: '客服工作台',
+    placeholder: '输入消息，Enter 发送',
+    send: '发送',
+    empty: '暂无消息',
+    sessions: '会话',
+    noSession: '还没有用户发来消息',
+    unavailable: '在线客服暂不可用',
+    peer: '客服',
   },
 }

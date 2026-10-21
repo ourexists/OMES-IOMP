@@ -60,6 +60,7 @@ const VIEW_COMPONENTS: Record<string, ViewLoader> = {
   '/view/sync_tables': () => import('@/views/system/sync/index.vue'),
   '/view/task_tables': () => import('@/views/system/task/index.vue'),
   '/view/system_config': () => import('@/views/system/config/index.vue'),
+  '/view/im_desk': () => import('@/views/im/desk/index.vue'),
   '/view/local_file': () => import('@/views/system/file/index.vue'),
   '/view/local_file_tables': () => import('@/views/system/file/index.vue'),
   '/view/material_tables': () => import('@/views/material/index.vue'),

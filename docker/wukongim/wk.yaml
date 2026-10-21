@@ -1,0 +1,15 @@
+mode: "release"
+rootDir: "/root/wukongim/data"
+# Clients must present the token Admin stores with POST /user/token.
+tokenAuthOn: true
+# Same value as omes.im.secret.
+managerToken: "35ad3392afb0aa0dd50acb0faae13d042c4525f6f25d27caeb46b6d74355cc67"
+whitelistOffOfPerson: true
+external:
+  ip: "127.0.0.1"
+demo:
+  on: false
+manager:
+  on: false
+conversation:
+  on: true

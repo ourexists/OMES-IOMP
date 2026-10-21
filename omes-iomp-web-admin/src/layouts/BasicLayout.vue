@@ -23,6 +23,7 @@ import { findPermissionByUrl } from '@/utils/permission'
 import { isStandalonePermission, isStandaloneViewPath } from '@/router/view-map'
 import { APP_ICON_ALT, APP_ICON_SRC } from '@/config/brand'
 import MessageNotifyBell from '@/components/MessageNotifyBell.vue'
+import ServiceChatWidget from '@/components/im/ServiceChatWidget.vue'
 import { translateText } from '@/i18n'
 import { isLayoutAutoHeightPath } from '@/router/view-map'
 
@@ -203,6 +204,7 @@ const currentThemeLabel = computed(() =>
         </router-view>
       </a-layout-content>
     </a-layout>
+    <ServiceChatWidget v-if="route.path !== '/view/im_desk'" />
   </a-layout>
 </template>
 
