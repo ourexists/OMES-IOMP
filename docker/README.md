@@ -68,4 +68,4 @@ IDEA 的 `.run/` 配置已同步新路径，Dockerfile 构建 context 为仓库�
 
 当前 Compose 仅集成已有的 Admin、SAS、Web 和三种中间件。AI、Control、Flink 尚未定义容器服务，其运行说明见各模块文档。
 
-在线客服使用单独的 WuKongIM，编排在 [wukongim/docker-compose.yml](wukongim/docker-compose.yml)。在 `docker/wukongim` 里执行 `docker compose up -d`。这边的 `down` 不会删除 WuKongIM 的卷。宿主机只监听 `127.0.0.1:5001`。
+在线客服使用单独的 WuKongIM，编排在 [wukongim/docker-compose.yml](im/docker-compose.yml)。在 `docker/wukongim` 里执行 `docker compose up -d`。这边的 `down` 不会删除 WuKongIM 的卷。宿主机只监听 `127.0.0.1:5001`。
