@@ -21,8 +21,6 @@ import java.util.List;
 @Component
 public class TcMqttEquipDataParser implements EquipDataParser {
 
-    public static final String CODE_KEY = "code";
-
     @Autowired
     private EquipRealtimeManager equipRealtimeManager;
 
@@ -30,54 +28,53 @@ public class TcMqttEquipDataParser implements EquipDataParser {
     private AlarmRuleProcessor alarmRuleProcessor;
 
     public List<EquipRealtime> parse(String gwId, String sourceData) {
+        return parse(gwId, sourceData, MqttParseConfig.tc());
+    }
+
+    public List<EquipRealtime> parse(String gwId, String sourceData, MqttParseConfig config) {
         List<EquipRealtime> targets = new ArrayList<>();
         final JSONObject jsonObject;
         try {
             jsonObject = JSON.parseObject(sourceData);
         } catch (Exception e) {
-            log.warn("TC MQTT equip JSON parse failed gwId={} payloadChars={}", gwId, sourceData.length(), e);
+            log.warn("grouped MQTT equip JSON parse failed gwId={} payloadChars={}", gwId, sourceData.length(), e);
             return targets;
         }
         if (jsonObject == null) {
-            log.warn("TC MQTT equip JSON root null gwId={} payloadChars={}", gwId, sourceData.length());
+            log.warn("grouped MQTT equip JSON root null gwId={} payloadChars={}", gwId, sourceData.length());
             return targets;
         }
-        String sn = jsonObject.getString("SN");
-        JSONArray devArray = jsonObject.getJSONArray("dev");
-        JSONArray ywArray = jsonObject.getJSONArray("ai");
-        String timeStr = jsonObject.getString("time");
+        if (config == null || config.getGroups().isEmpty()) {
+            log.warn("grouped MQTT equip has no groups gwId={}", gwId);
+            return targets;
+        }
+        String sn = jsonObject.getString(config.getSnField());
+        String timeStr = jsonObject.getString(config.getTimeField());
         if (!StringUtils.hasText(timeStr)) {
-            log.warn("TC MQTT equip missing time gwId={} sn={}", gwId, sn);
+            log.warn("grouped MQTT equip missing time gwId={} sn={} timeField={}", gwId, sn, config.getTimeField());
             return Collections.emptyList();
         }
         final Date time;
         try {
             time = Date.from(OffsetDateTime.parse(timeStr.trim()).toInstant());
         } catch (Exception e) {
-            log.warn("TC MQTT equip time parse failed gwId={} sn={} timeStr={}", gwId, sn, timeStr, e);
+            log.warn("grouped MQTT equip time parse failed gwId={} sn={} timeStr={}", gwId, sn, timeStr, e);
             return Collections.emptyList();
         }
 
-        int devLen = devArray == null ? 0 : devArray.size();
-        int ywLen = ywArray == null ? 0 : ywArray.size();
-
-        if (devArray != null) {
-            for (JSONObject object : devArray.toArray(JSONObject.class)) {
-                String devSn = object.getString(CODE_KEY);
-                String ssn = sn + "dev" + devSn;
-                EquipRealtime equipRealtime = equipRealtimeManager.get(ssn);
-                if (equipRealtime == null || equipRealtime.getEquipRealtimeConfig() == null
-                        || !gwId.equals(equipRealtime.getEquipRealtimeConfig().getGwId())) {
+        int itemCount = 0;
+        for (MqttParseConfig.Group group : config.getGroups()) {
+            JSONArray array = jsonObject.getJSONArray(group.getArray());
+            if (array == null) {
+                continue;
+            }
+            itemCount += array.size();
+            for (JSONObject object : array.toArray(JSONObject.class)) {
+                if (object == null) {
                     continue;
                 }
-                targets.add(doParse(equipRealtime, object, time));
-            }
-
-        }
-        if (ywArray != null) {
-            for (JSONObject object : ywArray.toArray(JSONObject.class)) {
-                String ywSn = object.getString(CODE_KEY);
-                String ssn = sn + "yw" + ywSn;
+                String code = object.getString(config.getCodeField());
+                String ssn = sn + group.getPrefix() + code;
                 EquipRealtime equipRealtime = equipRealtimeManager.get(ssn);
                 if (equipRealtime == null || equipRealtime.getEquipRealtimeConfig() == null
                         || !gwId.equals(equipRealtime.getEquipRealtimeConfig().getGwId())) {
@@ -86,13 +83,12 @@ public class TcMqttEquipDataParser implements EquipDataParser {
                 targets.add(doParse(equipRealtime, object, time));
             }
         }
-        if (targets.isEmpty() && (devLen > 0 || ywLen > 0)) {
+        if (targets.isEmpty() && itemCount > 0) {
             log.warn(
-                    "TC MQTT equip parse produced 0 rows (cache miss or gw mismatch) gwId={} sn={} devCount={} ywCount={}",
+                    "grouped MQTT equip parse produced 0 rows (cache miss or gw mismatch) gwId={} sn={} itemCount={}",
                     gwId,
                     sn,
-                    devLen,
-                    ywLen);
+                    itemCount);
         }
         return targets;
     }

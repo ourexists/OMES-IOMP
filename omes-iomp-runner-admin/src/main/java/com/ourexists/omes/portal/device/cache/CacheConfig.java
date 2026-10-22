@@ -34,8 +34,9 @@ public class CacheConfig {
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory, ObjectMapper objectMapper) {
         GenericJackson2JsonRedisSerializer valueSerializer = redisValueSerializer(objectMapper);
+        // Duration.ZERO = 永不过期（设备实时主缓存 Lua SET 亦不设 EX；车间仍由 Workshop Lua 单独带 TTL）
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(30))
+                .entryTtl(Duration.ZERO)
                 .disableCachingNullValues()
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(
                         valueSerializer

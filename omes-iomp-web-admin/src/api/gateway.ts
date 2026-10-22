@@ -73,6 +73,11 @@ export function isMqttProtocol(protocol?: string): boolean {
   return p === 'mqtt' || p === 'tc_mqtt'
 }
 
+/** 只有普通 MQTT 把解析方式写在 params.parse；TC_MQTT 仍用固定规则。 */
+export function isConfigurableMqtt(protocol?: string): boolean {
+  return normalizeProtocol(protocol) === 'mqtt'
+}
+
 export function isDgwProtocol(protocol?: string): boolean {
   return normalizeProtocol(protocol) === 'dgw'
 }

@@ -1174,7 +1174,7 @@ CREATE TABLE "public"."t_gateway" (
   "server_name" varchar(50) COLLATE "pg_catalog"."default",
   "uri" varchar(255) COLLATE "pg_catalog"."default",
   "topic" varchar(50) COLLATE "pg_catalog"."default",
-  "params" varchar(255) COLLATE "pg_catalog"."default",
+  "params" varchar(2000) COLLATE "pg_catalog"."default",
   "protocol" varchar(20) COLLATE "pg_catalog"."default",
   "enabled" bool,
   "username" varchar(150) COLLATE "pg_catalog"."default",

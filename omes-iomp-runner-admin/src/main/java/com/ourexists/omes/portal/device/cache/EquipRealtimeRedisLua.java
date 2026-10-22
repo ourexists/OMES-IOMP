@@ -19,30 +19,30 @@ final class EquipRealtimeRedisLua {
 
     static {
         UPSERT_SCRIPT.setScriptText("""
-                redis.call('SET', KEYS[1], ARGV[1], 'EX', tonumber(ARGV[2]))
-                if ARGV[3] ~= '' then
-                  redis.call('HSET', KEYS[2], ARGV[3], ARGV[4])
+                redis.call('SET', KEYS[1], ARGV[1])
+                if ARGV[2] ~= '' then
+                  redis.call('HSET', KEYS[2], ARGV[2], ARGV[3])
+                end
+                if ARGV[4] == '1' then
+                  redis.call('SREM', KEYS[3], ARGV[3])
                 end
                 if ARGV[5] == '1' then
-                  redis.call('SREM', KEYS[3], ARGV[4])
+                  redis.call('SADD', KEYS[4], ARGV[3])
                 end
                 if ARGV[6] == '1' then
-                  redis.call('SADD', KEYS[4], ARGV[4])
-                end
-                if ARGV[7] == '1' then
-                  redis.call('ZADD', KEYS[5], tonumber(ARGV[8]), ARGV[4])
+                  redis.call('ZADD', KEYS[5], tonumber(ARGV[7]), ARGV[3])
                 else
-                  redis.call('ZREM', KEYS[5], ARGV[4])
+                  redis.call('ZREM', KEYS[5], ARGV[3])
                 end
-                if ARGV[9] == '1' then
-                  redis.call('ZADD', KEYS[6], tonumber(ARGV[10]), ARGV[4])
+                if ARGV[8] == '1' then
+                  redis.call('ZADD', KEYS[6], tonumber(ARGV[9]), ARGV[3])
                 else
-                  redis.call('ZREM', KEYS[6], ARGV[4])
+                  redis.call('ZREM', KEYS[6], ARGV[3])
                 end
-                if ARGV[11] == '1' then
-                  redis.call('ZADD', KEYS[7], tonumber(ARGV[12]), ARGV[4])
+                if ARGV[10] == '1' then
+                  redis.call('ZADD', KEYS[7], tonumber(ARGV[11]), ARGV[3])
                 else
-                  redis.call('ZREM', KEYS[7], ARGV[4])
+                  redis.call('ZREM', KEYS[7], ARGV[3])
                 end
                 return 1
                 """);
@@ -84,17 +84,14 @@ final class EquipRealtimeRedisLua {
         CLEAR_TENANT_SCRIPT.setResultType(Long.class);
     }
 
-    /** 与 CacheConfig 中 equip RedisCache 默认 TTL 一致（分钟） */
-    static final int CACHE_TTL_SECONDS = 30 * 60;
-
     private EquipRealtimeRedisLua() {
     }
 
+    /** 设备实时主缓存不过期，仅显式 remove / clear 时删除。 */
     static void executeUpsert(
             RedisTemplate<String, Object> redisTemplate,
             List<String> keys,
             Object equipSerializedPayload,
-            int ttlSeconds,
             String equipId,
             String selfCode,
             boolean sremOldGw,
@@ -109,7 +106,6 @@ final class EquipRealtimeRedisLua {
                 UPSERT_SCRIPT,
                 keys,
                 equipSerializedPayload,
-                ttlSeconds,
                 equipId == null ? "" : equipId,
                 selfCode,
                 sremOldGw ? "1" : "0",

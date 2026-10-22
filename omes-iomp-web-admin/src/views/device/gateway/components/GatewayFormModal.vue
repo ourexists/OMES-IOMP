@@ -11,6 +11,7 @@ import {
 import {
   fetchGatewayById,
   fetchGatewayProtocols,
+  isConfigurableMqtt,
   isDgwProtocol,
   isMqttProtocol,
   needsGatewayAuth,
@@ -47,9 +48,17 @@ const formState = reactive({
   username: '',
   password: '',
   collectCron: '',
+  parseMode: 'flat' as 'flat' | 'grouped',
+  snField: 'SN',
+  timeField: 'time',
+  codeField: 'code',
+  groups: [] as { array: string; prefix: string }[],
 })
 
+const rawParams = ref('')
+
 const showMqttFields = computed(() => isMqttProtocol(formState.protocol))
+const showParseConfig = computed(() => isConfigurableMqtt(formState.protocol))
 const showDgwFields = computed(() => isDgwProtocol(formState.protocol))
 const showAuthFields = computed(() => needsGatewayAuth(formState.protocol))
 const topicRequired = computed(() => showMqttFields.value)
@@ -67,6 +76,118 @@ async function loadProtocols() {
   protocolOptions.value = Array.isArray(list) ? list : []
 }
 
+function paramsText(params?: GatewayRecord['params']): string {
+  if (!params) {
+    return ''
+  }
+  if (typeof params === 'string') {
+    return params
+  }
+  try {
+    return JSON.stringify(params)
+  } catch {
+    return ''
+  }
+}
+
+function resetParse() {
+  formState.parseMode = 'flat'
+  formState.snField = 'SN'
+  formState.timeField = 'time'
+  formState.codeField = 'code'
+  formState.groups = []
+}
+
+function applyParams(params?: GatewayRecord['params']) {
+  rawParams.value = paramsText(params)
+  let mode: 'flat' | 'grouped' = 'flat'
+  let snField = 'SN'
+  let timeField = 'time'
+  let codeField = 'code'
+  let groups: { array: string; prefix: string }[] = []
+  if (rawParams.value) {
+    try {
+      const root = JSON.parse(rawParams.value) as { parse?: Record<string, unknown> }
+      const parse = root?.parse
+      if (parse && typeof parse === 'object') {
+        mode = parse.mode === 'grouped' ? 'grouped' : 'flat'
+        snField = String(parse.snField || 'SN')
+        timeField = String(parse.timeField || 'time')
+        codeField = String(parse.codeField || 'code')
+        if (Array.isArray(parse.groups)) {
+          groups = parse.groups
+            .filter((item) => item && typeof item === 'object')
+            .map((item) => {
+              const group = item as { array?: unknown; prefix?: unknown }
+              return {
+                array: String(group.array || ''),
+                prefix: String(group.prefix || ''),
+              }
+            })
+        }
+      }
+    } catch {
+      // 保留原始 params，表单按平铺显示
+    }
+  }
+  formState.snField = snField
+  formState.timeField = timeField
+  formState.codeField = codeField
+  formState.groups = groups
+  formState.parseMode = mode
+}
+
+function buildParams(): string | undefined {
+  if (!isConfigurableMqtt(formState.protocol)) {
+    return rawParams.value || undefined
+  }
+  let root: Record<string, unknown> = {}
+  if (rawParams.value) {
+    try {
+      const parsed = JSON.parse(rawParams.value) as unknown
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        root = parsed as Record<string, unknown>
+      }
+    } catch {
+      root = {}
+    }
+  }
+  const parse: Record<string, unknown> = { mode: formState.parseMode }
+  const snField = formState.snField.trim()
+  const timeField = formState.timeField.trim()
+  const codeField = formState.codeField.trim()
+  if (snField && snField !== 'SN') {
+    parse.snField = snField
+  }
+  if (timeField && timeField !== 'time') {
+    parse.timeField = timeField
+  }
+  if (codeField && codeField !== 'code') {
+    parse.codeField = codeField
+  }
+  const groups = formState.groups
+    .map((group) => ({ array: group.array.trim(), prefix: group.prefix.trim() }))
+    .filter((group) => group.array)
+  if (groups.length) {
+    parse.groups = groups
+  }
+  if (formState.parseMode === 'flat' && !groups.length && Object.keys(parse).length === 1) {
+    delete root.parse
+  } else {
+    root.parse = parse
+  }
+  // 始终写回字符串。更新策略会跳过 null，分组配置切回平铺时否则清不掉。
+  return JSON.stringify(root)
+}
+
+function addParseGroup() {
+  formState.groups.push({ array: '', prefix: '' })
+}
+
+function removeParseGroup(index: number) {
+  formState.groups.splice(index, 1)
+}
+
 async function loadDetail(id: string) {
   loading.value = true
   try {
@@ -78,6 +199,7 @@ async function loadDetail(id: string) {
     formState.username = data.username || ''
     formState.password = data.password || ''
     formState.collectCron = data.collectCron || ''
+    applyParams(data.params)
   } finally {
     loading.value = false
   }
@@ -91,6 +213,8 @@ function resetForm() {
   formState.username = ''
   formState.password = ''
   formState.collectCron = ''
+  rawParams.value = ''
+  resetParse()
 }
 
 function closeModal() {
@@ -102,6 +226,18 @@ watch(
   (protocol) => {
     if (isDgwProtocol(protocol) && !formState.collectCron.trim()) {
       formState.collectCron = '0/5 * * * * ?'
+    }
+  },
+)
+
+watch(
+  () => formState.parseMode,
+  (mode, prev) => {
+    if (mode === 'grouped' && prev !== 'grouped' && formState.groups.length === 0) {
+      formState.groups = [
+        { array: 'dev', prefix: 'dev' },
+        { array: 'ai', prefix: 'yw' },
+      ]
     }
   },
 )
@@ -146,6 +282,14 @@ async function handleSubmit() {
     message.warning(t('gatewayPage.collectCronRequired'))
     return
   }
+  if (
+    showParseConfig.value
+    && formState.parseMode === 'grouped'
+    && !formState.groups.some((group) => group.array.trim())
+  ) {
+    message.warning(t('gatewayPage.parseGroupRequired'))
+    return
+  }
 
   const payload: GatewayRecord = {
     id: props.record?.id,
@@ -156,6 +300,7 @@ async function handleSubmit() {
     username: formState.username?.trim() || undefined,
     password: formState.password || undefined,
     collectCron: formState.collectCron?.trim() || undefined,
+    params: buildParams(),
   }
 
   saving.value = true
@@ -279,6 +424,60 @@ async function handleSubmit() {
               :placeholder="t('gatewayPage.topicPlaceholder')"
             />
           </a-form-item>
+          <template v-if="showParseConfig">
+            <a-form-item :label="t('gatewayPage.parseMode')">
+              <a-select
+                v-model:value="formState.parseMode"
+                :options="[
+                  { value: 'flat', label: t('gatewayPage.parseFlat') },
+                  { value: 'grouped', label: t('gatewayPage.parseGrouped') },
+                ]"
+              />
+            </a-form-item>
+            <div class="form-hint">
+              {{ formState.parseMode === 'grouped' ? t('gatewayPage.parseGroupedHint') : t('gatewayPage.parseFlatHint') }}
+            </div>
+            <template v-if="formState.parseMode === 'grouped'">
+              <a-row :gutter="16">
+                <a-col :span="8">
+                  <a-form-item :label="t('gatewayPage.snField')">
+                    <a-input v-model:value="formState.snField" allow-clear placeholder="SN" />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="8">
+                  <a-form-item :label="t('gatewayPage.timeField')">
+                    <a-input v-model:value="formState.timeField" allow-clear placeholder="time" />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="8">
+                  <a-form-item :label="t('gatewayPage.codeField')">
+                    <a-input v-model:value="formState.codeField" allow-clear placeholder="code" />
+                  </a-form-item>
+                </a-col>
+              </a-row>
+              <div class="parse-groups-label">{{ t('gatewayPage.parseGroups') }}</div>
+              <div v-for="(group, index) in formState.groups" :key="index" class="parse-group-row">
+                <a-input
+                  v-model:value="group.array"
+                  allow-clear
+                  :addon-before="t('gatewayPage.parseArray')"
+                  :placeholder="t('gatewayPage.parseArrayPlaceholder')"
+                />
+                <a-input
+                  v-model:value="group.prefix"
+                  allow-clear
+                  :addon-before="t('gatewayPage.parsePrefix')"
+                  :placeholder="t('gatewayPage.parsePrefixPlaceholder')"
+                />
+                <a-button type="link" danger @click="removeParseGroup(index)">
+                  {{ t('gatewayPage.delete') }}
+                </a-button>
+              </div>
+              <a-button type="dashed" block @click="addParseGroup">
+                {{ t('gatewayPage.addParseGroup') }}
+              </a-button>
+            </template>
+          </template>
         </div>
 
         <div v-if="!formState.protocol" class="form-hint-empty">
@@ -368,9 +567,32 @@ async function handleSubmit() {
 
 .form-hint {
   margin-top: 10px;
+  margin-bottom: 12px;
   font-size: 12px;
   line-height: 1.5;
   color: var(--omes-color-text-tertiary);
+}
+
+.parse-groups-label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--omes-color-text-label);
+}
+
+.parse-group-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.parse-group-row > :deep(.ant-input-group-wrapper) {
+  flex: 1;
+  min-width: 0;
+}
+
+.parse-group-row :deep(.ant-btn) {
+  flex: 0 0 auto;
 }
 
 .protocol-badge {

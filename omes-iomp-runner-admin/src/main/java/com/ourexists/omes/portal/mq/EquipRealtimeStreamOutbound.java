@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 /**
  * 设备实时数据经 {@link StreamBridge} 发往 Spring Cloud Stream 出站 binding（Rabbit binder 等由配置决定）。
  * <p>
- * 同步写入门户 {@link EquipRealtimeManager}（Redis）：设备缓存键带固定 TTL（见 {@code EquipRealtimeRedisLua.CACHE_TTL_SECONDS}），
- * 而 Flink 变更持久化仅在「检测到有变更」时才刷新缓存；若长时间上报但字段未变，缓存会先过期，界面表现为周期性离线，因此每次出站即刷新实时态。
+ * 同步写入门户 {@link EquipRealtimeManager}（Redis，主缓存不过期）：Flink 变更持久化仅在「检测到有变更」时才刷新缓存，
+ * 因此每次出站即刷新实时态，保证界面看到最新上报时间与点位值。
  */
 @Slf4j
 @Component
