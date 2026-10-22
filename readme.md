@@ -68,7 +68,7 @@
 
 消息分普通和告警，可按周期向指定平台推送。浏览器经 SAS 的 WebSocket 中继接收。文件管理存放产品和设备档案使用的图片，文件落在本地目录，通过 `/files` 访问。
 
-在线客服使用 WuKongIM。管理服务代发 HTTP，浏览器不直连消息服务。管理端提供客服工作台，其他页面有悬浮会话。开关和地址在 `config/admin.properties` 的 `omes.im.enabled`、`omes.im.api-url`、`omes.im.secret`。编排文件在 [docker/im](docker/im/README.md)，默认只监听 `127.0.0.1:5001`。
+在线客服使用 WuKongIM。管理服务代发 HTTP（生产前端走 `/api/im/**`）。Web Nginx 另提供同源前缀 `/wkim/` 反代到 WuKongIM HTTP（`VITE_WKIM_BASE_URL=/wkim`）。管理端提供客服工作台，其他页面有悬浮会话。开关和地址在 `config/admin.properties` 的 `omes.im.enabled`、`omes.im.api-url`、`omes.im.secret`。编排文件在 [docker/im](docker/im/README.md)，宿主机只监听 `127.0.0.1:5001`。
 
 ### 移动端与 AI
 

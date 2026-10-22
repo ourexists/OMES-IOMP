@@ -38,6 +38,12 @@ export default defineConfig(({ mode }) => {
             })
           },
         },
+        // 与生产 Nginx /wkim/ → WuKongIM :5001 对齐
+        '/wkim': {
+          target: env.VITE_WKIM_PROXY_TARGET?.trim() || 'http://127.0.0.1:5001',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/wkim/, ''),
+        },
       },
     },
     build: {

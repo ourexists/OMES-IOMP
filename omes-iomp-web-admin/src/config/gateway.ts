@@ -92,6 +92,10 @@ export function gatewayApiPath(path: string): string {
     return path
   }
   const normalized = path.startsWith('/') ? path : `/${path}`
+  // WuKongIM 走独立前缀 /wkim，不要再套 /api
+  if (normalized === '/wkim' || normalized.startsWith('/wkim/')) {
+    return normalized
+  }
   const base = runtimeSasBaseUrl ?? resolveGatewayBaseUrl()
   // 同源（Nginx / Vite）走 /api，由反代去掉前缀。直连 SAS 不加，后端没有 /api 上下文
   if (!base) {
